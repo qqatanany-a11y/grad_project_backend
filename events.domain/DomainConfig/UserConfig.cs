@@ -13,6 +13,9 @@ namespace events.domain.DomainConfig
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.FullName).HasMaxLength(200).IsRequired(true);
+            builder.Property(p => p.Email).HasMaxLength(200).IsRequired(true);
+            builder.Property(p => p.PasswordHash).HasMaxLength(20).IsRequired(true);
+            builder.Property(p => p.PhoneNumber).HasMaxLength(20).IsRequired(true);
             builder.Property(p => p.IsActive).HasDefaultValue(true).IsRequired(true);
             builder.Property(p => p.CreatedAt).IsRequired(true);
 

@@ -1,0 +1,15 @@
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.deps.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.runtimeconfig.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.pdb
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.AssemblyReference.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfoInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfo.cs
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.CoreCompileInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.sourcelink.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\refint\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.pdb
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.genruntimeconfig.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\ref\events.domain.dll

@@ -1,41 +1,49 @@
 ﻿
+using events.domain.Entites;
+
 namespace events.domain.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
         private User()
         {
         }
-
-        public int Id { get; private set; }
+        public string Email { get; private set; } = null!;
+        public string PasswordHash { get; private set; } = null!;
+        public string PhoneNumber { get; private set; } = null!;
         public string FullName { get; private set; }
-        public bool IsActive { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public bool IsActive { get; private set; } = true;
 
-        public int RoleId { get; private set; }
+        public Guid RoleId { get; private set; }
         public UserRole Role { get; private set; }
 
-        public virtual ICollection<Venue> Venues { get; private set; } = new List<Venue>();
-        public virtual ICollection<Booking> Bookings { get; private set; } = new List<Booking>();
-        public virtual ICollection<Review> Reviews { get; private set; } = new List<Review>();
+        public  List<Venue> Venues { get; private set; } = new List<Venue>();
+        public  List<Booking> Bookings { get; private set; } = new List<Booking>();
+        public  List<Review> Reviews { get; private set; } = new List<Review>();
 
-        public User(string fullName)
+        public User(string email,string passwordHash,string phoneNumber,string fullName)
         {
+            Email = email;
+            PasswordHash = passwordHash;
+            PhoneNumber = phoneNumber;
             FullName = fullName;
             IsActive = true;
-            CreatedAt = DateTime.UtcNow;
         }
-        public void UpdateName( string name)
+        public void UpdateName(string name)
         {
             FullName = name;
+            this.UpdatedAt = DateTime.UtcNow;
         }
         public void Active()
         {
             IsActive = true;
+            this.UpdatedAt = DateTime.UtcNow;
         }
+
         public void Deactive()
         {
             IsActive = false;
+            this.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

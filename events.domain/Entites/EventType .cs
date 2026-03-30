@@ -1,11 +1,13 @@
-﻿namespace events.domain.Entities
-{
-    public class EventType
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+﻿using events.domain.Entites;
 
-        public virtual ICollection<VenueEventType> VenueEventTypes { get; set; } = new List<VenueEventType>();
+namespace events.domain.Entities
+{
+    // sport events, music events, corporate events, private events, etc.
+    public class EventType : BaseEntity
+    {
+        public string Name { get; private set; } = null!;
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+        public List<VenueEventType> VenueEventTypes { get; private set; } = new List<VenueEventType>();
     }
 }

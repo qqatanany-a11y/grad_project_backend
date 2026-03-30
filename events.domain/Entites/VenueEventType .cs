@@ -1,13 +1,14 @@
-﻿namespace events.domain.Entities
-{
-    public class VenueEventType
-    {
-        public int VenueId { get; set; }        
-        public int EventTypeId { get; set; }     
+﻿using events.domain.Entites;
 
-        
-        public virtual Venue Venue { get; set; } = null!;
+namespace events.domain.Entities
+{
+    public class VenueEventType : BaseEntity
+    {
+        public Guid VenueId { get; private set; }        
+        public int EventTypeId { get; private set; }     
+
+        public  Venue Venue { get; private set; } = null!;
      
-        public virtual EventType EventType { get; set; } = null!;
+        public  EventType EventType { get; private set; } = null!;
     }
 }

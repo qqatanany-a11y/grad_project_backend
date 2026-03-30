@@ -1,25 +1,17 @@
 ﻿
+using events.domain.Entites;
+
 namespace events.domain.Entities
 {
-    public class Booking
+    public class Booking : BaseEntity
     {
         private Booking() { } // EF Core
 
-        // =========================
-        // Primary Key
-        // =========================
-        public int Id { get; private set; }
+        public Guid UserId { get; private set; }
+        public Guid VenueId { get; private set; }
+        public Guid? EventTypeId { get; private set; }
 
-        // =========================
-        // Foreign Keys
-        // =========================
-        public int UserId { get; private set; }
-        public int VenueId { get; private set; }
-        public int? EventTypeId { get; private set; }
-
-        // =========================
-        // Main Fields
-        // =========================
+    
         public DateTime BookingDate { get; private set; }
         public TimeSpan StartTime { get; private set; }
         public TimeSpan EndTime { get; private set; }
@@ -27,12 +19,8 @@ namespace events.domain.Entities
         public int? GuestsCount { get; private set; }
         public decimal TotalPrice { get; private set; }
 
-        public BookingStatus Status { get; private set; } = BookingStatus.Pending;
-        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-
-        // =========================
-        // Navigation Properties
-        // =========================
+        public BookingStatusEnum Status { get; private set; } = BookingStatusEnum.Pending;
+        
         public User User { get; private set; }
         public Venue Venue { get; private set; } 
         public EventType? EventType { get; private set; }

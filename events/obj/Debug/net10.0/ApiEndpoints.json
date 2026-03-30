@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "events.Controllers.TestController",
+    "Method": "test",
+    "RelativePath": "Test/test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

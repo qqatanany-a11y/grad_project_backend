@@ -1,14 +1,12 @@
-﻿namespace events.domain.Entities
-{
-    public class VenueImage
-    {
-        public int Id { get; set; }
-        public int VenueId { get; set; }         
-        public string ImageUrl { get; set; } = null!;
-        public bool IsCover { get; set; } = false;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+﻿using events.domain.Entites;
 
-      
-        public virtual Venue Venue { get; set; } = null!;
+namespace events.domain.Entities
+{
+    public class VenueImage : BaseEntity
+    {
+        public Guid VenueId { get; private set; }         
+        public string ImageUrl { get; private set; } = null!;
+        public bool IsCover { get; private set; } = false;
+        public Venue Venue { get; private set; } = null!;
     }
 }

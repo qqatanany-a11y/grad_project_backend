@@ -1,15 +1,13 @@
-﻿namespace events.domain.Entities
-{
-    public class VenueAvailability
-    {
-        public int Id { get; set; }
-        public int VenueId { get; set; }        
-        public DateTime StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public bool IsAvailable { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+﻿using events.domain.Entites;
 
-        
-        public virtual Venue Venue { get; set; } = null!;
+namespace events.domain.Entities
+{
+    public class VenueAvailability : BaseEntity
+    {
+        public Guid VenueId { get; private set; }        
+        public DateTime StartTime { get; private set; }
+        public DateTime? EndTime { get; private set; }
+        public bool IsAvailable { get; private set; } = true;
+        public Venue Venue { get; private set; } = null!;
     }
 }

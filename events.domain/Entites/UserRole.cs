@@ -1,11 +1,12 @@
 ﻿
+using events.domain.Entites;
+
 namespace events.domain.Entities
 {
-    public class UserRole
+    public class UserRole : BaseEntity
     {
         private UserRole() { }
 
-        public int Id { get; private set; }
         public string Name { get; private set; }
         public string[] Permation { get; private set; }
 
@@ -18,6 +19,7 @@ namespace events.domain.Entities
         public void UpdatePermation(string[] permation) 
         {
             Permation = permation;
+            this.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

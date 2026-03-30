@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using events.domain.DomainConfig;
 
-namespace events.domain.DomainConfig
+namespace events.Infrastructure.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
@@ -20,5 +21,6 @@ namespace events.domain.DomainConfig
             builder.ApplyConfiguration(new UserRoleConfig());
 
         }
+        public DbSet<events.domain.Entities.User> Users { get; set; }
     }
 }   

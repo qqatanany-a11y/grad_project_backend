@@ -2,18 +2,16 @@
 
 public class Review
 {
-    public int Id { get; set; }
 
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
+    public Guid UserId { get; private set; }
+    public User User { get; private set; } = null!;
 
-    public int VenueId { get; set; }
-    public Venue Venue { get; set; } = null!;
+    public Guid VenueId { get; private set; }
+    public Venue Venue { get; private set; } = null!;
 
-    public int BookingId { get; set; }
-    public Booking Booking { get; set; } = null!;
+    public Guid BookingId { get; private set; }
+    public Booking Booking { get; private set; } = null!;
 
-    public int Rating { get; set; }
-    public string? Comment { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int Rating { get; private set; }
+    public string? Comment { get; private set; }
 }
