@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="events.domain/events.domain.csproj" Id="aa681d53-3d5a-474d-8d8d-d3a4159f3174" />
+  <Project Path="events/events.csproj" />
+</Solution>
