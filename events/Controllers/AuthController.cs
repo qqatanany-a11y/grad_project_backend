@@ -70,6 +70,7 @@ namespace events.Controllers
                 Role = role,
                 Name = name
             };
+
         }
     }
 }
