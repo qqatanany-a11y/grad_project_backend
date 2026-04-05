@@ -326,3 +326,17 @@ C:\Users\DELL\source\repos\eventslaithomar\events\obj\Debug\net10.0\ref\events.d
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\BCrypt.Net-Next.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Event.Application.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\events.domain.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Event.Application.pdb
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\events.domain.pdb
+C:\Users\omars\source\repos\events\events\obj\Debug\net10.0\events.sourcelink.json
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Npgsql.dll
+C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

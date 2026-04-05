@@ -8,38 +8,20 @@ namespace events.domain.DomainConfig
     {
         public void Configure(EntityTypeBuilder<Venue> builder)
         {
-
-
             builder.HasKey(v => v.Id);
+            builder.Property(v => v.Name).IsRequired().HasMaxLength(150);
+            builder.Property(v => v.Description).HasMaxLength(1000).IsRequired(false);
+            builder.Property(v => v.City).HasMaxLength(100).IsRequired(false);
+            builder.Property(v => v.Address).HasMaxLength(250).IsRequired(false);
+            builder.Property(v => v.Capacity).IsRequired();
+            builder.Property(v => v.MinimalPrice).HasColumnType("decimal(18,2)").IsRequired();
+            builder.Property(v => v.IsActive).HasDefaultValue(true);
 
-            builder.Property(v => v.Name)
-                   .IsRequired()
-                   .HasMaxLength(150);
-
-            builder.Property(v => v.Description)
-                   .HasMaxLength(1000);
-
-            builder.Property(v => v.City)
-                   .HasMaxLength(100);
-
-            builder.Property(v => v.Address)
-                   .HasMaxLength(250);
-
-            builder.Property(v => v.Capacity)
-                   .IsRequired();
-
-            builder.Property(v => v.MinimalPrice)
-                   .HasColumnType("decimal(18,2)")
-                   .IsRequired();
-
-            builder.Property(v => v.IsActive)
-                   .HasDefaultValue(true);
-
-           
-            builder.HasOne(v => v.Owner)
-                   .WithMany(u => u.Venues) 
-                   .HasForeignKey(v => v.OwnerId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            // ✅ Company بدل Owner
+           // builder.HasOne(v => v.Company)
+              //     .WithMany(c => c.Venues)
+               //    .HasForeignKey(v => v.CompanyId)
+              //     .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(v => v.Images)
                    .WithOne(i => i.Venue)
@@ -65,8 +47,6 @@ namespace events.domain.DomainConfig
                    .WithOne(r => r.Venue)
                    .HasForeignKey(r => r.VenueId)
                    .OnDelete(DeleteBehavior.Cascade);
-
         }
-
     }
 }

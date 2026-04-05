@@ -27,11 +27,7 @@ namespace events.domain.DomainConfig
                    .IsRequired(false);
 
             builder.Property(p => p.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()");
-
-            builder.HasOne(p => p.Booking)
-                   .WithOne(b => b.Payment) 
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .HasDefaultValueSql("now()");
 
 
         }

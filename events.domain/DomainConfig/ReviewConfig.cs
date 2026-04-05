@@ -8,24 +8,19 @@ namespace events.domain.DomainConfig
     {
         public void Configure(EntityTypeBuilder<Review> builder)
         {
-            
-            builder.HasKey(r => new { r.UserId, r.BookingId });
+            builder.HasKey(r => r.Id);
+            builder.Property(r => r.Rating).IsRequired();
+            builder.Property(r => r.Comment).HasMaxLength(500).IsRequired(false);
 
-            builder.Property(r => r.Rating)
-                   .IsRequired();
-
-            builder.Property(r => r.Comment)
-                   .HasMaxLength(500);
-
-            builder.HasOne(r => r.User)
-                   .WithMany(u => u.Reviews)
-                   .HasForeignKey(r => r.UserId)
+            builder.HasOne(r => r.Client)
+                   .WithMany(c => c.Reviews)
+                   .HasForeignKey(r => r.ClientId)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(r => r.Venue)
                    .WithMany(v => v.Reviews)
                    .HasForeignKey(r => r.VenueId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(r => r.Booking)
                    .WithOne(b => b.Review)

@@ -16,7 +16,7 @@ namespace events.domain.DomainConfig
                    .HasMaxLength(100);
 
             builder.Property(e => e.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()");
+                   .HasDefaultValueSql("now()");
 
             builder.HasMany(e => e.VenueEventTypes)
                    .WithOne(vet => vet.EventType)

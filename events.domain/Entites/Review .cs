@@ -1,17 +1,19 @@
-﻿namespace events.domain.Entities;
+﻿using events.domain.Entites;
 
-public class Review
+namespace events.domain.Entities
 {
+    public class Review : BaseEntity
+    {
+        private Review() { }
 
-    public Guid UserId { get; private set; }
-    public User User { get; private set; } = null!;
+        public int ClientId { get; private set; }
+        public int VenueId { get; private set; }
+        public int BookingId { get; private set; }
+        public int Rating { get; private set; }
+        public string? Comment { get; private set; }
 
-    public Guid VenueId { get; private set; }
-    public Venue Venue { get; private set; } = null!;
-
-    public Guid BookingId { get; private set; }
-    public Booking Booking { get; private set; } = null!;
-
-    public int Rating { get; private set; }
-    public string? Comment { get; private set; }
+        public Client Client { get; private set; } 
+        public Venue Venue { get; private set; } 
+        public Booking Booking { get; private set; } 
+    }
 }

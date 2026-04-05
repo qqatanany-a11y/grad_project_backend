@@ -1,49 +1,57 @@
-﻿
-using events.domain.Entites;
-
+﻿using events.domain.Entites;
+using System.ComponentModel.Design;
 namespace events.domain.Entities
 {
     public class User : BaseEntity
     {
-        private User()
-        {
-        }
+        private User() { }
         public string Email { get; private set; } = null!;
         public string PasswordHash { get; private set; } = null!;
         public string PhoneNumber { get; private set; } = null!;
-        public string FullName { get; private set; }
+        public string FirstName { get; private set; } = null!;
+        public string? MiddleName { get; private set; }
+        public string LastName { get; private set; } = null!;
+
+        public int CompanyId { get; private set; }
+        public Company Company { get; private set; }
+
+        public string FullName => string.IsNullOrWhiteSpace(MiddleName)
+            ? $"{FirstName} {LastName}"
+            : $"{FirstName} {MiddleName} {LastName}";
+
         public bool IsActive { get; private set; } = true;
-
-        public Guid RoleId { get; private set; }
+        public int RoleId { get; private set; }
         public UserRole Role { get; private set; }
-
-        public  List<Venue> Venues { get; private set; } = new List<Venue>();
-        public  List<Booking> Bookings { get; private set; } = new List<Booking>();
-        public  List<Review> Reviews { get; private set; } = new List<Review>();
-
-        public User(string email,string passwordHash,string phoneNumber,string fullName)
+        public List<Booking> Bookings { get; private set; } = new List<Booking>();
+        public User(string email, string passwordHash, string phoneNumber,
+                    string firstName, string lastName, string middleName, int roleId, int companyId)
         {
             Email = email;
             PasswordHash = passwordHash;
             PhoneNumber = phoneNumber;
-            FullName = fullName;
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
             IsActive = true;
+            RoleId = roleId;
+            CompanyId = companyId;
         }
-        public void UpdateName(string name)
+        public void UpdateName(string firstName, string lastName, string? middleName)
         {
-            FullName = name;
-            this.UpdatedAt = DateTime.UtcNow;
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
+            UpdatedAt = DateTime.UtcNow;
         }
-        public void Active()
+        public void Activate()
         {
             IsActive = true;
-            this.UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
-
-        public void Deactive()
+        public void Deactivate()
         {
             IsActive = false;
-            this.UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

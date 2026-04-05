@@ -2,38 +2,49 @@
 using events.domain.Repos;
 using events.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Event.Infrastructure.Repos
+
 {
     public class UserRepo : IUserRepo
     {
-        // learn
         private readonly ApplicationDbContext _db;
+
         public UserRepo(ApplicationDbContext db)
         {
             _db = db;
         }
+       
         public async Task<bool> AddUserAsync(User user)
         {
-            return true;
+            await _db.Users.AddAsync(user);
+            int result = await _db.SaveChangesAsync();
+            return result > 0;
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+
+        public async Task <User?> GetUserByEmailAsync(string email)
         {
-            return null;
+            return await _db.Users
+                .Include(s => s.Company)
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public Task<User> GetUserByIdAsync(Guid userId)
+        public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+
+            var user = await _db.Users
+                .FirstOrDefaultAsync(x => x.Id.Equals(userId));
+            return user;
+            
         }
 
-        public Task UpdateUserAsync(User user)
+       
+
+
+        public async Task UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
         }
     }
 }

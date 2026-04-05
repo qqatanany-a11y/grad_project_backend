@@ -8,40 +8,20 @@ namespace events.domain.DomainConfig
     {
         public void Configure(EntityTypeBuilder<Booking> builder)
         {
-         
             builder.HasKey(b => b.Id);
+            builder.Property(b => b.Id).ValueGeneratedOnAdd();
+            builder.Property(b => b.BookingDate).IsRequired();
+            builder.Property(b => b.StartTime).IsRequired();
+            builder.Property(b => b.EndTime).IsRequired();
+            builder.Property(b => b.TotalPrice).IsRequired().HasColumnType("decimal(18,2)");
+            builder.Property(b => b.Status).IsRequired();
+            builder.Property(b => b.CreatedAt).IsRequired();
+            builder.Property(b => b.GuestsCount).IsRequired(false);
 
-            builder.Property(b => b.Id)
-                .ValueGeneratedOnAdd();
-
-            builder.Property(b => b.BookingDate)
-                .IsRequired();
-
-            builder.Property(b => b.StartTime)
-                .IsRequired();
-
-            builder.Property(b => b.EndTime)
-                .IsRequired();
-
-            builder.Property(b => b.TotalPrice)
-                .IsRequired()
-                .HasColumnType("decimal(18,2)");
-
-            builder.Property(b => b.Status)
-                .IsRequired();
-
-            builder.Property(b => b.CreatedAt)
-                .IsRequired();
-
-       
-            builder.Property(b => b.GuestsCount)
-                .IsRequired(false);
-
-           
-            builder.HasOne(b => b.User)
-                .WithMany(u => u.Bookings)
-                .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(b => b.Client)
+                .WithMany(c => c.Bookings)
+                .HasForeignKey(b => b.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Venue)
                 .WithMany(v => v.Bookings)

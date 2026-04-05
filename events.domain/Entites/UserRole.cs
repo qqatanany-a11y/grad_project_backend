@@ -1,25 +1,30 @@
-﻿
-using events.domain.Entites;
-
+﻿using events.domain.Entites;
 namespace events.domain.Entities
 {
+    
     public class UserRole : BaseEntity
     {
-        private UserRole() { }
+        public UserRole() { }
 
-        public string Name { get; private set; }
-        public string[] Permation { get; private set; }
+        public string Name { get; set; } = null!;
+        public string[] Permation { get; set; } = Array.Empty<string>();
 
-        public UserRole(string name, string[] permation) 
+        public UserRole( string name, string[] permation)
         {
+
+        
             Name = name;
             Permation = permation;
         }
+        public UserRole(int id)
+        {
+            Id = id;    
+        }
 
-        public void UpdatePermation(string[] permation) 
+        public void UpdatePermation(string[] permation)
         {
             Permation = permation;
-            this.UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

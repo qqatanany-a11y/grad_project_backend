@@ -22,7 +22,7 @@ namespace events.domain.DomainConfig
                    .HasDefaultValue(true);
 
             builder.Property(v => v.CreatedAt)
-                   .HasDefaultValueSql("GETUTCDATE()");
+                   .HasDefaultValueSql("now()");
 
             builder.HasOne(v => v.Venue)
                    .WithMany(vn => vn.Availabilities) 
