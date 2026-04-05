@@ -6,11 +6,11 @@ namespace events.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IClientAuthService _clientAuthService;
+        private readonly IUserAuthService _clientAuthService;
 
-        public ClientController(IClientAuthService clientAuthService)
+        public UserController(IUserAuthService clientAuthService)
         {
             _clientAuthService = clientAuthService;
         }

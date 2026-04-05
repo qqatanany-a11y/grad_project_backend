@@ -11,7 +11,5 @@ namespace Event.Application.Dtos
         public string PhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }
         public string Password { get; set; }
-        public int CompanyId { get; set; }
-
     }
 }

@@ -12,8 +12,8 @@ namespace events.domain.Entities
         public string? MiddleName { get; private set; }
         public string LastName { get; private set; } = null!;
 
-        public int CompanyId { get; private set; }
-        public Company Company { get; private set; }
+        //public int? CompanyId { get; private set; }
+        //public Company? Company { get; private set; }
 
         public string FullName => string.IsNullOrWhiteSpace(MiddleName)
             ? $"{FirstName} {LastName}"
@@ -24,7 +24,7 @@ namespace events.domain.Entities
         public UserRole Role { get; private set; }
         public List<Booking> Bookings { get; private set; } = new List<Booking>();
         public User(string email, string passwordHash, string phoneNumber,
-                    string firstName, string lastName, string middleName, int roleId, int companyId)
+                    string firstName, string lastName, string middleName, int roleId)
         {
             Email = email;
             PasswordHash = passwordHash;
@@ -34,7 +34,6 @@ namespace events.domain.Entities
             MiddleName = middleName;
             IsActive = true;
             RoleId = roleId;
-            CompanyId = companyId;
         }
         public void UpdateName(string firstName, string lastName, string? middleName)
         {

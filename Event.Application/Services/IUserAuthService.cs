@@ -2,7 +2,7 @@
 
 namespace Event.Application.Services
 {
-    public interface IClientAuthService
+    public interface IUserAuthService
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto> LoginAsync(LoginDto dto);

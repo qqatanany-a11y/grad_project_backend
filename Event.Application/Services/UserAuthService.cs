@@ -9,75 +9,73 @@ using System.Text;
 
 namespace Event.Application.Services
 {
-    public class ClientAuthService : IClientAuthService
+    public class UserAuthService : IUserAuthService 
     {
-        private readonly IClientRepo _clientRepo;
         private readonly IConfiguration _config;
+        private readonly IUserRepo _userRepo;
 
-        public ClientAuthService(IClientRepo clientRepo, IConfiguration config)
+        public UserAuthService(IUserRepo userRepo, IConfiguration config)
         {
-            _clientRepo = clientRepo;
+            _userRepo = userRepo;
             _config = config;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
         {
-            var existing = await _clientRepo.GetByEmailAsync(dto.Email);
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (existing != null)
-                throw new Exception("البريد الإلكتروني مسجل مسبقاً");
+                throw new Exception("The email is already exists");
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+ 
+            var user=new User(dto.Email, passwordHash, dto.PhoneNumber, dto.FirstName, dto.LastName, dto.MiddleName,2);
 
-            var client = new Client(
-                dto.FirstName,
-                dto.LastName,
-                dto.Email,
-                passwordHash,
-                dto.PhoneNumber,
-                dto.MiddleName
-            );
+            var res=await _userRepo.AddUserAsync(user);
+            if (!res)
+            {
+                throw new Exception("Failed to create user");
+            }
 
-            await _clientRepo.AddAsync(client);
-            var token = GenerateJwtToken(client);
+            var token = GenerateJwtToken(user);
 
             return new AuthResponseDto
             {
                 Token = token,
-                FullName = client.FullName,
-                Email = client.Email,
-                Role = "Client"
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = "User"
             };
         }
-
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
-            var client = await _clientRepo.GetByEmailAsync(dto.Email);
-            if (client == null)
-                throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
+            var user = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (user == null)
+                throw new Exception("The email or password is not valid");
 
-            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, client.PasswordHash);
+            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+
             if (!isValid)
-                throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
+                throw new Exception("The email or password is not valid");
 
-            var token = GenerateJwtToken(client);
+            var token = GenerateJwtToken(user);
 
             return new AuthResponseDto
             {
                 Token = token,
-                FullName = client.FullName,
-                Email = client.Email,
-                Role = "Client"
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = "User"
             };
         }
 
-        private string GenerateJwtToken(Client client)
+        private string GenerateJwtToken(User client)
         {
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, client.Id.ToString()),
                 new Claim(ClaimTypes.Email, client.Email),
                 new Claim(ClaimTypes.Name, client.FullName),
-                new Claim(ClaimTypes.Role, "Client")
+                new Claim(ClaimTypes.Role, "User")
             };
 
             var key = new SymmetricSecurityKey(

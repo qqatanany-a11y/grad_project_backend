@@ -25,7 +25,6 @@ namespace Event.Infrastructure.Repos
         public async Task <User?> GetUserByEmailAsync(string email)
         {
             return await _db.Users
-                .Include(s => s.Company)
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 

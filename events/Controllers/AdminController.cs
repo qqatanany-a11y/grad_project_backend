@@ -29,19 +29,6 @@ namespace events.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(AdminLoginDto dto)
-        {
-            try
-            {
-                var result = await _adminAuthService.LoginAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
 
     }

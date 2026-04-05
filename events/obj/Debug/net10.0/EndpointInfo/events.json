@@ -36,72 +36,10 @@
         }
       }
     },
-    "/api/Admin/login": {
+    "/api/Owner/register-owner": {
       "post": {
         "tags": [
-          "Admin"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminLoginDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminLoginDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminLoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Auth/register": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Auth/register-owner": {
-      "post": {
-        "tags": [
-          "Auth"
+          "Owner"
         ],
         "requestBody": {
           "content": {
@@ -129,115 +67,84 @@
         }
       }
     },
-    "/api/Auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Auth/test": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Client/register": {
-      "post": {
-        "tags": [
-          "Client"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Client/login": {
-      "post": {
-        "tags": [
-          "Client"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Owner/venues": {
+    "/api/Owner/test": {
       "get": {
         "tags": [
           "Owner"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Venues/venues": {
+      "get": {
+        "tags": [
+          "Venues"
         ],
         "responses": {
           "200": {
@@ -247,7 +154,7 @@
       },
       "post": {
         "tags": [
-          "Owner"
+          "Venues"
         ],
         "requestBody": {
           "content": {
@@ -275,10 +182,10 @@
         }
       }
     },
-    "/api/Owner/venues/{id}": {
+    "/api/Venues/venues/{id}": {
       "put": {
         "tags": [
-          "Owner"
+          "Venues"
         ],
         "parameters": [
           {
@@ -318,7 +225,7 @@
       },
       "delete": {
         "tags": [
-          "Owner"
+          "Venues"
         ],
         "parameters": [
           {
@@ -367,20 +274,6 @@
           "minimalPrice": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdminLoginDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -459,10 +352,6 @@
           "password": {
             "type": "string",
             "nullable": true
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -553,13 +442,13 @@
       "name": "Admin"
     },
     {
-      "name": "Auth"
-    },
-    {
-      "name": "Client"
-    },
-    {
       "name": "Owner"
+    },
+    {
+      "name": "User"
+    },
+    {
+      "name": "Venues"
     }
   ]
 }

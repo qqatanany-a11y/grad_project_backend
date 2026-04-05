@@ -13,15 +13,13 @@ namespace Event.Application.Services
     {
         private readonly IUserRepo _userRepo;
         private readonly IRoleRepo _roleRepo;
-        private readonly IOwnerProfileRepo _ownerProfileRepo;
         private readonly IConfiguration _config;
 
         public AuthService(IUserRepo userRepo, IRoleRepo roleRepo,
-                           IOwnerProfileRepo ownerProfileRepo, IConfiguration config)
+                           IConfiguration config)
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
-            _ownerProfileRepo = ownerProfileRepo;
             _config = config;
         }
 
@@ -44,8 +42,7 @@ namespace Event.Application.Services
                 dto.FirstName,
                 dto.LastName,
                 dto.MiddleName,
-                role.Id,
-                dto.CompanyId
+                role.Id
             );
 
             await _userRepo.AddUserAsync(user);
@@ -66,9 +63,7 @@ namespace Event.Application.Services
             if (existing != null)
                 throw new Exception("البريد الإلكتروني مسجل مسبقاً");
 
-            var role = await _roleRepo.GetRoleByNameAsync("Owner");
-            if (role == null)
-                throw new Exception("الـ Role غير موجود");
+   
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -79,29 +74,28 @@ namespace Event.Application.Services
                 dto.FirstName,
                 dto.LastName,
                 dto.MiddleName,
-                role.Id,
-                dto.CompanyId
-            );
+                3
+               );
 
             await _userRepo.AddUserAsync(user);
 
-            var ownerProfile = new OwnerProfile(
-                user.Id,
-                dto.CompanyName,
-                dto.BusinessPhone,
-                dto.BusinessAddress
-            );
+            //var ownerProfile = new OwnerProfile(
+            //    user.Id,
+            //    dto.CompanyName,
+            //    dto.BusinessPhone,
+            //    dto.BusinessAddress
+            //);
 
-            await _ownerProfileRepo.AddAsync(ownerProfile);
+            //await _ownerProfileRepo.AddAsync(ownerProfile);
 
-            var token = GenerateJwtToken(user, role.Name); // ← معدل
+            var token = GenerateJwtToken(user, "Owner"); // ← معدل
 
             return new AuthResponseDto
             {
                 Token = token,
                 FullName = user.FullName,
                 Email = user.Email,
-                Role = role.Name
+                Role = "Owner"
             };
         }
 
@@ -115,7 +109,6 @@ namespace Event.Application.Services
             if (!isValid)
                 throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
 
-            // جيب الـ Role من DB
             var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "User";
 
@@ -136,7 +129,6 @@ namespace Event.Application.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("CompanyId", user.CompanyId.ToString()),
                 new Claim(ClaimTypes.Name, user.FullName),
                 new Claim(ClaimTypes.Role, roleName) // ← معدل
             };

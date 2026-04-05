@@ -19,7 +19,6 @@ builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IOwnerProfileRepo, OwnerProfileRepo>();
 
 
 // JWT
@@ -44,10 +43,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
-builder.Services.AddScoped<ISystemAdminRepo, SystemAdminRepo>();
 builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
-builder.Services.AddScoped<IClientRepo, ClientRepo>();
-builder.Services.AddScoped<IClientAuthService, ClientAuthService>();
+builder.Services.AddScoped<IUserAuthService, UserAuthService>();
 builder.Services.AddScoped<IVenueRepo, VenueRepo>();
 builder.Services.AddScoped<IVenueService, VenueService>();
 var app = builder.Build();

@@ -1,22 +1,6 @@
 [
   {
     "ContainingType": "events.Controllers.AdminController",
-    "Method": "Login",
-    "RelativePath": "api/Admin/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Event.Application.Dtos.AdminLoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AdminController",
     "Method": "Register",
     "RelativePath": "api/Admin/register",
     "HttpMethod": "POST",
@@ -32,41 +16,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.AuthController",
-    "Method": "Login",
-    "RelativePath": "api/Auth/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Event.Application.Dtos.LoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AuthController",
-    "Method": "Register",
-    "RelativePath": "api/Auth/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Event.Application.Dtos.RegisterDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AuthController",
+    "ContainingType": "events.Controllers.OwnerController",
     "Method": "RegisterOwner",
-    "RelativePath": "api/Auth/register-owner",
+    "RelativePath": "api/Owner/register-owner",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -80,9 +32,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.AuthController",
+    "ContainingType": "events.Controllers.OwnerController",
     "Method": "Test",
-    "RelativePath": "api/Auth/test",
+    "RelativePath": "api/Owner/test",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -90,9 +42,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.ClientController",
+    "ContainingType": "events.Controllers.UserController",
     "Method": "Login",
-    "RelativePath": "api/Client/login",
+    "RelativePath": "api/User/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -106,9 +58,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.ClientController",
+    "ContainingType": "events.Controllers.UserController",
     "Method": "Register",
-    "RelativePath": "api/Client/register",
+    "RelativePath": "api/User/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -122,9 +74,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.OwnerController",
+    "ContainingType": "events.Controllers.VenuesController",
     "Method": "GetVenues",
-    "RelativePath": "api/Owner/venues",
+    "RelativePath": "api/Venues/venues",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -132,9 +84,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.OwnerController",
+    "ContainingType": "events.Controllers.VenuesController",
     "Method": "AddVenue",
-    "RelativePath": "api/Owner/venues",
+    "RelativePath": "api/Venues/venues",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -148,9 +100,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.OwnerController",
+    "ContainingType": "events.Controllers.VenuesController",
     "Method": "UpdateVenue",
-    "RelativePath": "api/Owner/venues/{id}",
+    "RelativePath": "api/Venues/venues/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -169,9 +121,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.OwnerController",
+    "ContainingType": "events.Controllers.VenuesController",
     "Method": "DeleteVenue",
-    "RelativePath": "api/Owner/venues/{id}",
+    "RelativePath": "api/Venues/venues/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

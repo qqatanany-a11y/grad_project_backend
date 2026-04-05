@@ -11,33 +11,35 @@ namespace Event.Application.Services
 {
     public class AdminAuthService : IAdminAuthService
     {
-        private readonly ISystemAdminRepo _adminRepo;
         private readonly IConfiguration _config;
+        private readonly IUserRepo _userRepo;
 
-        public AdminAuthService(ISystemAdminRepo adminRepo, IConfiguration config)
+        public AdminAuthService(IConfiguration config,IUserRepo repo)
         {
-            _adminRepo = adminRepo;
             _config = config;
+            _userRepo = repo;
         }
+        // admin registration -> edit system admin to user
 
         public async Task<AdminResponseDto> RegisterAsync(AdminRegisterDto dto)
         {
-            var existing = await _adminRepo.GetByEmailAsync(dto.Email);
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (existing != null)
                 throw new Exception("البريد الإلكتروني مسجل مسبقاً");
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-            var admin = new SystemAdmin(
+            var admin = new User(
                 dto.Email,
                 passwordHash,
                 dto.PhoneNumber,
                 dto.FirstName,
                 dto.LastName,
-                dto.MiddleName
+                dto.MiddleName,
+                1
             );
 
-            await _adminRepo.AddAsync(admin);
+            await _userRepo.AddUserAsync(admin);
             var token = GenerateJwtToken(admin);
 
             return new AdminResponseDto
@@ -45,39 +47,39 @@ namespace Event.Application.Services
                 Token = token,
                 FullName = admin.FullName,
                 Email = admin.Email,
-                Role = "SystemAdmin"
+                Role = "Admin"
             };
         }
 
         public async Task<AdminResponseDto> LoginAsync(AdminLoginDto dto)
         {
-            var admin = await _adminRepo.GetByEmailAsync(dto.Email);
-            if (admin == null)
+            var user = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (user == null)
                 throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
 
-            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, admin.PasswordHash);
+            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
             if (!isValid)
                 throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
 
-            var token = GenerateJwtToken(admin);
+            var token = GenerateJwtToken(user);
 
             return new AdminResponseDto
             {
                 Token = token,
-                FullName = admin.FullName,
-                Email = admin.Email,
+                FullName = user.FullName,
+                Email = user.Email,
                 Role = "SystemAdmin"
             };
         }
 
-        private string GenerateJwtToken(SystemAdmin admin)
+        private string GenerateJwtToken(User user)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()),
-                new Claim(ClaimTypes.Email, admin.Email),
-                new Claim(ClaimTypes.Name, admin.FullName),
-                new Claim(ClaimTypes.Role, "SystemAdmin")
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim(ClaimTypes.Role, "Admin")
             };
 
             var key = new SymmetricSecurityKey(

@@ -340,3 +340,9 @@ C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\events.domain.pdb
 C:\Users\omars\source\repos\events\events\obj\Debug\net10.0\events.sourcelink.json
 C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Npgsql.dll
 C:\Users\omars\source\repos\events\events\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\BCrypt.Net-Next.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Npgsql.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Event.Application.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Event.Application.pdb
