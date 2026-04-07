@@ -1,4 +1,5 @@
 ﻿
+
 namespace Event.Application.Dtos
 {
     public class RegisterDto
@@ -10,6 +11,6 @@ namespace Event.Application.Dtos
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string SecondaryPhoneNumber { get; set; }
-        public string Password { get; set; }
+        public string Password { get; set; } 
     }
 }

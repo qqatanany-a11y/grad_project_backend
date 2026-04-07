@@ -1,50 +1,8 @@
 [
   {
-    "ContainingType": "events.Controllers.AdminController",
-    "Method": "Register",
-    "RelativePath": "api/Admin/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Event.Application.Dtos.AdminRegisterDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "RegisterOwner",
-    "RelativePath": "api/Owner/register-owner",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Event.Application.Dtos.RegisterOwnerDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "Test",
-    "RelativePath": "api/Owner/test",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "events.Controllers.UserController",
     "Method": "Login",
-    "RelativePath": "api/User/login",
+    "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -60,7 +18,7 @@
   {
     "ContainingType": "events.Controllers.UserController",
     "Method": "Register",
-    "RelativePath": "api/User/register",
+    "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -68,6 +26,32 @@
       {
         "Name": "dto",
         "Type": "Event.Application.Dtos.RegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "events.Controllers.OwnerController",
+    "Method": "GetMyInfo",
+    "RelativePath": "api/owner/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "events.Controllers.OwnerController",
+    "Method": "RegisterOwner",
+    "RelativePath": "api/owner/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Event.Application.Dtos.RegisterOwnerDto",
         "IsRequired": true
       }
     ],

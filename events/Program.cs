@@ -16,10 +16,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Repos
 builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IRoleRepo, RoleRepo>();
+builder.Services.AddScoped<IVenueRepo, VenueRepo>();
+builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();  // ← موجود ✅
 
 // Services
-builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IAuthService, AuthService>();  // ← سيرفس وحدة بس
+builder.Services.AddScoped<IVenueService, VenueService>();
 
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -42,11 +45,17 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IRoleRepo, RoleRepo>();
-builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
-builder.Services.AddScoped<IUserAuthService, UserAuthService>();
-builder.Services.AddScoped<IVenueRepo, VenueRepo>();
-builder.Services.AddScoped<IVenueService, VenueService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -56,8 +65,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();  
+app.UseCors("AllowAll");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

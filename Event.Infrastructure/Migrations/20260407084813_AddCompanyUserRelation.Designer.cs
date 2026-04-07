@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using events.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using events.Infrastructure.Persistence;
 namespace Event.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260407084813_AddCompanyUserRelation")]
+    partial class AddCompanyUserRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,6 +226,9 @@ namespace Event.Infrastructure.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -320,7 +326,7 @@ namespace Event.Infrastructure.Migrations
                             FirstName = "Omar",
                             LastName = "Admin",
                             MiddleName = "",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFcpGGxDf6ABeWoCUO18X4+XansM1SITeg0RmUlQfJ26wIfeNveydnOnYZMs9tghLQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJZqahCbq4aQ4kULK7H2M2MXqFiLLsWbLD4TzPSZzQAkFwdf2Y/I15YZj0497fDhAA==",
                             PhoneNumber = "0796096783",
                             RoleId = 1
                         });
@@ -555,7 +561,7 @@ namespace Event.Infrastructure.Migrations
                     b.HasOne("events.domain.Entities.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("events.domain.Entities.Venue", "Venue")
@@ -591,9 +597,9 @@ namespace Event.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("events.domain.Entities.User", "User")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("events.domain.Entities.Venue", "Venue")
@@ -710,8 +716,6 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Company");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("events.domain.Entities.Venue", b =>

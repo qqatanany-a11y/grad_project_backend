@@ -15,15 +15,17 @@ namespace events.domain.DomainConfig
             builder.Property(c => c.PhoneNumber).HasMaxLength(20).IsRequired();
             builder.Property(c => c.Email).HasMaxLength(200).IsRequired();
 
-          //  builder.HasMany(c => c.Venues)
-                 //  .WithOne(v => v.Company)
-                  // .HasForeignKey(v => v.CompanyId)
-                  // .OnDelete(DeleteBehavior.Cascade);
-            ///
-         //   builder.HasMany(c => c.Users)
-                 //  .WithOne(u => u.Company)
-                //   .HasForeignKey(u => u.CompanyId)
-                //   .OnDelete(DeleteBehavior.Restrict);
+            // ← جديد: شركة وحدة لكل Owner
+            builder.HasOne(c => c.User)
+                   .WithOne(u => u.Company)
+                   .HasForeignKey<Company>(c => c.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            // ← جديد: شركة عندها كتير قاعات
+            builder.HasMany(c => c.Venues)
+                   .WithOne(v => v.Company)
+                   .HasForeignKey(v => v.CompanyId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

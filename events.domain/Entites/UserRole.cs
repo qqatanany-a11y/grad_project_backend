@@ -11,8 +11,6 @@ namespace events.domain.Entities
 
         public UserRole( string name, string[] permation)
         {
-
-        
             Name = name;
             Permation = permation;
         }

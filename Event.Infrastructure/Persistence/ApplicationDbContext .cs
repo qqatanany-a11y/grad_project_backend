@@ -1,8 +1,8 @@
 ﻿using events.domain.DomainConfig;
 using events.domain.Entites;
 using events.domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace events.Infrastructure.Persistence
 {
@@ -23,6 +23,12 @@ namespace events.Infrastructure.Persistence
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w =>
+                w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,7 +36,7 @@ namespace events.Infrastructure.Persistence
             builder.ApplyConfiguration(new UserConfig());
             builder.ApplyConfiguration(new UserRoleConfig());
             builder.ApplyConfiguration(new CompanyConfig());
-            builder.ApplyConfiguration(new ClientConfig());
+          
             builder.ApplyConfiguration(new VenueConfig());
             builder.ApplyConfiguration(new VenueImageConfig());
             builder.ApplyConfiguration(new VenueAvailabilityConfig());
@@ -47,23 +53,23 @@ namespace events.Infrastructure.Persistence
                 new UserRole { Id = 3, Name = "Owner", Permation = new string[] { "manage_venue" }, CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
             );
 
-            var hasher = new PasswordHasher<User>();
 
-            string password = "Omar1234@";
-            string hashedPassword = hasher.HashPassword(null, password);
 
             builder.Entity<User>().HasData(
-              new{
+            new
+            {
                 Id = 1,
                 Email = "omar@gmail.com",
-                PasswordHash = hashedPassword,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Omar1234"), // ← BCrypt
                 PhoneNumber = "0796096783",
                 FirstName = "Omar",
                 LastName = "Admin",
-                MiddleName = "",
-                RoleId = 1
-              }
-            );
+                MiddleName = "Naser",
+                IsActive = true,
+                RoleId = 1,
+                CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+            }
+  );
 
             builder.Entity<EventType>().HasData(
                 new EventType { Id = 1, Name = "Party", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },

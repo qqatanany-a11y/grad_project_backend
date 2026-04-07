@@ -12,10 +12,7 @@ namespace events.domain.DomainConfig
             builder.Property(r => r.Rating).IsRequired();
             builder.Property(r => r.Comment).HasMaxLength(500).IsRequired(false);
 
-            builder.HasOne(r => r.Client)
-                   .WithMany(c => c.Reviews)
-                   .HasForeignKey(r => r.ClientId)
-                   .OnDelete(DeleteBehavior.Restrict);
+
 
             builder.HasOne(r => r.Venue)
                    .WithMany(v => v.Reviews)
@@ -26,6 +23,11 @@ namespace events.domain.DomainConfig
                    .WithOne(b => b.Review)
                    .HasForeignKey<Review>(r => r.BookingId)
                    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(r => r.User)
+            .WithMany(u => u.Reviews)
+               .HasForeignKey(r => r.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

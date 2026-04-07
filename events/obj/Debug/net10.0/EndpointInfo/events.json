@@ -5,38 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Admin/register": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminRegisterDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminRegisterDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdminRegisterDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Owner/register-owner": {
+    "/api/owner/register": {
       "post": {
         "tags": [
           "Owner"
@@ -67,7 +36,7 @@
         }
       }
     },
-    "/api/Owner/test": {
+    "/api/owner/me": {
       "get": {
         "tags": [
           "Owner"
@@ -79,7 +48,7 @@
         }
       }
     },
-    "/api/User/register": {
+    "/api/auth/register": {
       "post": {
         "tags": [
           "User"
@@ -110,7 +79,7 @@
         }
       }
     },
-    "/api/User/login": {
+    "/api/auth/login": {
       "post": {
         "tags": [
           "User"
@@ -278,36 +247,6 @@
         },
         "additionalProperties": false
       },
-      "AdminRegisterDto": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "middleName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "LoginDto": {
         "type": "object",
         "properties": {
@@ -357,47 +296,54 @@
         "additionalProperties": false
       },
       "RegisterOwnerDto": {
+        "required": [
+          "businessAddress",
+          "businessPhone",
+          "companyName",
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "phoneNumber"
+        ],
         "type": "object",
         "properties": {
           "firstName": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "middleName": {
             "type": "string",
             "nullable": true
           },
           "lastName": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "email": {
+            "minLength": 1,
             "type": "string",
-            "nullable": true
+            "format": "email"
           },
           "phoneNumber": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "minLength": 6,
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "businessPhone": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "businessAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int32"
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -438,9 +384,6 @@
     }
   },
   "tags": [
-    {
-      "name": "Admin"
-    },
     {
       "name": "Owner"
     },
