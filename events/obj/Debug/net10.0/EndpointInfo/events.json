@@ -330,7 +330,7 @@
             "type": "string"
           },
           "password": {
-            "minLength": 6,
+            "minLength": 8,
             "type": "string"
           },
           "companyName": {

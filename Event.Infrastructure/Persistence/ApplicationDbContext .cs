@@ -1,6 +1,7 @@
 ﻿using events.domain.DomainConfig;
 using events.domain.Entites;
 using events.domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -60,7 +61,7 @@ namespace events.Infrastructure.Persistence
             {
                 Id = 1,
                 Email = "omar@gmail.com",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Omar1234"), // ← BCrypt
+                PasswordHash = "$2b$11$wH8s6xHh9v7Zy0Q0v3P7uO9R9vT7kJrZz6lHqRzYwzKQ1x9kWQh7K",
                 PhoneNumber = "0796096783",
                 FirstName = "Omar",
                 LastName = "Admin",

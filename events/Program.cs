@@ -1,11 +1,16 @@
 using Event.Application.Services;
-using events.domain.Repos;
+using Event.Application.Validators;
 using Event.Infrastructure.Repos;
+using events.domain.Entities;
+using events.domain.Repos;
 using events.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -55,8 +60,35 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterVaildator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterOwnerVaildator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginVaildator>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (!context.Users.Any())
+    {
+        var user = new User(
+            "omar@gmail.com",
+            BCrypt.Net.BCrypt.HashPassword("Omar1234"),
+            "0782450024",
+            "Omar",
+            "Admin",
+            "Naser",
+            1 // RoleId for Admin
+
+        );
+      
+        context.Users.Add(user);
+        context.SaveChanges();
+    }
+}
+
+
 
 if (app.Environment.IsDevelopment())
 {

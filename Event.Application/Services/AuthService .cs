@@ -2,6 +2,7 @@
 using events.domain.Entites;
 using events.domain.Entities;
 using events.domain.Repos;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,29 +19,44 @@ namespace Event.Application.Services
         private readonly IRoleRepo _roleRepo;
         private readonly ICompanyRepo _companyRepo;    // ← جديد
         private readonly IConfiguration _config;
+        private readonly IValidator<RegisterDto> _registerValidator;
+        private readonly IValidator<RegisterOwnerDto> _registerOwnerValidator;
+        private readonly IValidator<LoginDto> _loginValidator;
 
         public AuthService(IUserRepo userRepo, IRoleRepo roleRepo,
                            ICompanyRepo companyRepo,               // ← جديد
-                           IConfiguration config)
+                           IConfiguration config,
+                           IValidator<RegisterDto> registerValidator,
+                           IValidator<RegisterOwnerDto> registerOwnerValidator,
+                           IValidator<LoginDto> loginValidator
+                           )
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
             _companyRepo = companyRepo;                            // ← جديد
             _config = config;
+            _registerValidator = registerValidator;
+            _registerOwnerValidator = registerOwnerValidator;    
+            _loginValidator = loginValidator;
         }
 
         // RegisterAsync — ما تغير عليه شي ✅
 
         public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
         {
+         
+            var validationResult = await _registerOwnerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (existing != null)
-                throw new Exception("البريد الإلكتروني مسجل مسبقاً");
+                throw new Exception("Email already exists");
 
             // ← صلحنا: بنجيب الـ Role من الـ DB مش Hardcoded
             var role = await _roleRepo.GetRoleByNameAsync("Owner");
             if (role == null)
-                throw new Exception("الـ Role غير موجود");
+                throw new Exception("Role not found");
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -75,6 +91,10 @@ namespace Event.Application.Services
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
+            var validationResult = await _loginValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var user = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (user == null)
                 throw new Exception("Inccorect Email or Password");
@@ -136,7 +156,11 @@ namespace Event.Application.Services
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
 {
-    var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
+            var validationResult = await _registerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
     if (existing != null)
         throw new Exception("Email already exists");
 
