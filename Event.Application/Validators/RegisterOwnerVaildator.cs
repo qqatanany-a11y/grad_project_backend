@@ -21,11 +21,11 @@ namespace Event.Application.Validators
                 .MaximumLength(200).WithMessage("Email cannot exceed 200 characters.");
 
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone number is required.")
-                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Invalid phone number format.")
+                .Matches(@"^\+?[1-10]\d{1,14}$").WithMessage("Invalid phone number format.")
                 .MaximumLength(20).WithMessage("Phone number cannot exceed 20 characters.");
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.")
-                .MinimumLength(8).WithMessage("Password must be at least 6 characters long.");
+                .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
 
 
         }
