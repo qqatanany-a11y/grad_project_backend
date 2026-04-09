@@ -1,35 +1,26 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace events.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    [Route("api/owner")]
+    [Authorize(Roles = "Owner")]  // ← كل الـ Endpoints محمية للـ Owner بس
+    public class OwnerController : ControllerBase
     {
         private readonly IAuthService _authService;
 
-        public AuthController(IAuthService authService)
+        public OwnerController(IAuthService authService)
         {
             _authService = authService;
         }
 
+        // POST api/owner/register → مش محتاج Authorize لأنو تسجيل جديد
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto dto)
-        {
-            try
-            {
-                var result = await _authService.RegisterAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpPost("register-owner")]
+        [AllowAnonymous]  // ← استثناء عشان التسجيل مالو Auth
         public async Task<IActionResult> RegisterOwner(RegisterOwnerDto dto)
         {
             try
@@ -43,34 +34,20 @@ namespace events.Controllers
             }
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto dto)
-        {
-            try
-            {
-                var result = await _authService.LoginAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("test")]
-        [Microsoft.AspNetCore.Authorization.Authorize]
-        public object Test()
+        // GET api/owner/me → بيرجع معلومات الـ Owner من الـ Token
+        [HttpGet("me")]
+        public IActionResult GetMyInfo()
         {
             var companyId = User.Claims.FirstOrDefault(c => c.Type == "CompanyId")?.Value;
             var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             var name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            return new
+            return Ok(new
             {
                 CompanyId = companyId,
                 Role = role,
                 Name = name
-            };
-
+            });
         }
     }
 }

@@ -34,3 +34,21 @@ C:\Users\omars\source\repos\events\Event.Application\obj\Debug\net10.0\Event.App
 C:\Users\omars\source\repos\events\Event.Application\obj\Debug\net10.0\refint\Event.Application.dll
 C:\Users\omars\source\repos\events\Event.Application\obj\Debug\net10.0\Event.Application.pdb
 C:\Users\omars\source\repos\events\Event.Application\obj\Debug\net10.0\ref\Event.Application.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\Event.Application.deps.json
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\Event.Application.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\Event.Application.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\Event.Infrastructure.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\Event.Infrastructure.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\bin\Debug\net10.0\events.domain.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.csproj.AssemblyReference.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.AssemblyInfoInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.AssemblyInfo.cs
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.csproj.CoreCompileInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.sourcelink.json
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Ap.C934F138.Up2Date
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\refint\Event.Application.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\ref\Event.Application.dll

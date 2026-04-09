@@ -8,12 +8,13 @@ namespace events.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Owner,User")]
-    public class OwnerController : ControllerBase
+    [Authorize(Roles = "Owner")]
+    // api -> OwnerController -> /api/venues ->  role owner or user
+    public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
 
-        public OwnerController(IVenueService venueService)
+        public VenuesController(IVenueService venueService)
         {
             _venueService = venueService;
         }
@@ -51,12 +52,13 @@ namespace events.Controllers
             }
         }
 
+
         [HttpPut("venues/{id}")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
             var companyId = GetCompanyId();
-            if (companyId == 0) return Unauthorized();
-
+            if (companyId == 0) 
+                return Unauthorized();
             try
             {
                 var result = await _venueService.UpdateAsync(id, dto, companyId);

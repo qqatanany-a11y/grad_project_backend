@@ -6,7 +6,6 @@ namespace events.domain.Entities
     {
         private Booking() { }
 
-        public int ClientId { get; private set; }
         public int VenueId { get; private set; }
         public int? EventTypeId { get; private set; }
         public int? AprovedById { get; private set; }
@@ -18,7 +17,8 @@ namespace events.domain.Entities
         public decimal TotalPrice { get; private set; }
         public BookingStatusEnum Status { get; private set; } = BookingStatusEnum.Pending;
 
-        public Client Client { get; private set; } 
+        public int UserId { get; private set; }
+        public User User { get; private set; }
         public Venue Venue { get; private set; } 
         public EventType? EventType { get; private set; }
         public Payment? Payment { get; private set; }

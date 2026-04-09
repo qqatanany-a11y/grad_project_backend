@@ -1,11 +1,15 @@
 ﻿using Event.Application.Dtos;
+using events.domain.Entites;
 using events.domain.Entities;
 using events.domain.Repos;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
+
 
 namespace Event.Application.Services
 {
@@ -13,139 +17,133 @@ namespace Event.Application.Services
     {
         private readonly IUserRepo _userRepo;
         private readonly IRoleRepo _roleRepo;
-        private readonly IOwnerProfileRepo _ownerProfileRepo;
+        private readonly ICompanyRepo _companyRepo;    // ← جديد
         private readonly IConfiguration _config;
+        private readonly IValidator<RegisterDto> _registerValidator;
+        private readonly IValidator<RegisterOwnerDto> _registerOwnerValidator;
+        private readonly IValidator<LoginDto> _loginValidator;
 
         public AuthService(IUserRepo userRepo, IRoleRepo roleRepo,
-                           IOwnerProfileRepo ownerProfileRepo, IConfiguration config)
+                           ICompanyRepo companyRepo,               // ← جديد
+                           IConfiguration config,
+                           IValidator<RegisterDto> registerValidator,
+                           IValidator<RegisterOwnerDto> registerOwnerValidator,
+                           IValidator<LoginDto> loginValidator
+                           )
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
-            _ownerProfileRepo = ownerProfileRepo;
+            _companyRepo = companyRepo;                            // ← جديد
             _config = config;
+            _registerValidator = registerValidator;
+            _registerOwnerValidator = registerOwnerValidator;    
+            _loginValidator = loginValidator;
         }
 
-        public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
-        {
-            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
-            if (existing != null)
-                throw new Exception("البريد الإلكتروني مسجل مسبقاً");
-
-            var role = await _roleRepo.GetRoleByNameAsync("User");
-            if (role == null)
-                throw new Exception("الـ Role غير موجود");
-
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-            var user = new User(
-                dto.Email,
-                passwordHash,
-                dto.PhoneNumber,
-                dto.FirstName,
-                dto.LastName,
-                dto.MiddleName,
-                role.Id,
-                dto.CompanyId
-            );
-
-            await _userRepo.AddUserAsync(user);
-            var token = GenerateJwtToken(user, role.Name); // ← معدل
-
-            return new AuthResponseDto
-            {
-                Token = token,
-                FullName = user.FullName,
-                Email = user.Email,
-                Role = role.Name
-            };
-        }
+        // RegisterAsync — ما تغير عليه شي ✅
 
         public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
         {
+         
+            var validationResult = await _registerOwnerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (existing != null)
-                throw new Exception("البريد الإلكتروني مسجل مسبقاً");
+                throw new Exception("Email already exists");
 
+            // ← صلحنا: بنجيب الـ Role من الـ DB مش Hardcoded
             var role = await _roleRepo.GetRoleByNameAsync("Owner");
             if (role == null)
-                throw new Exception("الـ Role غير موجود");
+                throw new Exception("Role not found");
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             var user = new User(
-                dto.Email,
-                passwordHash,
-                dto.PhoneNumber,
-                dto.FirstName,
-                dto.LastName,
-                dto.MiddleName,
-                role.Id,
-                dto.CompanyId
+                dto.Email, passwordHash, dto.PhoneNumber,
+                dto.FirstName, dto.LastName, dto.MiddleName, role.Id
             );
-
             await _userRepo.AddUserAsync(user);
 
-            var ownerProfile = new OwnerProfile(
-                user.Id,
+            // ← جديد: بنحفظ الشركة وبنربطها بالـ User
+            var company = new Company(
                 dto.CompanyName,
+                dto.BusinessAddress,
                 dto.BusinessPhone,
-                dto.BusinessAddress
+                dto.Email,
+                user.Id                   // ← UserId تبع الـ Owner
             );
+            await _companyRepo.AddAsync(company);
 
-            await _ownerProfileRepo.AddAsync(ownerProfile);
-
-            var token = GenerateJwtToken(user, role.Name); // ← معدل
+            // ← جديد: بنحط CompanyId بالـ JWT
+            var token = GenerateJwtToken(user, role.Name, company.Id);
 
             return new AuthResponseDto
             {
                 Token = token,
                 FullName = user.FullName,
                 Email = user.Email,
-                Role = role.Name
+                Role = role.Name,
+                CompanyId = company.Id    // ← جديد
             };
         }
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
+            var validationResult = await _loginValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
             var user = await _userRepo.GetUserByEmailAsync(dto.Email);
             if (user == null)
-                throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
+                throw new Exception("Inccorect Email or Password");
 
             var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
             if (!isValid)
-                throw new Exception("البريد الإلكتروني أو كلمة المرور غلط");
+                throw new Exception("Inccorect Email or Password");
 
-            // جيب الـ Role من DB
             var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "User";
 
-            var token = GenerateJwtToken(user, roleName); // ← معدل
+            // ← إذا Owner، بنجيب الـ CompanyId تبعه
+            int? companyId = null;
+            if (roleName == "Owner")
+            {
+                var company = await _companyRepo.GetByUserIdAsync(user.Id);
+                companyId = company?.Id;
+            }
+
+            var token = GenerateJwtToken(user, roleName, companyId);
 
             return new AuthResponseDto
             {
                 Token = token,
                 FullName = user.FullName,
                 Email = user.Email,
-                Role = roleName
+                Role = roleName,
+                CompanyId = companyId     // ← جديد
             };
         }
 
-        private string GenerateJwtToken(User user, string roleName)
+        // ← معدل: أضفنا companyId للـ JWT
+        private string GenerateJwtToken(User user, string roleName, int? companyId = null)
         {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim("CompanyId", user.CompanyId.ToString()),
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Role, roleName) // ← معدل
-            };
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.FullName),
+            new Claim(ClaimTypes.Role, roleName)
+        };
+
+            // ← بنضيف CompanyId للـ Token بس إذا كان Owner
+            if (companyId.HasValue)
+                claims.Add(new Claim("CompanyId", companyId.Value.ToString()));
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
@@ -153,8 +151,47 @@ namespace Event.Application.Services
                 expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: creds
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<AuthResponseDto> RegisterAsync(RegisterDto dto)
+{
+            var validationResult = await _registerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
+    if (existing != null)
+        throw new Exception("Email already exists");
+
+    var role = await _roleRepo.GetRoleByNameAsync("User");
+    if (role == null)
+        throw new Exception("Role not found");
+
+    var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+    var user = new User(
+        dto.Email,
+        passwordHash,
+        dto.PhoneNumber,
+        dto.FirstName,
+        dto.LastName,
+        dto.MiddleName,
+        role.Id
+    );
+
+    await _userRepo.AddUserAsync(user);
+
+    var token = GenerateJwtToken(user, role.Name);
+
+    return new AuthResponseDto
+    {
+        Token = token,
+        FullName = user.FullName,
+        Email = user.Email,
+        Role = role.Name,
+        CompanyId = null
+    };
+}
     }
 }

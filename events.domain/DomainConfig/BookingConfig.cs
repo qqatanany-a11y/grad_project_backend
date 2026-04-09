@@ -18,10 +18,11 @@ namespace events.domain.DomainConfig
             builder.Property(b => b.CreatedAt).IsRequired();
             builder.Property(b => b.GuestsCount).IsRequired(false);
 
-            builder.HasOne(b => b.Client)
-                .WithMany(c => c.Bookings)
-                .HasForeignKey(b => b.ClientId)
-                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(b => b.User)
+         .WithMany(u => u.Bookings)
+         .HasForeignKey(b => b.UserId)
+         .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Venue)
                 .WithMany(v => v.Bookings)

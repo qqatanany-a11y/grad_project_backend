@@ -5,22 +5,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace events.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class ClientController : ControllerBase
+    [Route("api/auth")]  // ← غيرنا الـ Route لـ auth لأنو Login للكل
+    public class UserController : ControllerBase
     {
-        private readonly IClientAuthService _clientAuthService;
+        private readonly IAuthService _authService;  // ← وحدنا الـ Service
 
-        public ClientController(IClientAuthService clientAuthService)
+        public UserController(IAuthService authService)
         {
-            _clientAuthService = clientAuthService;
+            _authService = authService;
         }
 
+        // POST api/auth/register → للـ User العادي
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
             try
             {
-                var result = await _clientAuthService.RegisterAsync(dto);
+                var result = await _authService.RegisterAsync(dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -29,12 +30,13 @@ namespace events.Controllers
             }
         }
 
+        // POST api/auth/login → للكل (User, Owner, Admin)
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             try
             {
-                var result = await _clientAuthService.LoginAsync(dto);
+                var result = await _authService.LoginAsync(dto);
                 return Ok(result);
             }
             catch (Exception ex)
