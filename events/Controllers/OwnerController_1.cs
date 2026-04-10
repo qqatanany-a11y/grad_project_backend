@@ -1,8 +1,8 @@
 ﻿using Event.Application.Dtos;
-using Event.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Event.Application.IServices;
 
 namespace events.Controllers
 {
