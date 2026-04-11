@@ -4,12 +4,13 @@ namespace events.domain.Entities
     public class User : BaseEntity
     {
         public User() { }
-        public string Email { get; private set; } = null!;
-        public string PasswordHash { get; private set; } = null!;
-        public string PhoneNumber { get; private set; } = null!;
-        public string FirstName { get; private set; } = null!;
+        public string Email { get; private set; }
+        public string PasswordHash { get; private set; } 
+        public string PhoneNumber { get; private set; }
+        public string FirstName { get; private set; } 
         public string? MiddleName { get; private set; }
-        public string LastName { get; private set; } = null!;
+        public string LastName { get; private set; }
+        public string? SecondaryPhoneNumber { get; private set; }
         public string FullName => string.IsNullOrWhiteSpace(MiddleName)
             ? $"{FirstName} {LastName}"
             : $"{FirstName} {MiddleName} {LastName}";
@@ -22,7 +23,7 @@ namespace events.domain.Entities
 
 
         public User(string email, string passwordHash, string phoneNumber,
-                    string firstName, string lastName, string middleName, int roleId)
+                    string firstName, string lastName, string? middleName,  int roleId)
         {
             Email = email;
             PasswordHash = passwordHash;
@@ -30,6 +31,7 @@ namespace events.domain.Entities
             FirstName = firstName;
             LastName = lastName;
             MiddleName = middleName;
+            
             IsActive = true;
             RoleId = roleId;
         }

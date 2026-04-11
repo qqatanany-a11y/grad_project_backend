@@ -1,5 +1,6 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace events.Controllers
@@ -13,6 +14,8 @@ namespace events.Controllers
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -26,6 +29,8 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(Roles = "Admin")]
 
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUser(int userId)
@@ -75,6 +80,7 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUser(int userId, UserDto userDto)
         {
@@ -88,6 +94,36 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "Admin")]
 
+        [HttpPut("Activate/{userId}")]
+        public async Task<IActionResult> ActivateUser(int userId)
+        {
+            try
+            {
+                await _userService.ActivateUserAsync(userId);
+                return Ok("User activated successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [Authorize(Roles = "Admin")]
+
+        [HttpPut("Deactivate/{userId}")]
+        public async Task<IActionResult> DeactivateUser(int userId)
+        {
+            try
+            {
+                await _userService.DeactivateUserAsync(userId);
+                return Ok("User deactivated successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
     }
 }
