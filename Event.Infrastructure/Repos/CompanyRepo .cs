@@ -1,4 +1,5 @@
 ﻿using events.domain.Entites;
+using events.domain.Entities;
 using events.domain.Repos;
 using events.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,22 @@ namespace Event.Infrastructure.Repos
         {
             _db.Companies.Remove(company);
             await _db.SaveChangesAsync();
+        }
+        public async Task<List<Company>> GetAllAsync()
+        {
+            return await _db.Companies
+                .Include(c => c.Venues)
+                .ToListAsync();
+        }
+
+        public async Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId)
+        {
+            return await _db.Venues
+                .Where(v => v.CompanyId == companyId)
+                .Include(v => v.Availabilities)
+                .Include(v => v.Images)
+                .Include(v => v.VenueEventTypes)
+                .ToListAsync();
         }
     }
 }

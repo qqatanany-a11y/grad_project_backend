@@ -56,21 +56,7 @@ namespace events.Infrastructure.Persistence
 
 
 
-            builder.Entity<User>().HasData(
-            new
-            {
-                Id = 1,
-                Email = "omar@gmail.com",
-                PasswordHash = "$2b$11$wH8s6xHh9v7Zy0Q0v3P7uO9R9vT7kJrZz6lHqRzYwzKQ1x9kWQh7K",
-                PhoneNumber = "0796096783",
-                FirstName = "Omar",
-                LastName = "Admin",
-                MiddleName = "Naser",
-                IsActive = true,
-                RoleId = 1,
-                CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-            }
-  );
+     
 
             builder.Entity<EventType>().HasData(
                 new EventType { Id = 1, Name = "Party", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },

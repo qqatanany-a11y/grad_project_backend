@@ -1,4 +1,5 @@
 ﻿using Event.Application.Dtos;
+using Event.Application.IServices;
 using events.domain.Entites;
 using events.domain.Entities;
 using events.domain.Repos;
@@ -41,7 +42,40 @@ namespace Event.Application.Services
         }
 
         // RegisterAsync — ما تغير عليه شي ✅
+        public async Task<AuthResponseDto> RegisterAdminAsync(RegisterDto dto)
+        {
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (existing != null)
+                throw new Exception("Email already exists");
 
+            var role = await _roleRepo.GetRoleByNameAsync("Admin");
+            if (role == null)
+                throw new Exception("Role not found");
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+            var user = new User(
+                dto.Email,
+                passwordHash,
+                dto.PhoneNumber,
+                dto.FirstName,
+                dto.LastName,
+                dto.MiddleName,
+                role.Id
+            );
+
+            await _userRepo.AddUserAsync(user);
+            var token = GenerateJwtToken(user, role.Name);
+
+            return new AuthResponseDto
+            {
+                Token = token,
+                FullName = user.FullName,
+                Email = user.Email,
+                Role = role.Name,
+                CompanyId = null
+            };
+        }
         public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
         {
          

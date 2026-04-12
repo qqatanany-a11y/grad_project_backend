@@ -1,3 +1,4 @@
+using Event.Application.IServices;
 using Event.Application.Services;
 using Event.Application.Validators;
 using Event.Infrastructure.Repos;
@@ -20,14 +21,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Repos
+
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<IVenueRepo, VenueRepo>();
+builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
+builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();  // ← موجود ✅
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();  // ← سيرفس وحدة بس
 builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
