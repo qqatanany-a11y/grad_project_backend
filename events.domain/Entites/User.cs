@@ -43,6 +43,12 @@ namespace events.domain.Entities
             MiddleName = middleName;
             UpdatedAt = DateTime.UtcNow;
         }
+        public void UpdateContactInfo(string email, string phoneNumber)
+        {
+            Email = email;
+            PhoneNumber = phoneNumber;
+            UpdatedAt = DateTime.UtcNow;
+        }
         public void Activate() { IsActive = true; UpdatedAt = DateTime.UtcNow; }
         public void Deactivate() { IsActive = false; UpdatedAt = DateTime.UtcNow; }
     }

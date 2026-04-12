@@ -21,6 +21,18 @@ namespace Event.Infrastructure.Repos
             return result > 0;
         }
 
+        public async Task<bool> DeleteUserAsync(User user)
+        {
+            _db.Users.Remove(user);
+            int result = await _db.SaveChangesAsync();
+            return result > 0;
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await _db.Users.ToListAsync();
+        }
+
 
         public async Task <User?> GetUserByEmailAsync(string email)
         {
@@ -28,21 +40,18 @@ namespace Event.Infrastructure.Repos
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<User> GetUserByIdAsync(Guid userId)
+        public async Task<User?> GetUserByIdAsync(int userId)
         {
 
             var user = await _db.Users
-                .FirstOrDefaultAsync(x => x.Id.Equals(userId));
+                .FirstOrDefaultAsync(x => x.Id==userId);
             return user;
-            
+      
         }
 
-       
-
-
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync()
         {
-            _db.Users.Update(user);
+            
             await _db.SaveChangesAsync();
         }
     }

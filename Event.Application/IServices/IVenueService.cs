@@ -1,6 +1,6 @@
 ﻿using Event.Application.Dtos;
 
-namespace Event.Application.Services
+namespace Event.Application.IServices
 {
     public interface IVenueService
     {

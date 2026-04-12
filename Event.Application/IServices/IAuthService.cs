@@ -1,12 +1,12 @@
 ﻿using Event.Application.Dtos;
 
-namespace Event.Application.Services
+namespace Event.Application.IServices
 {
     public interface IAuthService
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto> LoginAsync(LoginDto dto);
         Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto);
-
+        Task<AuthResponseDto> RegisterAdminAsync(RegisterDto dto);
     }
 }

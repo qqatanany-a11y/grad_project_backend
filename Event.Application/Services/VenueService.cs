@@ -1,4 +1,5 @@
 ﻿using Event.Application.Dtos;
+using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
 
