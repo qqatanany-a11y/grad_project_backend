@@ -25,6 +25,7 @@ namespace events.Controllers
                 .FirstOrDefault(c => c.Type == "CompanyId")?.Value ?? "0");
         }
 
+
         [HttpGet("venues")]
         public async Task<IActionResult> GetVenues()
         {
