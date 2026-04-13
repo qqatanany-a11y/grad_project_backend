@@ -6,11 +6,11 @@ namespace events.Controllers
 {
     [ApiController]
     [Route("api/auth")]  // ← غيرنا الـ Route لـ auth لأنو Login للكل
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;  // ← وحدنا الـ Service
 
-        public UserController(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }

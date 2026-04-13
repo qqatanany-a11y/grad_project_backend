@@ -82,7 +82,6 @@ using (var scope = app.Services.CreateScope())
             BCrypt.Net.BCrypt.HashPassword("Omar1234"),
             "0782450024",
             "Omar",
-            "Admin",
             "Naser",
             1 // RoleId for Admin
 

@@ -60,7 +60,6 @@ namespace Event.Application.Services
                 dto.PhoneNumber,
                 dto.FirstName,
                 dto.LastName,
-                dto.MiddleName,
                 role.Id
             );
 
@@ -96,7 +95,7 @@ namespace Event.Application.Services
 
             var user = new User(
                 dto.Email, passwordHash, dto.PhoneNumber,
-                dto.FirstName, dto.LastName, dto.MiddleName, role.Id
+                dto.FirstName, dto.LastName, role.Id
             );
             await _userRepo.AddUserAsync(user);
 
@@ -210,7 +209,6 @@ namespace Event.Application.Services
         dto.PhoneNumber,
         dto.FirstName,
         dto.LastName,
-        dto.MiddleName,
         role.Id
     );
 

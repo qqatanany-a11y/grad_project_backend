@@ -8,12 +8,10 @@ namespace events.domain.Entities
         public string PasswordHash { get; private set; } 
         public string PhoneNumber { get; private set; }
         public string FirstName { get; private set; } 
-        public string? MiddleName { get; private set; }
         public string LastName { get; private set; }
         public string? SecondaryPhoneNumber { get; private set; }
-        public string FullName => string.IsNullOrWhiteSpace(MiddleName)
-            ? $"{FirstName} {LastName}"
-            : $"{FirstName} {MiddleName} {LastName}";
+        public string FullName => $"{FirstName} {LastName}"
+            ;
         public bool IsActive { get; private set; } = true;
         public int RoleId { get; private set; }
         public UserRole Role { get; private set; }
@@ -23,24 +21,21 @@ namespace events.domain.Entities
 
 
         public User(string email, string passwordHash, string phoneNumber,
-                    string firstName, string lastName, string? middleName,  int roleId)
+                    string firstName, string lastName,  int roleId)
         {
             Email = email;
             PasswordHash = passwordHash;
             PhoneNumber = phoneNumber;
             FirstName = firstName;
             LastName = lastName;
-            MiddleName = middleName;
-            
             IsActive = true;
             RoleId = roleId;
         }
 
-        public void UpdateName(string firstName, string lastName, string? middleName)
+        public void UpdateName(string firstName, string lastName)
         {
             FirstName = firstName;
             LastName = lastName;
-            MiddleName = middleName;
             UpdatedAt = DateTime.UtcNow;
         }
         public void UpdateContactInfo(string email, string phoneNumber)

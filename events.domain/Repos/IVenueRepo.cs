@@ -9,5 +9,8 @@ namespace events.domain.Repos
         Task AddAsync(Venue venue);
         Task UpdateAsync(Venue venue);
         Task DeleteAsync(Venue venue);
+        Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId); 
+        Task<List<Venue>> GetAllAsync();
+        Task<List<Venue>> GetByOwnerId(int ownerId);
     }
 }

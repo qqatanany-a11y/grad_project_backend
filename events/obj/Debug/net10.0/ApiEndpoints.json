@@ -64,48 +64,6 @@
   },
   {
     "ContainingType": "events.Controllers.AdminController",
-    "Method": "GetAllCompanies",
-    "RelativePath": "api/admin/companies",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AdminController",
-    "Method": "GetCompanyDetails",
-    "RelativePath": "api/admin/companies/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AdminController",
-    "Method": "GetCompanyVenues",
-    "RelativePath": "api/admin/companies/{id}/venues",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.AdminController",
     "Method": "DeactivateUser",
     "RelativePath": "api/admin/Deactivate/{userId}",
     "HttpMethod": "PUT",
@@ -169,7 +127,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.UserController",
+    "ContainingType": "events.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
@@ -185,7 +143,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.UserController",
+    "ContainingType": "events.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
@@ -227,20 +185,10 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "GetMyVenues",
-    "RelativePath": "api/owner/venues",
+    "ContainingType": "events.Controllers.VenuesController",
+    "Method": "AddVenue",
+    "RelativePath": "api/Venues",
     "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "RegisterVenue",
-    "RelativePath": "api/owner/venues",
-    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -250,32 +198,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "GetVenueDetails",
-    "RelativePath": "api/owner/venues/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "events.Controllers.OwnerController",
-    "Method": "GetVenuesAvailability",
-    "RelativePath": "api/owner/venues/availability",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -335,6 +257,54 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "events.Controllers.VenuesController",
+    "Method": "GetVenueById",
+    "RelativePath": "api/Venues/venues/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "events.Controllers.VenuesController",
+    "Method": "GetVenuesByCompanyId",
+    "RelativePath": "api/Venues/VienuesByCompanyId/{CompanyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CompanyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "events.Controllers.VenuesController",
+    "Method": "GetVenuesByOwnerId",
+    "RelativePath": "api/Venues/VienuesByOwnerId/{OwnerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "OwnerId",
         "Type": "System.Int32",
         "IsRequired": true
       }

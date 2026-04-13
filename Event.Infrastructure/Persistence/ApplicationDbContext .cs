@@ -54,10 +54,6 @@ namespace events.Infrastructure.Persistence
                 new UserRole { Id = 3, Name = "Owner", Permation = new string[] { "manage_venue" }, CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
             );
 
-
-
-     
-
             builder.Entity<EventType>().HasData(
                 new EventType { Id = 1, Name = "Party", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
                 new EventType { Id = 2, Name = "Engagement", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },

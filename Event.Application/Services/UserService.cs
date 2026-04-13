@@ -23,7 +23,7 @@ namespace Event.Application.Services
             if (userDto == null)
                 throw new ArgumentNullException(nameof(userDto));
             var passwordHasher = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-            var user = new User(userDto.Email,passwordHasher,userDto.PhoneNumber,userDto.FirstName,userDto.LastName,userDto.MiddleName,1);
+            var user = new User(userDto.Email,passwordHasher,userDto.PhoneNumber,userDto.FirstName,userDto.LastName,1);
 
 
             var res=await  _userRepository.AddUserAsync(user);
@@ -50,7 +50,6 @@ namespace Event.Application.Services
                     Id = u.Id,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    MiddleName = u.MiddleName,
                     Email = u.Email,
                     PhoneNumber = u.PhoneNumber
              }).ToList();
@@ -67,7 +66,6 @@ namespace Event.Application.Services
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                MiddleName = user.MiddleName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber
 
@@ -87,7 +85,6 @@ namespace Event.Application.Services
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                MiddleName = user.MiddleName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber
             };
@@ -101,13 +98,10 @@ namespace Event.Application.Services
                 return false;
             
             if (!string.IsNullOrEmpty(userDto.FirstName))
-                user.UpdateName(userDto.FirstName, user.LastName, user.MiddleName);
+                user.UpdateName(userDto.FirstName, user.LastName);
 
             if (!string.IsNullOrEmpty(userDto.LastName))
-                user.UpdateName(user.FirstName, userDto.LastName, user.MiddleName);
-
-            if (!string.IsNullOrEmpty(userDto.MiddleName))
-                user.UpdateName(user.FirstName, user.LastName, userDto.MiddleName);
+                user.UpdateName(user.FirstName, userDto.LastName);
 
             if(!string.IsNullOrEmpty(userDto.Email))
                 user.UpdateContactInfo(userDto.Email,user.PhoneNumber);

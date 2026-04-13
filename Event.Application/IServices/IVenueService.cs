@@ -5,8 +5,11 @@ namespace Event.Application.IServices
     public interface IVenueService
     {
         Task<List<VenueDto>> GetByCompanyIdAsync(int companyId);
-        Task<VenueDto> AddAsync(AddVenueDto dto, int companyId);
-        Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto, int companyId);
-        Task DeleteAsync(int venueId, int companyId);
+        Task<VenueDto> AddAsync(AddVenueDto dto);
+        Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto);
+        Task DeleteAsync(int venueId);
+        Task<List<VenueDto>> GetAllAsync();
+        Task<VenueDto> GetByIdAsync(int id);
+        Task<List<VenueDto>> GetByOwnerIdAsync(int OwnerId);
     }
 }
