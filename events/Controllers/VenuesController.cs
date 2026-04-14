@@ -30,7 +30,7 @@ namespace events.Controllers
             return Ok(venues);
         }
 
-        [HttpGet]
+  
         [HttpPost("venues")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
@@ -68,7 +68,7 @@ namespace events.Controllers
             try
             {
                 await _venueService.DeleteAsync(id);
-                return Ok("تم حذف القاعة بنجاح");
+                return Ok("VENUE DELETED SUCSSEFULLY");
             }
             catch (Exception ex)
             {

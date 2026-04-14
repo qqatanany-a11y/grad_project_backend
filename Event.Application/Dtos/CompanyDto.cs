@@ -8,5 +8,6 @@
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public int VenuesCount { get; set; }
+        public List<VenueDto> Venues { get; set; }
     }
 }

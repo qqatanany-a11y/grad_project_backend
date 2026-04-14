@@ -12,10 +12,10 @@ namespace events.domain.Entities
         public string? SecondaryPhoneNumber { get; private set; }
         public string FullName => $"{FirstName} {LastName}"
             ;
-        public bool IsActive { get; private set; } = true;
+        public bool IsActive { get; private set; } 
         public int RoleId { get; private set; }
         public UserRole Role { get; private set; }
-        public Company? Company { get; private set; }    // ← جديد: nullable لأن User العادي مالوش شركة
+        public Company? Company { get; private set; }    
         public List<Booking> Bookings { get; private set; } = new List<Booking>();
         public List<Review> Reviews { get; private set; } = new List<Review>();
 

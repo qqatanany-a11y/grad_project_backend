@@ -66,7 +66,7 @@ namespace Event.Application.Services
                 dto.Address,
                 dto.Capacity,
                 dto.MinimalPrice,
-                dto.CopmanyId
+                dto.CompanyId
             );
 
             await _venueRepo.AddAsync(venue);

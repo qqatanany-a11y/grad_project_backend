@@ -346,6 +346,9 @@ C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Npgsql.dll
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Event.Application.dll
 C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\Event.Application.pdb
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.AspNetCore.dll
+C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\appsettings.Development.json
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\appsettings.json
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\events.staticwebassets.endpoints.json
@@ -357,6 +360,9 @@ D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\events.pdb
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\Azure.Core.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\Azure.Identity.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\BCrypt.Net-Next.dll
+D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.dll
+D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.AspNetCore.dll
+D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\Humanizer.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -520,9 +526,3 @@ D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\refint\events.d
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\events.pdb
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\events.genruntimeconfig.cache
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\ref\events.dll
-C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.dll
-C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.AspNetCore.dll
-C:\Users\DELL\source\repos\eventslaithomar\events\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
-D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.dll
-D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.AspNetCore.dll
-D:\Omar from C\OneDrive\Desktop\events2\events\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll

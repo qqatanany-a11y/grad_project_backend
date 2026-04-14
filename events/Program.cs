@@ -9,32 +9,29 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Text;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DB
+// ================= DB =================
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Repos
-
+// ================= Repositories =================
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<IVenueRepo, VenueRepo>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
-builder.Services.AddScoped<IVenueService, VenueService>();
-builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();  // ← موجود ✅
+builder.Services.AddScoped<IOwnerRequestRepo, OwnerRequestRepo>();
 
-// Services
-builder.Services.AddScoped<IAuthService, AuthService>();  // ← سيرفس وحدة بس
-builder.Services.AddScoped<IVenueService, VenueService>();
+// ================= Services =================
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
-// JWT
+// ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -51,11 +48,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// ================= Core =================
 builder.Services.AddAuthorization();
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler =
+        System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 
+// ================= CORS =================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -65,12 +70,15 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+// ================= Validators =================
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterOwnerVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVaildator>();
 
 var app = builder.Build();
 
+// ================= Seed Admin =================
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -78,22 +86,20 @@ using (var scope = app.Services.CreateScope())
     if (!context.Users.Any())
     {
         var user = new User(
-            "omar@gmail.com",
-            BCrypt.Net.BCrypt.HashPassword("Omar1234"),
+            "admin@gmail.com",
+            BCrypt.Net.BCrypt.HashPassword("Admin1234"),
             "0782450024",
-            "Omar",
-            "Naser",
-            1 // RoleId for Admin
-
+            "Admin",
+            "System",
+            1
         );
-      
+
         context.Users.Add(user);
         context.SaveChanges();
     }
 }
 
-
-
+// ================= Pipeline =================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -102,7 +108,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

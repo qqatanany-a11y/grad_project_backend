@@ -1,209 +1,103 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
-using Event.Application.Services;
-using Event.Infrastructure.Repos;
 using events.domain.Repos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace events.Controllers
+namespace Event.API.Controllers
 {
     [ApiController]
     [Route("api/admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
+        private readonly IAdminService _adminService;
         private readonly IUserService _userService;
         private readonly ICompanyRepo _companyRepo;
-        private readonly IAuthService _authService;
+        private readonly IVenueRepo _venueRepo;
 
-
-        public AdminController(IUserService userService, ICompanyRepo companyRepo, IAuthService authService)
+        public AdminController(
+            IAdminService adminService,
+            IUserService userService,
+            ICompanyRepo companyRepo,
+            IVenueRepo venueRepo)
         {
+            _adminService = adminService;
             _userService = userService;
             _companyRepo = companyRepo;
-            _authService = authService;
+            _venueRepo = venueRepo;
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("register-admin")]
-        public async Task<IActionResult> RegisterAdmin(RegisterDto dto)
+        // ================= OWNER REQUESTS =================
+
+        [HttpGet("owner-requests")]
+        public async Task<IActionResult> GetOwnerRequests()
+            => Ok(await _adminService.GetOwnerRequestsAsync());
+
+        [HttpPost("owner-requests/{id}/approve")]
+        public async Task<IActionResult> Approve(int id)
         {
-            try
-            {
-                var result = await _authService.RegisterAdminAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _adminService.ApproveOwnerAsync(id);
+            return Ok("Approved");
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        [HttpPost("owner-requests/{id}/reject")]
+        public async Task<IActionResult> Reject(int id)
         {
-            try
-            {
-                var users = await _userService.GetAllUsersAsync();
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _adminService.RejectOwnerAsync(id);
+            return Ok("Rejected");
         }
-       
 
-        [Authorize(Roles = "Admin")]
+        // ================= USERS =================
 
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
-        {
-            try
-            {
-                var result = await _userService.DeleteUserAsync(userId);
-                if (result)
-                    return Ok("User deleted successfully");
-                else
-                    return NotFound("User not found");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("email/{email}")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+            => Ok(await _userService.GetAllUsersAsync());
+
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+            => Ok(await _userService.GetUserByIdAsync(id));
+
+        [HttpGet("users/email/{email}")]
         public async Task<IActionResult> GetUserByEmail(string email)
+            => Ok(await _userService.GetUserByEmailAsync(email));
+
+        [HttpPut("users/{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserDto dto)
         {
-            try
-            {
-                var user = await _userService.GetUserByEmailAsync(email);
-                if (user != null)
-                    return Ok(user);
-                else
-                    return NotFound("User not found");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("id/{userId}")]
-        public async Task<IActionResult> GetUserById(int userId)
-        {
-            try
-            {
-                var user = await _userService.GetUserByIdAsync(userId);
-                if (user != null)
-                    return Ok(user);
-                else
-                    return NotFound("User not found");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _userService.UpdateUserAsync(id, dto);
+            return Ok("Updated");
         }
 
-        [HttpPut("{userId}")]
-        public async Task<IActionResult> UpdateUser(int userId, UserDto userDto)
+        [HttpPut("users/{id}/activate")]
+        public async Task<IActionResult> Activate(int id)
         {
-            try
-            {
-                await _userService.UpdateUserAsync(userId, userDto);
-                return Ok("User updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [Authorize(Roles = "Admin")]
-
-        [HttpPut("Activate/{userId}")]
-        public async Task<IActionResult> ActivateUser(int userId)
-        {
-            try
-            {
-                await _userService.ActivateUserAsync(userId);
-                return Ok("User activated successfully");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [Authorize(Roles = "Admin")]
-
-        [HttpPut("Deactivate/{userId}")]
-        public async Task<IActionResult> DeactivateUser(int userId)
-        {
-            try
-            {
-                await _userService.DeactivateUserAsync(userId);
-                return Ok("User deactivated successfully");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            await _userService.ActivateUserAsync(id);
+            return Ok("Activated");
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpGet("companies/{id}")]
-        //public async Task<IActionResult> GetCompanyDetails(int id)
-        //{
-        //    try
-        //    {
-        //        var company = await _companyRepo.GetByIdAsync(id);
-        //        if (company == null) return NotFound("Company not found");
+        [HttpPut("users/{id}/deactivate")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            await _userService.DeactivateUserAsync(id);
+            return Ok("Deactivated");
+        }
 
-        //        var result = new CompanyDetailsDto
-        //        {
-        //            Id = company.Id,
-        //            Name = company.Name,
-        //            Location = company.Location,
-        //            PhoneNumber = company.PhoneNumber,
-        //            Email = company.Email,
-        //            Venues = company.Venues?.Select(v => new VenueDto
-        //            {
-        //                Id = v.Id,
-        //                Name = v.Name,
-        //                City = v.City,
-        //                Capacity = v.Capacity,
-        //                MinimalPrice = v.MinimalPrice,
-        //                IsActive = v.IsActive
-        //            }).ToList()
-        //        };
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex) { return BadRequest(ex.Message); }
-        //}
+        [HttpDelete("users/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _userService.DeleteUserAsync(id);
+            return Ok("Deleted");
+        }
 
-        //[Authorize(Roles = "Admin")]
-        //[HttpGet("companies")]
-        //public async Task<IActionResult> GetAllCompanies()
-        //{
-        //    try
-        //    {
-        //        return Ok("hi");
-        //    }
-        //    catch (Exception ex) { return BadRequest(ex.Message); }
-        //}
-          
-        //[Authorize(Roles = "Admin")]
-        //[HttpGet("companies/{id}/venues")]
-        //public async Task<IActionResult> GetCompanyVenues(int id)
-        //{
-        //    try
-        //    {
-          
-        //        return Ok("result");
-        //    }
-        //    catch (Exception ex) { return BadRequest(ex.Message); }
-        //}
+        // ================= DASHBOARD =================
 
+        [HttpGet("companies")]
+        public async Task<IActionResult> GetCompanies()
+            => Ok(await _companyRepo.GetAllAsync());
+
+        [HttpGet("venues")]
+        public async Task<IActionResult> GetVenues()
+            => Ok(await _venueRepo.GetAllAsync());
     }
 }

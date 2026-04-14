@@ -75,52 +75,7 @@ namespace Event.Application.Services
                 CompanyId = null
             };
         }
-        public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
-        {
-         
-            var validationResult = await _registerOwnerValidator.ValidateAsync(dto);
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
 
-            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
-            if (existing != null)
-                throw new Exception("Email already exists");
-
-            // ← صلحنا: بنجيب الـ Role من الـ DB مش Hardcoded
-            var role = await _roleRepo.GetRoleByNameAsync("Owner");
-            if (role == null)
-                throw new Exception("Role not found");
-
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-
-            var user = new User(
-                dto.Email, passwordHash, dto.PhoneNumber,
-                dto.FirstName, dto.LastName, role.Id
-            );
-            await _userRepo.AddUserAsync(user);
-
-            // ← جديد: بنحفظ الشركة وبنربطها بالـ User
-            var company = new Company(
-                dto.CompanyName,
-                dto.BusinessAddress,
-                dto.BusinessPhone,
-                dto.Email,
-                user.Id                   // ← UserId تبع الـ Owner
-            );
-            await _companyRepo.AddAsync(company);
-
-            // ← جديد: بنحط CompanyId بالـ JWT
-            var token = GenerateJwtToken(user, role.Name, company.Id);
-
-            return new AuthResponseDto
-            {
-                Token = token,
-                FullName = user.FullName,
-                Email = user.Email,
-                Role = role.Name,
-                CompanyId = company.Id    // ← جديد
-            };
-        }
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
         {
@@ -139,7 +94,6 @@ namespace Event.Application.Services
             var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "User";
 
-            // ← إذا Owner، بنجيب الـ CompanyId تبعه
             int? companyId = null;
             if (roleName == "Owner")
             {
@@ -155,11 +109,11 @@ namespace Event.Application.Services
                 FullName = user.FullName,
                 Email = user.Email,
                 Role = roleName,
-                CompanyId = companyId     // ← جديد
+                CompanyId = companyId     
             };
         }
 
-        // ← معدل: أضفنا companyId للـ JWT
+    
         private string GenerateJwtToken(User user, string roleName, int? companyId = null)
         {
             var claims = new List<Claim>
@@ -170,7 +124,6 @@ namespace Event.Application.Services
             new Claim(ClaimTypes.Role, roleName)
         };
 
-            // ← بنضيف CompanyId للـ Token بس إذا كان Owner
             if (companyId.HasValue)
                 claims.Add(new Claim("CompanyId", companyId.Value.ToString()));
 

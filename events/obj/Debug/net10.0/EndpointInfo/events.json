@@ -5,38 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/admin/register-admin": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin": {
+    "/api/admin/owner-requests": {
       "get": {
         "tags": [
           "Admin"
@@ -48,14 +17,72 @@
         }
       }
     },
-    "/api/admin/{userId}": {
-      "delete": {
+    "/api/admin/owner-requests/{id}/approve": {
+      "post": {
         "tags": [
           "Admin"
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/owner-requests/{id}/reject": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/users/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -76,7 +103,7 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -109,9 +136,30 @@
             "description": "OK"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
-    "/api/admin/email/{email}": {
+    "/api/admin/users/email/{email}": {
       "get": {
         "tags": [
           "Admin"
@@ -133,22 +181,57 @@
         }
       }
     },
-    "/api/admin/id/{userId}": {
+    "/api/admin/users/{id}/activate": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/users/{id}/deactivate": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/companies": {
       "get": {
         "tags": [
           "Admin"
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -156,44 +239,10 @@
         }
       }
     },
-    "/api/admin/Activate/{userId}": {
-      "put": {
+    "/api/admin/venues": {
+      "get": {
         "tags": [
           "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin/Deactivate/{userId}": {
-      "put": {
-        "tags": [
-          "Admin"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -264,7 +313,19 @@
         }
       }
     },
-    "/api/owner/register": {
+    "/api/owner/me": {
+      "get": {
+        "tags": [
+          "Owner"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/owner/request": {
       "post": {
         "tags": [
           "Owner"
@@ -288,18 +349,6 @@
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/owner/me": {
-      "get": {
-        "tags": [
-          "Owner"
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -319,37 +368,6 @@
         }
       },
       "post": {
-        "tags": [
-          "Venues"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddVenueDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddVenueDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddVenueDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Venues": {
-      "get": {
         "tags": [
           "Venues"
         ],
@@ -523,7 +541,7 @@
             "type": "string",
             "nullable": true
           },
-          "copmanyId": {
+          "companyId": {
             "type": "integer",
             "format": "int32"
           },
@@ -598,7 +616,6 @@
           "email",
           "firstName",
           "lastName",
-          "password",
           "phoneNumber"
         ],
         "type": "object",
@@ -606,10 +623,6 @@
           "firstName": {
             "minLength": 1,
             "type": "string"
-          },
-          "middleName": {
-            "type": "string",
-            "nullable": true
           },
           "lastName": {
             "minLength": 1,
@@ -624,10 +637,6 @@
             "minLength": 1,
             "type": "string"
           },
-          "password": {
-            "minLength": 8,
-            "type": "string"
-          },
           "companyName": {
             "minLength": 1,
             "type": "string"
@@ -639,6 +648,10 @@
           "businessAddress": {
             "minLength": 1,
             "type": "string"
+          },
+          "venueName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

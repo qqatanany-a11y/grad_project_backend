@@ -31,6 +31,7 @@ namespace Event.Application.Services
 
 
         }
+       
 
         public async Task<bool> DeleteUserAsync(int userId)
         {
