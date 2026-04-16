@@ -1,0 +1,72 @@
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.deps.json
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.runtimeconfig.json
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\events.domain.pdb
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfo.cs
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.sourcelink.json
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.In.C4D122D3.Up2Date
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\refint\Event.Infrastructure.dll
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.genruntimeconfig.cache
+C:\Users\DELL\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\ref\Event.Infrastructure.dll
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.deps.json
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.runtimeconfig.json
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\events.domain.dll
+C:\Users\omars\source\repos\events\Event.Infrastructure\bin\Debug\net10.0\events.domain.pdb
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfo.cs
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.sourcelink.json
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.In.C4D122D3.Up2Date
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\refint\Event.Infrastructure.dll
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.genruntimeconfig.cache
+C:\Users\omars\source\repos\events\Event.Infrastructure\obj\Debug\net10.0\ref\Event.Infrastructure.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.deps.json
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.runtimeconfig.json
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\bin\Debug\net10.0\events.domain.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.AssemblyReference.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfoInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfo.cs
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.sourcelink.json
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.In.C4D122D3.Up2Date
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\refint\Event.Infrastructure.dll
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.pdb
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.genruntimeconfig.cache
+D:\Omar from C\OneDrive\Desktop\events2\Event.Infrastructure\obj\Debug\net10.0\ref\Event.Infrastructure.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.deps.json
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.runtimeconfig.json
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\bin\Debug\net10.0\events.domain.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.AssemblyInfo.cs
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.sourcelink.json
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.In.C4D122D3.Up2Date
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\refint\Event.Infrastructure.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\Event.Infrastructure.genruntimeconfig.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Infrastructure\obj\Debug\net10.0\ref\Event.Infrastructure.dll

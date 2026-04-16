@@ -1,0 +1,60 @@
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.deps.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.runtimeconfig.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.pdb
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.AssemblyReference.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfoInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfo.cs
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.CoreCompileInputs.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.sourcelink.json
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\refint\events.domain.dll
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.pdb
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.genruntimeconfig.cache
+C:\Users\DELL\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\ref\events.domain.dll
+C:\Users\omars\source\repos\events\events.domain\bin\Debug\net10.0\events.domain.deps.json
+C:\Users\omars\source\repos\events\events.domain\bin\Debug\net10.0\events.domain.runtimeconfig.json
+C:\Users\omars\source\repos\events\events.domain\bin\Debug\net10.0\events.domain.dll
+C:\Users\omars\source\repos\events\events.domain\bin\Debug\net10.0\events.domain.pdb
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.csproj.AssemblyReference.cache
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfoInputs.cache
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfo.cs
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.csproj.CoreCompileInputs.cache
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.sourcelink.json
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.dll
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\refint\events.domain.dll
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.pdb
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\events.domain.genruntimeconfig.cache
+C:\Users\omars\source\repos\events\events.domain\obj\Debug\net10.0\ref\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\bin\Debug\net10.0\events.domain.deps.json
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\bin\Debug\net10.0\events.domain.runtimeconfig.json
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\bin\Debug\net10.0\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\bin\Debug\net10.0\events.domain.pdb
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.csproj.AssemblyReference.cache
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfoInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfo.cs
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.csproj.CoreCompileInputs.cache
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.sourcelink.json
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\refint\events.domain.dll
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.pdb
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\events.domain.genruntimeconfig.cache
+D:\Omar from C\OneDrive\Desktop\events2\events.domain\obj\Debug\net10.0\ref\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.deps.json
+C:\Users\useru\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.runtimeconfig.json
+C:\Users\useru\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\events.domain\bin\Debug\net10.0\events.domain.pdb
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.AssemblyReference.cache
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfoInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.AssemblyInfo.cs
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.csproj.CoreCompileInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.sourcelink.json
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\refint\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.pdb
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\events.domain.genruntimeconfig.cache
+C:\Users\useru\source\repos\eventslaithomar\events.domain\obj\Debug\net10.0\ref\events.domain.dll

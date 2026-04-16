@@ -154,6 +154,28 @@ namespace Event.Application.Services
                 CompanyName = v.Company?.Name
             }).ToList();
 
+
+        }
+
+        public async Task<List<VenueDto>> GetVenuesForGuestAsync()
+        {
+            var venues = await _venueRepo.GetAllActiveAsync();
+
+            // convert data to Dto
+            return venues.Select(v => new VenueDto
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Description = v.Description,
+                City = v.City,
+                Address = v.Address,
+                Capacity = v.Capacity,
+                MinimalPrice = v.MinimalPrice,
+                IsActive = v.IsActive,
+                CompanyName = v.Company?.Name ?? "N/A",
+                CompanyId = v.CompanyId
+                
+            }).ToList();
         }
     }
 }

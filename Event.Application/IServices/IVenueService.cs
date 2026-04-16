@@ -11,6 +11,7 @@ namespace Event.Application.IServices
         Task<List<VenueDto>> GetAllAsync();
         Task<VenueDto> GetByIdAsync(int id);
         Task<List<VenueDto>> GetByOwnerIdAsync(int OwnerId);
-      
+
+        Task<List<VenueDto>> GetVenuesForGuestAsync();
     }
 }

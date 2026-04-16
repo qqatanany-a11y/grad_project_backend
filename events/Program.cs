@@ -78,7 +78,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterOwnerVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVaildator>();
-
+builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 var app = builder.Build();
 
 // ================= Seed Admin =================
