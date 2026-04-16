@@ -35,21 +35,49 @@ namespace Event.Application.Services
                 throw new Exception("Request not found");
 
             if (request.Status != "Pending")
-                throw new Exception($"Request already {request.Status}");
+                throw new Exception("Already processed");
 
-            request.Approve();
-            await _ownerRequestRepo.UpdateAsync(request);
+            var existingUser = await _userRepo.GetUserByEmailAsync(request.Email);
+            if (existingUser != null)
+                throw new Exception("User already exists");
 
-            var owner = new User(
+          
+            var ownerUser = new User(
                 request.Email,
-                BCrypt.Net.BCrypt.HashPassword("123456"), // we should change it // making aautamatic password generatoar 
+                BCrypt.Net.BCrypt.HashPassword("Owner1234"), // just for now 
                 request.PhoneNumber,
                 request.FirstName,
                 request.LastName,
                 3 
             );
 
-            await _userRepo.AddUserAsync(owner);
+            await _userRepo.AddUserAsync(ownerUser);
+
+            var company = new Company(
+                request.CompanyName,
+                request.BusinessAddress,
+                request.BusinessPhone,
+                request.Email,
+                ownerUser.Id
+            );
+
+            await _companyRepo.AddAsync(company);
+
+            // 3) إنشاء Venue
+            var venue = new Venue(
+                request.VenueName,
+                "Pending description",
+                "Amman",
+                request.BusinessAddress,
+                100,
+                0,
+                company.Id
+            );
+
+            await _venueRepo.AddAsync(venue);
+
+            request.Approve();
+            await _ownerRequestRepo.UpdateAsync(request);
         }
         public async Task RejectOwnerAsync(int id)
         {
