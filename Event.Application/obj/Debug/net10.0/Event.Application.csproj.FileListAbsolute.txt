@@ -52,3 +52,21 @@ D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Even
 D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\refint\Event.Application.dll
 D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\Event.Application.pdb
 D:\Omar from C\OneDrive\Desktop\events2\Event.Application\obj\Debug\net10.0\ref\Event.Application.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\Event.Application.deps.json
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\Event.Application.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\Event.Application.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\Event.Infrastructure.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\events.domain.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\Event.Infrastructure.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\bin\Debug\net10.0\events.domain.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.csproj.AssemblyReference.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.AssemblyInfoInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.AssemblyInfo.cs
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.csproj.CoreCompileInputs.cache
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.sourcelink.json
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Ap.C934F138.Up2Date
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\refint\Event.Application.dll
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\Event.Application.pdb
+C:\Users\useru\source\repos\eventslaithomar\Event.Application\obj\Debug\net10.0\ref\Event.Application.dll

@@ -12,5 +12,7 @@ namespace events.domain.Repos
         Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId); 
         Task<List<Venue>> GetAllAsync();
         Task<List<Venue>> GetByOwnerId(int ownerId);
+
+        Task<List<Venue>> GetAllActiveAsync();
     }
 }

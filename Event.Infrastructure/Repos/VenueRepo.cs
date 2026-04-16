@@ -69,5 +69,14 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.VenueEventTypes)
                 .ToListAsync();
         }
+
+            public async Task<List<Venue>> GetAllActiveAsync()
+        {
+            return await _db.Venues
+                .Where(v => v.IsActive) 
+                .Include(v => v.Company) 
+                .Include(v => v.Images)  
+                .ToListAsync();
+        }
     }
-}
+    }

@@ -11,5 +11,7 @@ namespace events.domain.Repos
         Task AddAsync(Company company);
         Task UpdateAsync(Company company);
         Task DeleteAsync(Company company);
+
+        Task AddCompanyAsync(Company company);
     }
 }

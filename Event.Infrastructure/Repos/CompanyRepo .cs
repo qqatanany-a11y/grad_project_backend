@@ -53,6 +53,9 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-    
+        public Task AddCompanyAsync(Company company)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
