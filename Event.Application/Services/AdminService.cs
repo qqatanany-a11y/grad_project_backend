@@ -63,7 +63,6 @@ namespace Event.Application.Services
 
             await _companyRepo.AddAsync(company);
 
-            // 3) إنشاء Venue
             var venue = new Venue(
                 request.VenueName,
                 "Pending description",

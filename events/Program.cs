@@ -24,14 +24,15 @@ builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<IVenueRepo, VenueRepo>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
 builder.Services.AddScoped<IOwnerRequestRepo, OwnerRequestRepo>();
-
+builder.Services.AddScoped<IBookingRepo, BookingRepo>();
+builder.Services.AddScoped<IEditRequestRepo, EditRequestRepo>();
 // ================= Services =================
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IEditRequestService, EditRequestService>();
 
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

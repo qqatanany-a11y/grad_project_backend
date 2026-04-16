@@ -3,6 +3,7 @@ using Event.Application.IServices;
 using events.domain.Repos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Event.API.Controllers
 {
@@ -15,17 +16,20 @@ namespace Event.API.Controllers
         private readonly IUserService _userService;
         private readonly ICompanyRepo _companyRepo;
         private readonly IVenueRepo _venueRepo;
+        private readonly IEditRequestService _editRequestService;
 
         public AdminController(
             IAdminService adminService,
             IUserService userService,
             ICompanyRepo companyRepo,
-            IVenueRepo venueRepo)
+            IVenueRepo venueRepo,
+            IEditRequestService editRequestService)
         {
             _adminService = adminService;
             _userService = userService;
             _companyRepo = companyRepo;
             _venueRepo = venueRepo;
+            _editRequestService = editRequestService;
         }
 
         // ================= OWNER REQUESTS =================
@@ -99,5 +103,54 @@ namespace Event.API.Controllers
         [HttpGet("venues")]
         public async Task<IActionResult> GetVenues()
             => Ok(await _venueRepo.GetAllAsync());
+
+        // ================= EDIT REQUESTS =================
+
+        [HttpGet("edit-requests")]
+        public async Task<IActionResult> GetEditRequests()
+        {
+            var result = await _editRequestService.GetAllRequestsAsync();
+            return Ok(result);
+        }
+
+        [HttpPost("edit-requests/{id}/approve")]
+        public async Task<IActionResult> ApproveEditRequest(int id)
+        {
+            var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (adminIdClaim == null)
+                return Unauthorized("Admin not authenticated");
+
+            var adminId = int.Parse(adminIdClaim.Value);
+
+            try
+            {
+                await _editRequestService.ApproveAsync(id, adminId);
+                return Ok("Edit request approved");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("edit-requests/{id}/reject")]
+        public async Task<IActionResult> RejectEditRequest(int id, RejectEditRequestDto dto)
+        {
+            var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (adminIdClaim == null)
+                return Unauthorized("Admin not authenticated");
+
+            var adminId = int.Parse(adminIdClaim.Value);
+
+            try
+            {
+                await _editRequestService.RejectAsync(id, adminId, dto?.Reason);
+                return Ok("Edit request rejected");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
