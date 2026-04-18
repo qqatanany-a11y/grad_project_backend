@@ -24,8 +24,8 @@ namespace Event.Application.Validators
                 .Matches(@"^\+?[1-10]\d{1,14}$").WithMessage("Invalid phone number format.")
                 .MaximumLength(20).WithMessage("Phone number cannot exceed 20 characters.");
 
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.")
-                .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
+            //RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.")
+            //    .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
 
 
         }
