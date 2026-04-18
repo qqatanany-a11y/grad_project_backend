@@ -19,31 +19,25 @@ namespace events.Controllers
             _venueService = venueService;
         }
 
-        private int GetCompanyId()
-        {
-            return int.Parse(User.Claims
-                .FirstOrDefault(c => c.Type == "CompanyId")?.Value ?? "0");
-        }
+
 
         [HttpGet("venues")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetVenues()
         {
-            var companyId = GetCompanyId();
-            if (companyId == 0) return Unauthorized();
 
-            var venues = await _venueService.GetByCompanyIdAsync(companyId);
+            var venues = await _venueService.GetAllAsync();
             return Ok(venues);
         }
 
+  
         [HttpPost("venues")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
-            var companyId = GetCompanyId();
-            if (companyId == 0) return Unauthorized();
 
             try
             {
-                var result = await _venueService.AddAsync(dto, companyId);
+                var result = await _venueService.AddAsync(dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -56,12 +50,10 @@ namespace events.Controllers
         [HttpPut("venues/{id}")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
-            var companyId = GetCompanyId();
-            if (companyId == 0) 
-                return Unauthorized();
+
             try
             {
-                var result = await _venueService.UpdateAsync(id, dto, companyId);
+                var result = await _venueService.UpdateAsync(id, dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -73,13 +65,58 @@ namespace events.Controllers
         [HttpDelete("venues/{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
-            var companyId = GetCompanyId();
-            if (companyId == 0) return Unauthorized();
-
             try
             {
-                await _venueService.DeleteAsync(id, companyId);
-                return Ok("تم حذف القاعة بنجاح");
+                await _venueService.DeleteAsync(id);
+                return Ok("VENUE DELETED SUCSSEFULLY");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+        [HttpGet("venues/{id}")]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> GetVenueById(int id)
+        {
+            try
+            {
+                var venue = await _venueService.GetByIdAsync(id);
+                if (venue == null)
+                    return NotFound("القاعة غير موجودة");
+                return Ok(venue);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("VienuesByOwnerId/{OwnerId}")]
+        public async Task<IActionResult> GetVenuesByOwnerId(int OwnerId)
+        {
+            try
+            {
+                var venues = await _venueService.GetByOwnerIdAsync(OwnerId);
+                return Ok(venues);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("VienuesByCompanyId/{CompanyId}")]
+        public async Task<IActionResult> GetVenuesByCompanyId(int CompanyId)
+        {
+            try
+            {
+                var venues = await _venueService.GetByCompanyIdAsync(CompanyId);
+                return Ok(venues);
             }
             catch (Exception ex)
             {

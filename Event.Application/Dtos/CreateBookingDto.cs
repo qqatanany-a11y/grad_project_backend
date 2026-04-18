@@ -1,0 +1,11 @@
+﻿namespace Event.Application.Dtos
+{
+    public class CreateBookingDto
+    {
+        public int VenueId { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public int GuestsCount { get; set; }
+    }
+}

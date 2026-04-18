@@ -6,7 +6,8 @@ namespace Event.Application.IServices
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto> LoginAsync(LoginDto dto);
-        Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto);
         Task<AuthResponseDto> RegisterAdminAsync(RegisterDto dto);
+
+        Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto);
     }
 }
