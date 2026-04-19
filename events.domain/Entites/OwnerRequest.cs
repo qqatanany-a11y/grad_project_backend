@@ -11,14 +11,13 @@ public class OwnerRequest : BaseEntity
     public string BusinessAddress { get; private set; }
     public string BusinessPhone { get; private set; }
 
-    public string VenueName { get; private set; }
 
     public string Status { get; private set; } = "Pending";
 
     private OwnerRequest() { }
 
     public OwnerRequest(string email, string phone, string firstName, string lastName,
-        string companyName, string address, string businessPhone, string venueName)
+        string companyName, string address, string businessPhone)
     {
         Email = email;
         PhoneNumber = phone;
@@ -27,7 +26,6 @@ public class OwnerRequest : BaseEntity
         CompanyName = companyName;
         BusinessAddress = address;
         BusinessPhone = businessPhone;
-        VenueName = venueName;
     }
 
     public void Approve() => Status = "Approved";

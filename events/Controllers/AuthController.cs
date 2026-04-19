@@ -5,17 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace events.Controllers
 {
     [ApiController]
-    [Route("api/auth")]  // ← غيرنا الـ Route لـ auth لأنو Login للكل
+    [Route("api/auth")] 
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;  // ← وحدنا الـ Service
+        private readonly IAuthService _authService; 
 
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
 
-        // POST api/auth/register → للـ User العادي
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
@@ -30,7 +29,6 @@ namespace events.Controllers
             }
         }
 
-        // POST api/auth/login → للكل (User, Owner, Admin)
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {

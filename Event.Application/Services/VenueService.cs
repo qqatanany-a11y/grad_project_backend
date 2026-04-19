@@ -89,7 +89,7 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue not exist");
 
   
 
@@ -113,7 +113,7 @@ namespace Event.Application.Services
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception(" venue not exist");
             return new VenueDto
             {
                 Id = venue.Id,
@@ -132,7 +132,7 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue not exist");
 
            
             await _venueRepo.DeleteAsync(venue);
