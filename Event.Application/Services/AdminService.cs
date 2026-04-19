@@ -11,17 +11,26 @@ namespace Event.Application.Services
         private readonly IUserRepo _userRepo;
         private readonly ICompanyRepo _companyRepo;
         private readonly IVenueRepo _venueRepo;
+        private readonly IEmailService _emailService;
+        private readonly IPasswordGenerator _passwordGenerator;
 
         public AdminService(
             IOwnerRequestRepo ownerRequestRepo,
             IUserRepo userRepo,
             ICompanyRepo companyRepo,
-            IVenueRepo venueRepo)
+            IVenueRepo venueRepo,
+            IEmailService emailService,
+             IPasswordGenerator passwordGenerator
+            )
+
         {
             _ownerRequestRepo = ownerRequestRepo;
             _userRepo = userRepo;
             _companyRepo = companyRepo;
             _venueRepo = venueRepo;
+            _emailService = emailService;
+            _passwordGenerator = passwordGenerator;
+
         }
 
         public async Task<List<OwnerRequest>> GetOwnerRequestsAsync()
@@ -41,14 +50,15 @@ namespace Event.Application.Services
             if (existingUser != null)
                 throw new Exception("User already exists");
 
-          
+            var generatedPassword = _passwordGenerator.Generate();
+
             var ownerUser = new User(
                 request.Email,
-                BCrypt.Net.BCrypt.HashPassword("Owner1234"), // just for now 
+                BCrypt.Net.BCrypt.HashPassword(generatedPassword),
                 request.PhoneNumber,
                 request.FirstName,
                 request.LastName,
-                3 
+                3
             );
 
             await _userRepo.AddUserAsync(ownerUser);
@@ -63,17 +73,13 @@ namespace Event.Application.Services
 
             await _companyRepo.AddAsync(company);
 
-            var venue = new Venue(
-                request.VenueName,
-                "Pending description",
-                "Amman",
-                request.BusinessAddress,
-                100,
-                0,
-                company.Id
-            );
+        
 
-            await _venueRepo.AddAsync(venue);
+            await _emailService.SendEmailAsync(
+                request.Email,
+                "Your owner account has been approved",
+                $"Hello {request.FirstName},<br><br>Your account has been approved.<br>Your temporary password is: <b>{generatedPassword}</b><br><br>Please login and change it."
+            );
 
             request.Approve();
             await _ownerRequestRepo.UpdateAsync(request);

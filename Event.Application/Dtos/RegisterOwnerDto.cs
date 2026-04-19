@@ -11,6 +11,5 @@ namespace Event.Application.Dtos
         [Required] public string CompanyName { get; set; }
         [Required] public string BusinessPhone { get; set; }
         [Required] public string BusinessAddress { get; set; }
-        public string VenueName { get; set; }
     }
 }
