@@ -20,16 +20,15 @@ namespace events.Controllers
         }
 
 
-        [HttpGet("all")]
+
+        [HttpGet("venues")]
         [AllowAnonymous]
-        public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
+        public async Task<IActionResult> GetVenues()
         {
-            var venues = await _venueService.GetVenuesForGuestAsync();
+
+            var venues = await _venueService.GetAllAsync();
             return Ok(venues);
         }
-
-
-
 
   
         [HttpPost("venues")]
@@ -69,7 +68,7 @@ namespace events.Controllers
             try
             {
                 await _venueService.DeleteAsync(id);
-                return Ok("venue deleted successfully");
+                return Ok("VENUE DELETED SUCSSEFULLY");
             }
             catch (Exception ex)
             {
@@ -87,7 +86,7 @@ namespace events.Controllers
             {
                 var venue = await _venueService.GetByIdAsync(id);
                 if (venue == null)
-                    return NotFound("venue not exisit");
+                    return NotFound("القاعة غير موجودة");
                 return Ok(venue);
             }
             catch (Exception ex)

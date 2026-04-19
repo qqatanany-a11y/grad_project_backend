@@ -519,6 +519,7 @@ D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\staticwebassets
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\staticwebassets.development.json
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\swae.build.ex.cache
+D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\events.csproj.Up2Date
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\events.dll
 D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\refint\events.dll

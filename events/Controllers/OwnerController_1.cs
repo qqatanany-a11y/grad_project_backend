@@ -53,7 +53,19 @@ namespace events.Controllers
         {
             try
             {
-                await _authService.CreateOwnerRequestAsync(dto);
+                var request = new OwnerRequest(
+                    dto.Email,
+                    dto.PhoneNumber,
+                    dto.FirstName,
+                    dto.LastName,
+                    dto.CompanyName,
+                    dto.BusinessAddress,
+                    dto.BusinessPhone,
+                    dto.VenueName
+                );
+
+                await _ownerRequestRepo.AddAsync(request);
+
                 return Ok("Request sent, waiting for approval");
             }
             catch (Exception ex)
@@ -61,7 +73,6 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
 
         [HttpPost("edit-requests/profile")]
         public async Task<IActionResult> CreateProfileEditRequest(ProfileEditRequestDto dto)
