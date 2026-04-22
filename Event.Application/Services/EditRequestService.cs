@@ -143,16 +143,18 @@ namespace Event.Application.Services
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
-                venue.Update(
-                    dto.Name,
-                    dto.Description,
-                    dto.City,
-                    dto.Address,
-                    dto.Capacity,
-                    dto.MinimalPrice,
-                    dto.IsActive
-                );
 
+
+                 venue.Update(
+                     dto.Name,
+                     dto.Description,
+                     dto.City,
+                     dto.Address,
+                     dto.Capacity,
+                     dto.IsActive,
+                     dto.PricingType,
+                     dto.PricePerHour
+                 );
                 await _venueRepo.UpdateAsync(venue);
             }
 

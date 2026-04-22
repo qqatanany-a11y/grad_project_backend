@@ -43,14 +43,13 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-        public async Task<Booking> GetByIdAsync(int id)
+        public async Task<Booking?> GetByIdAsync(int id)
         {
             return await _context.Bookings
                 .Include(b => b.Venue)
                 .ThenInclude(v => v.Company)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
-
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

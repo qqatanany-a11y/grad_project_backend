@@ -8,7 +8,7 @@ namespace events.domain.Repos
         Task<List<Booking>> GetByVenueAndDate(int venueId, DateTime date);
         Task<List<Booking>> GetUserBookings(int userId);
         Task<List<Booking>> GetOwnerBookings(int ownerId);
-        Task<Booking> GetByIdAsync(int id);
+        Task<Booking?> GetByIdAsync(int id);
         Task SaveChangesAsync();
     }
 }

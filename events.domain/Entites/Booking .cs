@@ -19,13 +19,13 @@ namespace events.domain.Entities
 
         public int UserId { get; private set; }
 
-        public User User { get; private set; }
-        public Venue Venue { get; private set; }
+        public User User { get; private set; } = null!;
+        public Venue Venue { get; private set; } = null!;
         public EventType? EventType { get; private set; }
         public Payment? Payment { get; private set; }
         public Review? Review { get; private set; }
+        public List<BookingSelectedService> SelectedServices { get; private set; } = new();
 
-        // ✅ CREATE BOOKING
         public Booking(
             int venueId,
             int userId,
@@ -56,6 +56,12 @@ namespace events.domain.Entities
         {
             Status = BookingStatusEnum.Rejected;
             AprovedById = ownerId;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Cancel()
+        {
+            Status = BookingStatusEnum.Cancelled;
             UpdatedAt = DateTime.UtcNow;
         }
     }

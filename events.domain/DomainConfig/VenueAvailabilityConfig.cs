@@ -15,11 +15,11 @@ namespace events.domain.DomainConfig
                    .IsRequired();
 
             builder.Property(v => v.EndTime)
-                   .IsRequired(false);
+                   .IsRequired();
 
-            builder.Property(v => v.IsAvailable)
-                   .IsRequired()
-                   .HasDefaultValue(true);
+            builder.Property(v => v.IsBooked)
+       .IsRequired()
+       .HasDefaultValue(false);
 
             builder.Property(v => v.CreatedAt)
                    .HasDefaultValueSql("now()");

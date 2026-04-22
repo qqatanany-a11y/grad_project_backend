@@ -31,14 +31,19 @@ namespace events.Controllers
 
 
 
-  
         [HttpPost("venues")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
+            var companyIdClaim = User.FindFirst("CompanyId");
+
+            if (companyIdClaim == null)
+                return Unauthorized("Owner company not found");
+
+            var companyId = int.Parse(companyIdClaim.Value);
 
             try
             {
-                var result = await _venueService.AddAsync(dto);
+                var result = await _venueService.AddAsync(companyId, dto);
                 return Ok(result);
             }
             catch (Exception ex)

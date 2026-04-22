@@ -702,3 +702,4 @@ C:\Users\useru\source\repos\eventslaithomar\events\obj\Debug\net10.0\refint\even
 C:\Users\useru\source\repos\eventslaithomar\events\obj\Debug\net10.0\events.pdb
 C:\Users\useru\source\repos\eventslaithomar\events\obj\Debug\net10.0\events.genruntimeconfig.cache
 C:\Users\useru\source\repos\eventslaithomar\events\obj\Debug\net10.0\ref\events.dll
+D:\Omar from C\OneDrive\Desktop\events2\events\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

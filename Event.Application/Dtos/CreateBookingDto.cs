@@ -7,5 +7,6 @@
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public int GuestsCount { get; set; }
+        public List<int> VenueServiceOptionIds { get; set; } = new();
     }
 }
