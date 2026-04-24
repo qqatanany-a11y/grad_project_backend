@@ -71,8 +71,8 @@ public class BookingController : ControllerBase
 
         try
         {
-            await _bookingService.Cancel(bookingId, userId);
-            return Ok("Booking cancelled successfully");
+            var result = await _bookingService.Cancel(bookingId, userId);
+            return Ok(result);
         }
         catch (Exception ex)
         {

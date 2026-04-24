@@ -9,6 +9,8 @@ namespace Event.Application.IServices
         Task<List<BookingDto>> GetOwnerBookings(int ownerId);
         Task Approve(int bookingId, int ownerId);
         Task Reject(int bookingId, int ownerId);
-        Task Cancel(int bookingId, int userId);
+        Task<string> Cancel(int bookingId, int userId);
+
+
     }
 }

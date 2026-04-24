@@ -37,14 +37,17 @@ namespace Event.Application.Services
             if (dto.Price <= 0)
                 throw new Exception("Price must be greater than zero.");
 
-            var existingSlot = await _venueAvailabilityRepo.GetSlotAsync(
-                dto.VenueId,
-                dto.Date,
-                dto.StartTime,
-                dto.EndTime);
+            if (dto.Date < DateOnly.FromDateTime(DateTime.UtcNow))
+                throw new Exception("Date cannot be in the past.");
 
-            if (existingSlot != null)
-                throw new Exception("This slot already exists.");
+            var hasOverlap = await _venueAvailabilityRepo.HasOverlapAsync(
+     dto.VenueId,
+     dto.Date,
+     dto.StartTime,
+     dto.EndTime);
+
+            if (hasOverlap)
+                throw new Exception("This slot overlaps with an existing slot.");
 
             var availability = new VenueAvailability(
                 dto.VenueId,
@@ -95,6 +98,14 @@ namespace Event.Application.Services
 
         public async Task<List<VenueAvailabilityItemDto>> GetAvailableSlotsAsync(int venueId, DateOnly date)
         {
+            var venue = await _venueRepo.GetByIdAsync(venueId);
+
+            if (venue == null)
+                throw new Exception("Venue not found");
+
+            if (venue.PricingType != PricingType.FixedSlots)
+                throw new Exception("This venue does not use fixed slots.");
+
             var slots = await _venueAvailabilityRepo.GetAvailableByVenueAndDateAsync(venueId, date);
 
             return slots.Select(x => new VenueAvailabilityItemDto

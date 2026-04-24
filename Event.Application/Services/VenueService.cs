@@ -65,9 +65,15 @@ namespace Event.Application.Services
             if (dto.ImageUrls == null || dto.ImageUrls.Count < 10)
                 throw new Exception("You must upload at least 10 images.");
 
-            if (dto.PricingType == PricingType.Hourly && (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0))
-                throw new Exception("Price per hour is required for hourly venues.");
-
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null; 
+            }
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
@@ -102,6 +108,16 @@ namespace Event.Application.Services
 
             if (venue == null)
                 throw new Exception("venue not exist");
+
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null;
+            }
 
             venue.Update(
                  dto.Name,

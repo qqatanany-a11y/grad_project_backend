@@ -71,7 +71,7 @@ namespace events.domain.Entities
         public void AddImages(List<string> imageUrls)
         {
             if (imageUrls == null || imageUrls.Count < 10)
-                throw new Exception("You must upload at least 10 images.");
+                throw new Exception("Minimum 10 images are required for a venue.");
 
             Images.Clear();
 

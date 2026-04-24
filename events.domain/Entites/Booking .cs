@@ -4,6 +4,8 @@ namespace events.domain.Entities
 {
     public class Booking : BaseEntity
     {
+        private DateTime bookingDateUtc;
+
         private Booking() { }
 
         public int VenueId { get; private set; }
@@ -25,6 +27,9 @@ namespace events.domain.Entities
         public EventType? EventType { get; private set; }
         public Payment? Payment { get; private set; }
         public Review? Review { get; private set; }
+
+        public decimal BasePrice { get; private set; }
+        public decimal ServicesPrice { get; private set; }
         public List<BookingSelectedService> SelectedServices { get; private set; } = new();
 
         public Booking(
@@ -34,6 +39,8 @@ namespace events.domain.Entities
             TimeSpan startTime,
             TimeSpan endTime,
             int guestsCount,
+            decimal basePrice,
+            decimal servicesPrice,
             decimal totalPrice)
         {
             VenueId = venueId;
@@ -42,9 +49,22 @@ namespace events.domain.Entities
             StartTime = startTime;
             EndTime = endTime;
             GuestsCount = guestsCount;
+            BasePrice = basePrice;
+            ServicesPrice = servicesPrice;
             TotalPrice = totalPrice;
             Status = BookingStatusEnum.Pending;
             ReminderSent = false;
+        }
+
+        public Booking(int venueId, int userId, DateTime bookingDateUtc, TimeSpan startTime, TimeSpan endTime, int guestsCount, decimal totalPrice)
+        {
+            VenueId = venueId;
+            UserId = userId;
+            this.bookingDateUtc = bookingDateUtc;
+            StartTime = startTime;
+            EndTime = endTime;
+            GuestsCount = guestsCount;
+            TotalPrice = totalPrice;
         }
 
         public void Approve(int ownerId)

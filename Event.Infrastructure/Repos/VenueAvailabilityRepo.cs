@@ -56,5 +56,19 @@ namespace Event.Infrastructure.Repos
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> HasOverlapAsync(
+     int venueId,
+     DateOnly date,
+     TimeSpan startTime,
+     TimeSpan endTime)
+        {
+            return await _context.VenueAvailabilities
+                .AnyAsync(x =>
+                    x.VenueId == venueId &&
+                    x.Date == date &&
+                    startTime < x.EndTime &&
+                    endTime > x.StartTime);
+        }
     }
 }
