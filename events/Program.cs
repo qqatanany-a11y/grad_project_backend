@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ================= DB =================
@@ -30,6 +31,11 @@ builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
 builder.Services.AddScoped<IOwnerRequestRepo, OwnerRequestRepo>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<IEditRequestRepo, EditRequestRepo>();
+builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
+builder.Services.AddScoped<IVenueServiceOptionRepo, VenueServiceOptionRepo>();
+builder.Services.AddScoped<IBookingSelectedServiceRepo, BookingSelectedServiceRepo>();
+builder.Services.AddScoped<IVenueAvailabilityRepo, VenueAvailabilityRepo>();
+
 // ================= Services =================
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
@@ -37,6 +43,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IEditRequestService, EditRequestService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
+builder.Services.AddScoped<IVenueServiceOptionService, VenueServiceOptionService>();
+builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>();
 
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -84,6 +94,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterOwnerVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVaildator>();
 builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IVenueAvailabilityRepo, VenueAvailabilityRepo>();
 var app = builder.Build();
 
 // ================= Seed Admin =================

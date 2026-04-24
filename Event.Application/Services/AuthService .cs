@@ -18,7 +18,7 @@ namespace Event.Application.Services
         private readonly IRoleRepo _roleRepo;
         private readonly ICompanyRepo _companyRepo;
         private readonly IOwnerRequestRepo _ownerRequestRepo;
-        private readonly IConfiguration _config;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
         private readonly IValidator<RegisterDto> _registerValidator;
         private readonly IValidator<RegisterOwnerDto> _registerOwnerValidator;
         private readonly IValidator<LoginDto> _loginValidator;
@@ -30,7 +30,7 @@ namespace Event.Application.Services
             IRoleRepo roleRepo,
             ICompanyRepo companyRepo,
             IOwnerRequestRepo ownerRequestRepo,
-            IConfiguration config,
+            Microsoft.Extensions.Configuration.IConfiguration config,
             IValidator<RegisterDto> registerValidator,
             IValidator<RegisterOwnerDto> registerOwnerValidator,
             IValidator<LoginDto> loginValidator,

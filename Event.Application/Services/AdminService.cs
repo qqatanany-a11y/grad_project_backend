@@ -84,14 +84,14 @@ namespace Event.Application.Services
             request.Approve();
             await _ownerRequestRepo.UpdateAsync(request);
         }
-        public async Task RejectOwnerAsync(int id)
+        public async Task RejectOwnerAsync(int id, string reason)
         {
             var request = await _ownerRequestRepo.GetByIdAsync(id);
 
             if (request == null)
                 throw new Exception("Request not found");
 
-            request.Reject();
+            request.Reject(reason);
             await _ownerRequestRepo.UpdateAsync(request);
         }
 

@@ -7,7 +7,7 @@ namespace Event.Application.IServices
     {
         Task<List<OwnerRequest>> GetOwnerRequestsAsync();
         Task ApproveOwnerAsync(int requestId);
-        Task RejectOwnerAsync(int requestId);
+        Task RejectOwnerAsync(int id, string reason);
 
 
 

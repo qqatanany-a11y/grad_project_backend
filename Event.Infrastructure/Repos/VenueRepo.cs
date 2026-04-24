@@ -16,10 +16,9 @@ namespace Event.Infrastructure.Repos
 
         public async Task<List<Venue>> GetByCompanyIdAsync(int companyId)
         {
-           
             return await _db.Venues
                 .Where(v => v.CompanyId == companyId)
-                .Include(v => v.Company) 
+                .Include(v => v.Company)
                 .ToListAsync();
         }
 
@@ -29,10 +28,12 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Company)
                 .ToListAsync();
         }
+
         public async Task<Venue?> GetByIdAsync(int id)
         {
             return await _db.Venues
                 .Include(v => v.Company)
+                .Include(v => v.Images)
                 .FirstOrDefaultAsync(v => v.Id == id);
         }
 
@@ -43,6 +44,7 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Company)
                 .ToListAsync();
         }
+
         public async Task AddAsync(Venue venue)
         {
             await _db.Venues.AddAsync(venue);
@@ -60,6 +62,7 @@ namespace Event.Infrastructure.Repos
             _db.Venues.Remove(venue);
             await _db.SaveChangesAsync();
         }
+
         public async Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId)
         {
             return await _db.Venues
@@ -70,13 +73,13 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-            public async Task<List<Venue>> GetAllActiveAsync()
+        public async Task<List<Venue>> GetAllActiveAsync()
         {
             return await _db.Venues
-                .Where(v => v.IsActive) 
-                .Include(v => v.Company) 
-                .Include(v => v.Images)  
+                .Where(v => v.IsActive)
+                .Include(v => v.Company)
+                .Include(v => v.Images)
                 .ToListAsync();
         }
     }
-    }
+}

@@ -15,14 +15,17 @@ namespace events.domain.DomainConfig
             builder.Property(b => b.EndTime).IsRequired();
             builder.Property(b => b.TotalPrice).IsRequired().HasColumnType("decimal(18,2)");
             builder.Property(b => b.Status).IsRequired();
-            builder.Property(b => b.CreatedAt).IsRequired();
             builder.Property(b => b.GuestsCount).IsRequired(false);
 
 
+             builder.Property(b => b.CreatedAt)
+               .IsRequired()
+               .HasDefaultValueSql("now()");
+
             builder.HasOne(b => b.User)
-         .WithMany(u => u.Bookings)
-         .HasForeignKey(b => b.UserId)
-         .OnDelete(DeleteBehavior.Restrict);
+                 .WithMany(u => u.Bookings)
+                 .HasForeignKey(b => b.UserId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Venue)
                 .WithMany(v => v.Bookings)
@@ -43,6 +46,10 @@ namespace events.domain.DomainConfig
                 .WithOne(r => r.Booking)
                 .HasForeignKey<Review>(r => r.BookingId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(b => b.Status)
+               .IsRequired()
+               .HasConversion<string>();
         }
     }
 }

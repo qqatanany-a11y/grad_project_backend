@@ -28,14 +28,15 @@ public class BookingController : ControllerBase
 
         try
         {
-            await _bookingService.CreateBooking(userId, dto);
-            return Ok("Booked");
+            var result = await _bookingService.CreateBooking(userId, dto);
+            return Ok(result);
         }
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
+
 
     [HttpGet("my")]
     public async Task<IActionResult> MyBookings()
@@ -50,6 +51,27 @@ public class BookingController : ControllerBase
         try
         {
             var result = await _bookingService.GetMyBookings(userId);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("{bookingId}/cancel")]
+    public async Task<IActionResult> Cancel(int bookingId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim == null)
+            return Unauthorized("User not authenticated");
+
+        var userId = int.Parse(userIdClaim.Value);
+
+        try
+        {
+            var result = await _bookingService.Cancel(bookingId, userId);
             return Ok(result);
         }
         catch (Exception ex)
