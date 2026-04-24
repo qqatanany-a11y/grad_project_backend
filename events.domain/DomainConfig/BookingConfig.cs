@@ -17,10 +17,13 @@ namespace events.domain.DomainConfig
             builder.Property(b => b.Status).IsRequired();
             builder.Property(b => b.GuestsCount).IsRequired(false);
 
+            builder.Property(b => b.ReminderSent)
+                   .IsRequired()
+                   .HasDefaultValue(false);
 
-             builder.Property(b => b.CreatedAt)
-               .IsRequired()
-               .HasDefaultValueSql("now()");
+            builder.Property(b => b.CreatedAt)
+                   .IsRequired()
+                   .HasDefaultValueSql("now()");
 
             builder.HasOne(b => b.User)
                  .WithMany(u => u.Bookings)

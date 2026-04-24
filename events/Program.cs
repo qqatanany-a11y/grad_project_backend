@@ -47,6 +47,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 builder.Services.AddScoped<IVenueServiceOptionService, VenueServiceOptionService>();
 builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>();
+builder.Services.AddHostedService<BookingReminderBackgroundService>();
 
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

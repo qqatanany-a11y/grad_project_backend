@@ -9,6 +9,7 @@ namespace events.domain.Repos
         Task<List<Booking>> GetUserBookings(int userId);
         Task<List<Booking>> GetOwnerBookings(int ownerId);
         Task<Booking?> GetByIdAsync(int id);
+        Task<List<Booking>> GetBookingsForReminderAsync(DateTime fromUtc, DateTime toUtc);
         Task SaveChangesAsync();
     }
 }

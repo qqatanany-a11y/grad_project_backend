@@ -16,6 +16,7 @@ namespace events.domain.Entities
         public int? GuestsCount { get; private set; }
         public decimal TotalPrice { get; private set; }
         public BookingStatusEnum Status { get; private set; } = BookingStatusEnum.Pending;
+        public bool ReminderSent { get; private set; } = false;
 
         public int UserId { get; private set; }
 
@@ -43,6 +44,7 @@ namespace events.domain.Entities
             GuestsCount = guestsCount;
             TotalPrice = totalPrice;
             Status = BookingStatusEnum.Pending;
+            ReminderSent = false;
         }
 
         public void Approve(int ownerId)
@@ -62,6 +64,12 @@ namespace events.domain.Entities
         public void Cancel()
         {
             Status = BookingStatusEnum.Cancelled;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void MarkReminderSent()
+        {
+            ReminderSent = true;
             UpdatedAt = DateTime.UtcNow;
         }
     }
