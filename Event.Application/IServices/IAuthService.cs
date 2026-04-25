@@ -9,6 +9,5 @@ namespace Event.Application.IServices
         Task<AuthResponseDto> RegisterAdminAsync(RegisterDto dto);
 
         Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto);
-        Task CreateOwnerRequestAsync(RegisterOwnerDto dto);
     }
 }
