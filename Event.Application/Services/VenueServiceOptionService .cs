@@ -50,7 +50,9 @@ namespace Event.Application.Services
         {
             var options = await _venueServiceOptionRepo.GetByVenueIdAsync(venueId);
 
-            return options.Select(x => new VenueServiceOptionDto
+            return options
+                .Where(x => x.IsActive)
+                .Select(x => new VenueServiceOptionDto
             {
                 Id = x.Id,
                 VenueId = x.VenueId,

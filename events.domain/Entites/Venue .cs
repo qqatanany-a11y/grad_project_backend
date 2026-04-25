@@ -14,6 +14,7 @@ namespace events.domain.Entities
         public int CompanyId { get; private set; }
         public Company Company { get; private set; } = null!;
 
+        public VenueCategory Category { get; private set; }
         public PricingType PricingType { get; private set; }
         public decimal? PricePerHour { get; private set; }
 
@@ -33,6 +34,7 @@ namespace events.domain.Entities
             string address,
             int capacity,
             int companyId,
+            VenueCategory category,
             PricingType pricingType,
             decimal? pricePerHour)
         {
@@ -42,6 +44,7 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             CompanyId = companyId;
+            Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             IsActive = true;
@@ -54,6 +57,7 @@ namespace events.domain.Entities
             string address,
             int capacity,
             bool isActive,
+            VenueCategory category,
             PricingType pricingType,
             decimal? pricePerHour)
         {
@@ -63,6 +67,7 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             IsActive = isActive;
+            Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             UpdatedAt = DateTime.UtcNow;

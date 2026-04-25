@@ -70,8 +70,10 @@ namespace Event.Application.Services
                     City = venue.City,
                     Address = venue.Address,
                     Capacity = venue.Capacity,
-                    MinimalPrice = venue.MinimalPrice,
-                    IsActive = venue.IsActive
+                    IsActive = venue.IsActive,
+                    Category = venue.Category,
+                    PricingType = venue.PricingType,
+                    PricePerHour = venue.PricePerHour
                 },
                 Requested = dto
             };
@@ -106,7 +108,9 @@ namespace Event.Application.Services
                 City = dto.City,
                 Address = dto.Address,
                 Capacity = dto.Capacity,
-                MinimalPrice = dto.MinimalPrice,
+                Category = dto.Category,
+                PricingType = dto.PricingType,
+                PricePerHour = dto.PricePerHour,
                 CompanyName = company.Name
             };
 
@@ -215,6 +219,7 @@ namespace Event.Application.Services
                      dto.Address,
                      dto.Capacity,
                      dto.IsActive,
+                     dto.Category,
                      dto.PricingType,
                      dto.PricePerHour
                  );
@@ -236,8 +241,10 @@ namespace Event.Application.Services
                     dto.City,
                     dto.Address,
                     dto.Capacity,
-                    dto.MinimalPrice,
-                    company.Id
+                    company.Id,
+                    dto.Category,
+                    dto.PricingType,
+                    dto.PricePerHour
                 );
 
                 await _venueRepo.AddAsync(venue);

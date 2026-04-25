@@ -8,6 +8,7 @@
         public string Address { get; set; }
         public int Capacity { get; set; }
         public bool IsActive { get; set; }
+        public VenueCategory Category { get; set; }
         public PricingType PricingType { get; set; }
         public decimal? PricePerHour { get; set; }
     }

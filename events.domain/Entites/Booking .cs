@@ -30,6 +30,8 @@ namespace events.domain.Entities
 
         public decimal BasePrice { get; private set; }
         public decimal ServicesPrice { get; private set; }
+        public string? BrideIdDocumentDataUrl { get; private set; }
+        public string? BridegroomIdDocumentDataUrl { get; private set; }
         public List<BookingSelectedService> SelectedServices { get; private set; } = new();
 
         public Booking(
@@ -41,7 +43,9 @@ namespace events.domain.Entities
             int guestsCount,
             decimal basePrice,
             decimal servicesPrice,
-            decimal totalPrice)
+            decimal totalPrice,
+            string? brideIdDocumentDataUrl,
+            string? bridegroomIdDocumentDataUrl)
         {
             VenueId = venueId;
             UserId = userId;
@@ -52,6 +56,8 @@ namespace events.domain.Entities
             BasePrice = basePrice;
             ServicesPrice = servicesPrice;
             TotalPrice = totalPrice;
+            BrideIdDocumentDataUrl = brideIdDocumentDataUrl;
+            BridegroomIdDocumentDataUrl = bridegroomIdDocumentDataUrl;
             Status = BookingStatusEnum.Pending;
             ReminderSent = false;
         }

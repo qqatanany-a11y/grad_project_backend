@@ -10,6 +10,25 @@ namespace Event.Application.Services
         private readonly IVenueRepo _venueRepo;
         private readonly IUserRepo _userRepo;
 
+        private static VenueDto MapVenue(Venue venue)
+        {
+            return new VenueDto
+            {
+                Id = venue.Id,
+                Name = venue.Name,
+                Description = venue.Description,
+                City = venue.City,
+                Address = venue.Address,
+                Capacity = venue.Capacity,
+                IsActive = venue.IsActive,
+                CompanyName = venue.Company?.Name,
+                CompanyId = venue.CompanyId,
+                Category = venue.Category,
+                PricingType = venue.PricingType,
+                PricePerHour = venue.PricePerHour
+            };
+        }
+
         public VenueService(IVenueRepo venueRepo, IUserRepo userRepo)
         {
             _venueRepo = venueRepo;
@@ -20,18 +39,7 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(MapVenue).ToList();
         }
 
         public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
@@ -46,18 +54,7 @@ namespace Event.Application.Services
 
             var venues = await _venueRepo.GetByOwnerId(ownerId);
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(MapVenue).ToList();
         }
 
         public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
@@ -81,6 +78,7 @@ namespace Event.Application.Services
                 dto.Address,
                 dto.Capacity,
                 companyId,
+                dto.Category,
                 dto.PricingType,
                 dto.PricePerHour
             );
@@ -89,17 +87,7 @@ namespace Event.Application.Services
 
             await _venueRepo.AddAsync(venue);
 
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId
-            };
+            return MapVenue(venue);
         }
 
         public async Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto)
@@ -126,24 +114,14 @@ namespace Event.Application.Services
                  dto.Address,
                  dto.Capacity,
                  dto.IsActive,
+                 dto.Category,
                  dto.PricingType,
                  dto.PricePerHour
                 );
 
             await _venueRepo.UpdateAsync(venue);
 
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId,
-                CompanyName = venue.Company?.Name
-            };
+            return MapVenue(venue);
         }
 
         public async Task<VenueDto> GetByIdAsync(int venueId)
@@ -151,24 +129,8 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-<<<<<<< HEAD
-                throw new Exception("venue not exist");
-
-=======
                 throw new Exception("القاعة غير موجودة");
->>>>>>> origin/main
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId,
-                CompanyName = venue.Company?.Name
-            };
+            return MapVenue(venue);
         }
 
         public async Task DeleteAsync(int venueId)
@@ -185,36 +147,14 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetAllAsync();
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(MapVenue).ToList();
         }
 
         public async Task<List<VenueDto>> GetVenuesForGuestAsync()
         {
             var venues = await _venueRepo.GetAllActiveAsync();
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name ?? "N/A",
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(MapVenue).ToList();
         }
     }
 }

@@ -17,51 +17,34 @@ namespace Event.Application.Services
     {
         private readonly IUserRepo _userRepo;
         private readonly IRoleRepo _roleRepo;
-<<<<<<< HEAD
         private readonly ICompanyRepo _companyRepo;
-        private readonly IOwnerRequestRepo _ownerRequestRepo;
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
-=======
-        private readonly ICompanyRepo _companyRepo;    // ← جديد
-        private readonly IConfiguration _config;
->>>>>>> origin/main
         private readonly IValidator<RegisterDto> _registerValidator;
         private readonly IValidator<RegisterOwnerDto> _registerOwnerValidator;
         private readonly IValidator<LoginDto> _loginValidator;
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly IEmailService _emailService;
-<<<<<<< HEAD
 
         public AuthService(
             IUserRepo userRepo,
             IRoleRepo roleRepo,
             ICompanyRepo companyRepo,
-            IOwnerRequestRepo ownerRequestRepo,
             Microsoft.Extensions.Configuration.IConfiguration config,
             IValidator<RegisterDto> registerValidator,
             IValidator<RegisterOwnerDto> registerOwnerValidator,
             IValidator<LoginDto> loginValidator,
             IPasswordGenerator passwordGenerator,
             IEmailService emailService)
-=======
-        public AuthService(IUserRepo userRepo, IRoleRepo roleRepo,
-                           ICompanyRepo companyRepo,               // ← جديد
-                           IConfiguration config,
-                           IValidator<RegisterDto> registerValidator,
-                           IValidator<RegisterOwnerDto> registerOwnerValidator,
-                           IValidator<LoginDto> loginValidator,
-                           IPasswordGenerator passwordGenerator,
-                           IEmailService emailService
-                           )
->>>>>>> origin/main
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
-            _companyRepo = companyRepo;                            // ← جديد
+            _companyRepo = companyRepo;
             _config = config;
             _registerValidator = registerValidator;
             _registerOwnerValidator = registerOwnerValidator;
             _loginValidator = loginValidator;
+            _passwordGenerator = passwordGenerator;
+            _emailService = emailService;
         }
 
         // RegisterAsync — ما تغير عليه شي ✅

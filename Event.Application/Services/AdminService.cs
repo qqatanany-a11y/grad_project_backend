@@ -69,8 +69,10 @@ namespace Event.Application.Services
                 "Amman",
                 request.BusinessAddress,
                 100,
-                0,
-                company.Id
+                company.Id,
+                VenueCategory.WeddingHall,
+                PricingType.FixedSlots,
+                null
             );
 
             await _venueRepo.AddAsync(venue);
