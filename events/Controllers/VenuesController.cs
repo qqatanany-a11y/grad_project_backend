@@ -2,14 +2,11 @@
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace events.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Owner")]
-    // api -> OwnerController -> /api/venues ->  role owner or user
     public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
@@ -19,28 +16,27 @@ namespace events.Controllers
             _venueService = venueService;
         }
 
-
-<<<<<<< HEAD
-
-        [HttpGet("venues")]
-        public async Task<IActionResult> GetVenues()
-=======
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
->>>>>>> ef34a3bdcc7fd9a2a673f38430c111aaa29d3eec
         {
             var venues = await _venueService.GetVenuesForGuestAsync();
             return Ok(venues);
         }
 
+        [HttpGet("venues")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetVenues()
+        {
+            var venues = await _venueService.GetAllAsync();
+            return Ok(venues);
+        }
 
-
-
-        [HttpPost]
+        [HttpPost("venues")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
-            var companyIdClaim = User.FindFirst("companyId");
+            var companyIdClaim = User.FindFirst("CompanyId");
 
             if (companyIdClaim == null)
                 return Unauthorized("Owner company not found");
@@ -58,11 +54,10 @@ namespace events.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
-
             try
             {
                 var result = await _venueService.UpdateAsync(id, dto);
@@ -75,12 +70,13 @@ namespace events.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
             {
                 await _venueService.DeleteAsync(id);
-                return Ok("venue deleted successfully");
+                return Ok("VENUE DELETED SUCCESSFULLY");
             }
             catch (Exception ex)
             {
@@ -88,17 +84,17 @@ namespace events.Controllers
             }
         }
 
-        
         [HttpGet("{id}")]
         [AllowAnonymous]
-
         public async Task<IActionResult> GetVenueById(int id)
         {
             try
             {
                 var venue = await _venueService.GetByIdAsync(id);
+
                 if (venue == null)
-                    return NotFound("venue not exisit");
+                    return NotFound("Venue not found");
+
                 return Ok(venue);
             }
             catch (Exception ex)
@@ -107,27 +103,28 @@ namespace events.Controllers
             }
         }
 
-        [HttpGet("VienuesByOwnerId/{OwnerId}")]
-        public async Task<IActionResult> GetVenuesByOwnerId(int OwnerId)
+        [HttpGet("VienuesByOwnerId/{ownerId}")]
+        [Authorize(Roles = "Owner")]
+        public async Task<IActionResult> GetVenuesByOwnerId(int ownerId)
         {
             try
             {
-                var venues = await _venueService.GetByOwnerIdAsync(OwnerId);
+                var venues = await _venueService.GetByOwnerIdAsync(ownerId);
                 return Ok(venues);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
-        [HttpGet("VienuesByCompanyId/{CompanyId}")]
-        public async Task<IActionResult> GetVenuesByCompanyId(int CompanyId)
+        [HttpGet("VienuesByCompanyId/{companyId}")]
+        [Authorize(Roles = "Owner")]
+        public async Task<IActionResult> GetVenuesByCompanyId(int companyId)
         {
             try
             {
-                var venues = await _venueService.GetByCompanyIdAsync(CompanyId);
+                var venues = await _venueService.GetByCompanyIdAsync(companyId);
                 return Ok(venues);
             }
             catch (Exception ex)
