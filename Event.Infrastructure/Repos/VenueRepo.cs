@@ -16,17 +16,33 @@ namespace Event.Infrastructure.Repos
 
         public async Task<List<Venue>> GetByCompanyIdAsync(int companyId)
         {
-           
             return await _db.Venues
                 .Where(v => v.CompanyId == companyId)
-                .Include(v => v.Company) 
+                .Include(v => v.Company)
                 .ToListAsync();
         }
+
+        public async Task<List<Venue>> GetAllAsync()
+        {
+            return await _db.Venues
+                .Include(v => v.Company)
+                .ToListAsync();
+        }
+
         public async Task<Venue?> GetByIdAsync(int id)
         {
             return await _db.Venues
                 .Include(v => v.Company)
+                .Include(v => v.Images)
                 .FirstOrDefaultAsync(v => v.Id == id);
+        }
+
+        public async Task<List<Venue>> GetByOwnerId(int ownerId)
+        {
+            return await _db.Venues
+                .Where(v => v.Company != null && v.Company.UserId == ownerId)
+                .Include(v => v.Company)
+                .ToListAsync();
         }
 
         public async Task AddAsync(Venue venue)
@@ -45,6 +61,25 @@ namespace Event.Infrastructure.Repos
         {
             _db.Venues.Remove(venue);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId)
+        {
+            return await _db.Venues
+                .Where(v => v.CompanyId == companyId)
+                .Include(v => v.Availabilities)
+                .Include(v => v.Images)
+                .Include(v => v.VenueEventTypes)
+                .ToListAsync();
+        }
+
+        public async Task<List<Venue>> GetAllActiveAsync()
+        {
+            return await _db.Venues
+                .Where(v => v.IsActive)
+                .Include(v => v.Company)
+                .Include(v => v.Images)
+                .ToListAsync();
         }
     }
 }

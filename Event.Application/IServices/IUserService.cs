@@ -15,5 +15,6 @@ namespace Event.Application.IServices
         public Task<bool> UpdateUserAsync(int userId,UserDto userDto);
         public Task<bool> ActivateUserAsync(int userId);
         public Task<bool> DeactivateUserAsync(int userId);
+
     }
 }

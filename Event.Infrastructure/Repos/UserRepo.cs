@@ -30,20 +30,22 @@ namespace Event.Infrastructure.Repos
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _db.Users.ToListAsync();
+            return await _db.Users.Include(u => u.Role)
+                .ToListAsync();
         }
 
 
         public async Task <User?> GetUserByEmailAsync(string email)
         {
-            return await _db.Users
+            return await _db.Users.
+                Include(u => u.Role)
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<User?> GetUserByIdAsync(int userId)
         {
 
-            var user = await _db.Users
+            var user = await _db.Users.Include(u => u.Role)
                 .FirstOrDefaultAsync(x => x.Id==userId);
             return user;
       

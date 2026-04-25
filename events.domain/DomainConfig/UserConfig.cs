@@ -13,7 +13,6 @@ namespace events.domain.DomainConfig
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.Property(p => p.FirstName).HasMaxLength(100).IsRequired();
-            builder.Property(p => p.MiddleName).HasMaxLength(100).IsRequired(false);
             builder.Property(p => p.LastName).HasMaxLength(100).IsRequired();
 
             builder.Ignore(p => p.FullName);

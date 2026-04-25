@@ -23,7 +23,11 @@ namespace events.Infrastructure.Persistence
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Review> Reviews { get; set; }
-
+        public DbSet<OwnerRequest> OwnerRequests { get; set; }
+        public DbSet<EditRequest> EditRequests { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<VenueServiceOption> VenueServiceOptions { get; set; }
+        public DbSet<BookingSelectedService> BookingSelectedServices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(w =>
@@ -46,17 +50,17 @@ namespace events.Infrastructure.Persistence
             builder.ApplyConfiguration(new BookingConfig());
             builder.ApplyConfiguration(new PaymentConfig());
             builder.ApplyConfiguration(new ReviewConfig());
-     
+            builder.ApplyConfiguration(new EditRequestConfig());
+            builder.ApplyConfiguration(new ServiceConfig());
+            builder.ApplyConfiguration(new VenueServiceOptionConfig());
+            builder.ApplyConfiguration(new BookingSelectedServiceConfig());
+
 
             builder.Entity<UserRole>().HasData(
                 new UserRole { Id = 1, Name = "Admin", Permation = new string[] { "all" }, CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
                 new UserRole { Id = 2, Name = "User", Permation = new string[] { "read" }, CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
                 new UserRole { Id = 3, Name = "Owner", Permation = new string[] { "manage_venue" }, CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
             );
-
-
-
-     
 
             builder.Entity<EventType>().HasData(
                 new EventType { Id = 1, Name = "Party", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },

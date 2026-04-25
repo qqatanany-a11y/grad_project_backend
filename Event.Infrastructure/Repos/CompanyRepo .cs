@@ -53,14 +53,9 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-        public async Task<List<Venue>> GetVenuesByCompanyIdAsync(int companyId)
+        public Task AddCompanyAsync(Company company)
         {
-            return await _db.Venues
-                .Where(v => v.CompanyId == companyId)
-                .Include(v => v.Availabilities)
-                .Include(v => v.Images)
-                .Include(v => v.VenueEventTypes)
-                .ToListAsync();
+            throw new NotImplementedException();
         }
     }
 }

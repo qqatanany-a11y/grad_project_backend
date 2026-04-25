@@ -8,15 +8,18 @@ namespace Event.Application.Services
     public class VenueService : IVenueService
     {
         private readonly IVenueRepo _venueRepo;
+        private readonly IUserRepo _userRepo;
 
-        public VenueService(IVenueRepo venueRepo)
+        public VenueService(IVenueRepo venueRepo, IUserRepo userRepo)
         {
             _venueRepo = venueRepo;
+            _userRepo = userRepo;
         }
 
         public async Task<List<VenueDto>> GetByCompanyIdAsync(int companyId)
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
+
             return venues.Select(v => new VenueDto
             {
                 Id = v.Id,
@@ -25,23 +28,64 @@ namespace Event.Application.Services
                 City = v.City,
                 Address = v.Address,
                 Capacity = v.Capacity,
-                MinimalPrice = v.MinimalPrice,
                 IsActive = v.IsActive,
-                CompanyName = v.Company?.Name
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
             }).ToList();
         }
 
-        public async Task<VenueDto> AddAsync(AddVenueDto dto, int companyId)
+        public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
         {
+            var user = await _userRepo.GetUserByIdAsync(ownerId);
+
+            if (user == null)
+                throw new Exception("user not found");
+
+            if (user.Role.Name != "Owner")
+                throw new Exception("You do not have permission to access this resource.");
+
+            var venues = await _venueRepo.GetByOwnerId(ownerId);
+
+            return venues.Select(v => new VenueDto
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Description = v.Description,
+                City = v.City,
+                Address = v.Address,
+                Capacity = v.Capacity,
+                IsActive = v.IsActive,
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
+            }).ToList();
+        }
+
+        public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
+        {
+            if (dto.ImageUrls == null || dto.ImageUrls.Count < 10)
+                throw new Exception("You must upload at least 10 images.");
+
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null; 
+            }
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
                 dto.City,
                 dto.Address,
                 dto.Capacity,
-                dto.MinimalPrice,
-                companyId
+                companyId,
+                dto.PricingType,
+                dto.PricePerHour
             );
+
+            venue.AddImages(dto.ImageUrls);
 
             await _venueRepo.AddAsync(venue);
 
@@ -53,22 +97,38 @@ namespace Event.Application.Services
                 City = venue.City,
                 Address = venue.Address,
                 Capacity = venue.Capacity,
-                MinimalPrice = venue.MinimalPrice,
-                IsActive = venue.IsActive
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId
             };
         }
 
-        public async Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto, int companyId)
+        public async Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue not exist");
 
-            if (venue.CompanyId != companyId)
-                throw new Exception("غير مصرح لك بتعديل هذه القاعة");
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null;
+            }
 
-            venue.Update(dto.Name, dto.Description, dto.City, dto.Address, dto.Capacity, dto.MinimalPrice, dto.IsActive);
+            venue.Update(
+                 dto.Name,
+                 dto.Description,
+                 dto.City,
+                 dto.Address,
+                 dto.Capacity,
+                 dto.IsActive,
+                 dto.PricingType,
+                 dto.PricePerHour
+                );
 
             await _venueRepo.UpdateAsync(venue);
 
@@ -80,22 +140,77 @@ namespace Event.Application.Services
                 City = venue.City,
                 Address = venue.Address,
                 Capacity = venue.Capacity,
-                MinimalPrice = venue.MinimalPrice,
-                IsActive = venue.IsActive
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId,
+                CompanyName = venue.Company?.Name
             };
         }
 
-        public async Task DeleteAsync(int venueId, int companyId)
+        public async Task<VenueDto> GetByIdAsync(int venueId)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue not exist");
 
-            if (venue.CompanyId != companyId)
-                throw new Exception("غير مصرح لك بحذف هذه القاعة");
+            return new VenueDto
+            {
+                Id = venue.Id,
+                Name = venue.Name,
+                Description = venue.Description,
+                City = venue.City,
+                Address = venue.Address,
+                Capacity = venue.Capacity,
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId,
+                CompanyName = venue.Company?.Name
+            };
+        }
+
+        public async Task DeleteAsync(int venueId)
+        {
+            var venue = await _venueRepo.GetByIdAsync(venueId);
+
+            if (venue == null)
+                throw new Exception("venue not exist");
 
             await _venueRepo.DeleteAsync(venue);
+        }
+
+        public async Task<List<VenueDto>> GetAllAsync()
+        {
+            var venues = await _venueRepo.GetAllAsync();
+
+            return venues.Select(v => new VenueDto
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Description = v.Description,
+                City = v.City,
+                Address = v.Address,
+                Capacity = v.Capacity,
+                IsActive = v.IsActive,
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
+            }).ToList();
+        }
+
+        public async Task<List<VenueDto>> GetVenuesForGuestAsync()
+        {
+            var venues = await _venueRepo.GetAllActiveAsync();
+
+            return venues.Select(v => new VenueDto
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Description = v.Description,
+                City = v.City,
+                Address = v.Address,
+                Capacity = v.Capacity,
+                IsActive = v.IsActive,
+                CompanyName = v.Company?.Name ?? "N/A",
+                CompanyId = v.CompanyId
+            }).ToList();
         }
     }
 }

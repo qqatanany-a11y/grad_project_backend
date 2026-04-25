@@ -4,7 +4,8 @@
     {
         Pending, // 0
         Confirmed, // 1
-        Cancelled // 2   
+        Rejected, // 2   
+        Cancelled // 4 
     }
     
 

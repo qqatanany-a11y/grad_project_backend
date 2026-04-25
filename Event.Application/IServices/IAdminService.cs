@@ -1,0 +1,19 @@
+﻿using events.domain.Entites;
+using events.domain.Entities;
+
+namespace Event.Application.IServices
+{
+    public interface IAdminService
+    {
+        Task<List<OwnerRequest>> GetOwnerRequestsAsync();
+        Task ApproveOwnerAsync(int requestId);
+        Task RejectOwnerAsync(int id, string reason);
+
+
+
+
+        Task<List<Company>> GetCompaniesAsync();
+        Task<List<Venue>> GetVenuesAsync();
+        Task<List<User>> GetUsersAsync();
+    }
+}
