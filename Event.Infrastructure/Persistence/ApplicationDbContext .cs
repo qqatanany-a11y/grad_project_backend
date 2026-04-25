@@ -25,6 +25,9 @@ namespace events.Infrastructure.Persistence
         public DbSet<Review> Reviews { get; set; }
         public DbSet<OwnerRequest> OwnerRequests { get; set; }
         public DbSet<EditRequest> EditRequests { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<VenueServiceOption> VenueServiceOptions { get; set; }
+        public DbSet<BookingSelectedService> BookingSelectedServices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(w =>
@@ -48,6 +51,9 @@ namespace events.Infrastructure.Persistence
             builder.ApplyConfiguration(new PaymentConfig());
             builder.ApplyConfiguration(new ReviewConfig());
             builder.ApplyConfiguration(new EditRequestConfig());
+            builder.ApplyConfiguration(new ServiceConfig());
+            builder.ApplyConfiguration(new VenueServiceOptionConfig());
+            builder.ApplyConfiguration(new BookingSelectedServiceConfig());
 
 
             builder.Entity<UserRole>().HasData(

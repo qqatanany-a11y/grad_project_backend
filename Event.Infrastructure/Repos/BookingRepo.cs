@@ -43,14 +43,28 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-        public async Task<Booking> GetByIdAsync(int id)
+        public async Task<Booking?> GetByIdAsync(int id)
         {
             return await _context.Bookings
                 .Include(b => b.Venue)
                 .ThenInclude(v => v.Company)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<List<Booking>> GetBookingsForReminderAsync(DateTime fromUtc, DateTime toUtc)
+        {
+            return await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.Venue)
+                .Where(b =>
+                    b.Status == BookingStatusEnum.Confirmed &&
+                    !b.ReminderSent &&
+                    b.BookingDate >= fromUtc &&
+                    b.BookingDate <= toUtc)
+                .ToListAsync();
+        }
+        
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

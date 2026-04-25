@@ -2,7 +2,6 @@
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
-using System.Xml;
 
 namespace Event.Application.Services
 {
@@ -20,6 +19,7 @@ namespace Event.Application.Services
         public async Task<List<VenueDto>> GetByCompanyIdAsync(int companyId)
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
+
             return venues.Select(v => new VenueDto
             {
                 Id = v.Id,
@@ -28,21 +28,24 @@ namespace Event.Application.Services
                 City = v.City,
                 Address = v.Address,
                 Capacity = v.Capacity,
-                MinimalPrice = v.MinimalPrice,
                 IsActive = v.IsActive,
-                CompanyName = v.Company?.Name
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
             }).ToList();
         }
-        public async Task<List<VenueDto>> GetByOwnerIdAsync(int OwnerId)
+
+        public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
         {
-            var user= await _userRepo.GetUserByIdAsync(OwnerId);
+            var user = await _userRepo.GetUserByIdAsync(ownerId);
+
             if (user == null)
-                 throw new Exception("المستخدم غير موجود");
+                throw new Exception("user not found");
 
-            if(user.Role.Name!="Owner")
-                throw new Exception("المستخدم ليس مالك");
+            if (user.Role.Name != "Owner")
+                throw new Exception("You do not have permission to access this resource.");
 
-            var venues = await _venueRepo.GetByOwnerId(OwnerId);
+            var venues = await _venueRepo.GetByOwnerId(ownerId);
+
             return venues.Select(v => new VenueDto
             {
                 Id = v.Id,
@@ -51,23 +54,38 @@ namespace Event.Application.Services
                 City = v.City,
                 Address = v.Address,
                 Capacity = v.Capacity,
-                MinimalPrice = v.MinimalPrice,
                 IsActive = v.IsActive,
-                CompanyName = v.Company?.Name
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
             }).ToList();
-
         }
-        public async Task<VenueDto> AddAsync(AddVenueDto dto)
+
+        public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
         {
+            if (dto.ImageUrls == null || dto.ImageUrls.Count < 10)
+                throw new Exception("You must upload at least 10 images.");
+
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null; 
+            }
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
                 dto.City,
                 dto.Address,
                 dto.Capacity,
-                dto.MinimalPrice,
-                dto.CompanyId
+                companyId,
+                dto.PricingType,
+                dto.PricePerHour
             );
+
+            venue.AddImages(dto.ImageUrls);
 
             await _venueRepo.AddAsync(venue);
 
@@ -79,8 +97,8 @@ namespace Event.Application.Services
                 City = venue.City,
                 Address = venue.Address,
                 Capacity = venue.Capacity,
-                MinimalPrice = venue.MinimalPrice,
-                IsActive = venue.IsActive
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId
             };
         }
 
@@ -91,9 +109,26 @@ namespace Event.Application.Services
             if (venue == null)
                 throw new Exception("القاعة غير موجودة");
 
-  
+            if (dto.PricingType == PricingType.Hourly)
+            {
+                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+            else
+            {
+                dto.PricePerHour = null;
+            }
 
-            venue.Update(dto.Name, dto.Description, dto.City, dto.Address, dto.Capacity, dto.MinimalPrice, dto.IsActive);
+            venue.Update(
+                 dto.Name,
+                 dto.Description,
+                 dto.City,
+                 dto.Address,
+                 dto.Capacity,
+                 dto.IsActive,
+                 dto.PricingType,
+                 dto.PricePerHour
+                );
 
             await _venueRepo.UpdateAsync(venue);
 
@@ -105,15 +140,23 @@ namespace Event.Application.Services
                 City = venue.City,
                 Address = venue.Address,
                 Capacity = venue.Capacity,
-                MinimalPrice = venue.MinimalPrice,
-                IsActive = venue.IsActive
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId,
+                CompanyName = venue.Company?.Name
             };
         }
+
         public async Task<VenueDto> GetByIdAsync(int venueId)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
+
             if (venue == null)
+<<<<<<< HEAD
+                throw new Exception("venue not exist");
+
+=======
                 throw new Exception("القاعة غير موجودة");
+>>>>>>> origin/main
             return new VenueDto
             {
                 Id = venue.Id,
@@ -122,8 +165,9 @@ namespace Event.Application.Services
                 City = venue.City,
                 Address = venue.Address,
                 Capacity = venue.Capacity,
-                MinimalPrice = venue.MinimalPrice,
-                IsActive = venue.IsActive
+                IsActive = venue.IsActive,
+                CompanyId = venue.CompanyId,
+                CompanyName = venue.Company?.Name
             };
         }
 
@@ -134,13 +178,13 @@ namespace Event.Application.Services
             if (venue == null)
                 throw new Exception("القاعة غير موجودة");
 
-           
             await _venueRepo.DeleteAsync(venue);
         }
 
         public async Task<List<VenueDto>> GetAllAsync()
         {
             var venues = await _venueRepo.GetAllAsync();
+
             return venues.Select(v => new VenueDto
             {
                 Id = v.Id,
@@ -149,19 +193,16 @@ namespace Event.Application.Services
                 City = v.City,
                 Address = v.Address,
                 Capacity = v.Capacity,
-                MinimalPrice = v.MinimalPrice,
                 IsActive = v.IsActive,
-                CompanyName = v.Company?.Name
+                CompanyName = v.Company?.Name,
+                CompanyId = v.CompanyId
             }).ToList();
-
-
         }
 
         public async Task<List<VenueDto>> GetVenuesForGuestAsync()
         {
             var venues = await _venueRepo.GetAllActiveAsync();
 
-            // convert data to Dto
             return venues.Select(v => new VenueDto
             {
                 Id = v.Id,
@@ -170,11 +211,9 @@ namespace Event.Application.Services
                 City = v.City,
                 Address = v.Address,
                 Capacity = v.Capacity,
-                MinimalPrice = v.MinimalPrice,
                 IsActive = v.IsActive,
                 CompanyName = v.Company?.Name ?? "N/A",
                 CompanyId = v.CompanyId
-                
             }).ToList();
         }
     }

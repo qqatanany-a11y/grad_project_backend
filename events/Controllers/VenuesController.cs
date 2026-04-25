@@ -20,24 +20,49 @@ namespace events.Controllers
         }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+        [HttpGet("venues")]
+        public async Task<IActionResult> GetVenues()
+=======
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
+>>>>>>> ef34a3bdcc7fd9a2a673f38430c111aaa29d3eec
+=======
 
         [HttpGet("venues")]
         [AllowAnonymous]
         public async Task<IActionResult> GetVenues()
+>>>>>>> origin/main
         {
 
             var venues = await _venueService.GetAllAsync();
             return Ok(venues);
         }
 
+<<<<<<< HEAD
+
+
+
+        [HttpPost]
+=======
   
         [HttpPost("venues")]
+>>>>>>> origin/main
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
+            var companyIdClaim = User.FindFirst("companyId");
+
+            if (companyIdClaim == null)
+                return Unauthorized("Owner company not found");
+
+            var companyId = int.Parse(companyIdClaim.Value);
 
             try
             {
-                var result = await _venueService.AddAsync(dto);
+                var result = await _venueService.AddAsync(companyId, dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -47,7 +72,7 @@ namespace events.Controllers
         }
 
 
-        [HttpPut("venues/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
 
@@ -62,7 +87,7 @@ namespace events.Controllers
             }
         }
 
-        [HttpDelete("venues/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
@@ -77,7 +102,7 @@ namespace events.Controllers
         }
 
         
-        [HttpGet("venues/{id}")]
+        [HttpGet("{id}")]
         [AllowAnonymous]
 
         public async Task<IActionResult> GetVenueById(int id)
