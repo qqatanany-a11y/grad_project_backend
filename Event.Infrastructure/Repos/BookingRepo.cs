@@ -31,6 +31,9 @@ namespace Event.Infrastructure.Repos
             return await _context.Bookings
                 .Where(b => b.UserId == userId)
                 .Include(b => b.Venue)
+                .Include(b => b.SelectedServices)
+                .ThenInclude(bs => bs.VenueServiceOption)
+                .ThenInclude(vso => vso.Service)
                 .ToListAsync();
         }
 
@@ -39,6 +42,9 @@ namespace Event.Infrastructure.Repos
             return await _context.Bookings
                 .Include(b => b.Venue)
                 .ThenInclude(v => v.Company)
+                .Include(b => b.SelectedServices)
+                .ThenInclude(bs => bs.VenueServiceOption)
+                .ThenInclude(vso => vso.Service)
                 .Where(b => b.Venue.Company.UserId == ownerId)
                 .ToListAsync();
         }

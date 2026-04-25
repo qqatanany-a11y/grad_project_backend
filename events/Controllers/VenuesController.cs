@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,6 @@ namespace events.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "Owner")]
-    // api -> OwnerController -> /api/venues ->  role owner or user
     public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
@@ -19,38 +18,24 @@ namespace events.Controllers
             _venueService = venueService;
         }
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-        [HttpGet("venues")]
-        public async Task<IActionResult> GetVenues()
-=======
         [HttpGet("all")]
         [AllowAnonymous]
         public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
->>>>>>> ef34a3bdcc7fd9a2a673f38430c111aaa29d3eec
-=======
+        {
+            var venues = await _venueService.GetVenuesForGuestAsync();
+            return Ok(venues);
+        }
 
         [HttpGet("venues")]
         [AllowAnonymous]
         public async Task<IActionResult> GetVenues()
->>>>>>> origin/main
         {
-
-            var venues = await _venueService.GetAllAsync();
+            var venues = await _venueService.GetVenuesForGuestAsync();
             return Ok(venues);
         }
 
-<<<<<<< HEAD
-
-
-
         [HttpPost]
-=======
-  
         [HttpPost("venues")]
->>>>>>> origin/main
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
             var companyIdClaim = User.FindFirst("companyId");
@@ -71,11 +56,10 @@ namespace events.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
+        [HttpPut("venues/{id}")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
-
             try
             {
                 var result = await _venueService.UpdateAsync(id, dto);
@@ -88,12 +72,13 @@ namespace events.Controllers
         }
 
         [HttpDelete("{id}")]
+        [HttpDelete("venues/{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
             {
                 await _venueService.DeleteAsync(id);
-                return Ok("VENUE DELETED SUCSSEFULLY");
+                return Ok("Venue deleted successfully");
             }
             catch (Exception ex)
             {
@@ -101,17 +86,14 @@ namespace events.Controllers
             }
         }
 
-        
         [HttpGet("{id}")]
+        [HttpGet("venues/{id}")]
         [AllowAnonymous]
-
         public async Task<IActionResult> GetVenueById(int id)
         {
             try
             {
                 var venue = await _venueService.GetByIdAsync(id);
-                if (venue == null)
-                    return NotFound("القاعة غير موجودة");
                 return Ok(venue);
             }
             catch (Exception ex)
@@ -132,7 +114,6 @@ namespace events.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpGet("VienuesByCompanyId/{CompanyId}")]

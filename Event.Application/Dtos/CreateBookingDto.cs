@@ -10,5 +10,7 @@
 
         public int? VenueAvailabilityId { get; set; }
         public List<int> VenueServiceOptionIds { get; set; } = new();
+        public string? BrideIdDocumentDataUrl { get; set; }
+        public string? BridegroomIdDocumentDataUrl { get; set; }
     }
 }

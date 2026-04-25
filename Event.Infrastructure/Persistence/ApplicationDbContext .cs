@@ -67,6 +67,13 @@ namespace events.Infrastructure.Persistence
                 new EventType { Id = 2, Name = "Engagement", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
                 new EventType { Id = 3, Name = "Wedding", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
             );
+
+            builder.Entity<Service>().HasData(
+                new { Id = 1, Name = "Catering", Description = "Food and beverage service", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new { Id = 2, Name = "Decoration", Description = "Decor and venue styling", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new { Id = 3, Name = "Photography", Description = "Photo coverage package", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new { Id = 4, Name = "DJ", Description = "Music and sound setup", CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc) }
+            );
         }
     }
 }

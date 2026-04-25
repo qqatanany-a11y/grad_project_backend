@@ -14,6 +14,17 @@ namespace Event.Application.Services
         private readonly IVenueServiceOptionRepo _venueServiceOptionRepo;
         private readonly IBookingSelectedServiceRepo _bookingSelectedServiceRepo;
         private readonly IEmailService _emailService;
+
+        private static List<SelectedServiceResponseDto> MapSelectedServices(Booking booking)
+        {
+            return booking.SelectedServices.Select(x => new SelectedServiceResponseDto
+            {
+                VenueServiceOptionId = x.VenueServiceOptionId,
+                ServiceName = x.VenueServiceOption?.Service?.Name ?? string.Empty,
+                Price = x.Price
+            }).ToList();
+        }
+
         public BookingService(
             IBookingRepo bookingRepo,
             IVenueRepo venueRepo,
@@ -51,6 +62,12 @@ namespace Event.Application.Services
 
             if (dto.GuestsCount > venue.Capacity)
                 throw new Exception("Guests count exceeds venue capacity.");
+
+            if (string.IsNullOrWhiteSpace(dto.BrideIdDocumentDataUrl) ||
+                string.IsNullOrWhiteSpace(dto.BridegroomIdDocumentDataUrl))
+            {
+                throw new Exception("Bride and bridegroom ID documents are required.");
+            }
 
             var bookingDateUtc = dto.Date.Kind == DateTimeKind.Utc
                 ? dto.Date
@@ -132,16 +149,18 @@ namespace Event.Application.Services
             totalPrice = basePrice + servicesPrice;
 
             var booking = new Booking(
-    dto.VenueId,
-    userId,
-    bookingDateUtc,
-    dto.StartTime,
-    dto.EndTime,
-    dto.GuestsCount,
-    basePrice,
-    servicesPrice,
-    totalPrice
-);
+                dto.VenueId,
+                userId,
+                bookingDateUtc,
+                dto.StartTime,
+                dto.EndTime,
+                dto.GuestsCount,
+                basePrice,
+                servicesPrice,
+                totalPrice,
+                dto.BrideIdDocumentDataUrl,
+                dto.BridegroomIdDocumentDataUrl
+            );
 
             await _bookingRepo.AddAsync(booking);
             await _bookingRepo.SaveChangesAsync();
@@ -190,8 +209,13 @@ namespace Event.Application.Services
                 VenueName = b.Venue.Name,
                 Date = b.BookingDate,
                 Time = $"{b.StartTime} - {b.EndTime}",
+                BasePrice = b.BasePrice,
+                ServicesPrice = b.ServicesPrice,
                 TotalPrice = b.TotalPrice,
-                Status = b.Status.ToString()
+                Status = b.Status.ToString(),
+                BrideIdDocumentDataUrl = b.BrideIdDocumentDataUrl,
+                BridegroomIdDocumentDataUrl = b.BridegroomIdDocumentDataUrl,
+                Services = MapSelectedServices(b)
             }).ToList();
 
 
@@ -207,8 +231,13 @@ namespace Event.Application.Services
                 VenueName = b.Venue.Name,
                 Date = b.BookingDate,
                 Time = $"{b.StartTime} - {b.EndTime}",
+                BasePrice = b.BasePrice,
+                ServicesPrice = b.ServicesPrice,
                 TotalPrice = b.TotalPrice,
-                Status = b.Status.ToString()
+                Status = b.Status.ToString(),
+                BrideIdDocumentDataUrl = b.BrideIdDocumentDataUrl,
+                BridegroomIdDocumentDataUrl = b.BridegroomIdDocumentDataUrl,
+                Services = MapSelectedServices(b)
             }).ToList();
         }
 

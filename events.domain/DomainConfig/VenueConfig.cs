@@ -32,6 +32,10 @@ namespace events.domain.DomainConfig
             builder.Property(v => v.IsActive)
                    .HasDefaultValue(true);
 
+            builder.Property(v => v.Category)
+                   .IsRequired()
+                   .HasConversion<string>();
+
             builder.Property(v => v.PricingType)
                    .IsRequired()
                    .HasConversion<string>();
