@@ -1,6 +1,5 @@
 using Event.Application.IServices;
 using Event.Application.Services;
-using Event.Application.Settings;
 using Event.Application.Validators;
 using Event.Infrastructure.Repos;
 using events.domain.Entities;
@@ -18,9 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.Configure<SmtpSettings>(
-    builder.Configuration.GetSection("SmtpSettings"));
 
 // ================= Repositories =================
 builder.Services.AddScoped<IUserRepo, UserRepo>();

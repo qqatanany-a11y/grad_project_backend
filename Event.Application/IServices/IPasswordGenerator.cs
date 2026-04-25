@@ -1,7 +1,14 @@
-﻿namespace Event.Application.IServices
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace Event.Application.IServices
 {
     public interface IPasswordGenerator
     {
-        string Generate(int length = 12);
+        string Generate(int v);
     }
-}
+ 
+
+
+            }
+        
