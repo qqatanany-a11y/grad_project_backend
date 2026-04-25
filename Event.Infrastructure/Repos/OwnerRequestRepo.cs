@@ -23,7 +23,9 @@ public class OwnerRequestRepo : IOwnerRequestRepo
 
     public async Task<List<OwnerRequest>> GetAllAsync()
     {
-        return await _context.OwnerRequests.ToListAsync();
+        return await _context.OwnerRequests
+            .OrderByDescending(request => request.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task UpdateAsync(OwnerRequest request)
