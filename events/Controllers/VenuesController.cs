@@ -34,32 +34,14 @@ namespace events.Controllers
         [HttpPost("venues")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
-
-            try
-            {
-                var result = await _venueService.AddAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest("Submit a venue request for admin approval.");
         }
 
 
         [HttpPut("venues/{id}")]
-        public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
+        public IActionResult UpdateVenue(int id, UpdateVenueDto dto)
         {
-
-            try
-            {
-                var result = await _venueService.UpdateAsync(id, dto);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest("Submit a venue edit request for admin approval.");
         }
 
         [HttpDelete("venues/{id}")]

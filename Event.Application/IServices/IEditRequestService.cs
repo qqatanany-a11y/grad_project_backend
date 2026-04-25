@@ -6,6 +6,7 @@ namespace Event.Application.IServices
     {
         Task CreateProfileEditRequestAsync(int ownerId, ProfileEditRequestDto dto);
         Task CreateVenueEditRequestAsync(int ownerId, int venueId, VenueEditRequestDto dto);
+        Task CreateVenueCreateRequestAsync(int ownerId, CreateVenueRequestDto dto);
 
         Task<List<EditRequestDto>> GetMyRequestsAsync(int ownerId);
         Task<List<EditRequestDto>> GetAllRequestsAsync();

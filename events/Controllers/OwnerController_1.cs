@@ -114,6 +114,26 @@ namespace events.Controllers
             }
         }
 
+        [HttpPost("edit-requests/venue-create")]
+        public async Task<IActionResult> CreateVenueCreateRequest(CreateVenueRequestDto dto)
+        {
+            var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (ownerIdClaim == null)
+                return Unauthorized("Owner not authenticated");
+
+            var ownerId = int.Parse(ownerIdClaim.Value);
+
+            try
+            {
+                await _editRequestService.CreateVenueCreateRequestAsync(ownerId, dto);
+                return Ok("Venue creation request submitted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("edit-requests/my")]
         public async Task<IActionResult> MyEditRequests()
         {

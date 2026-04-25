@@ -41,8 +41,8 @@ namespace Event.API.Controllers
         [HttpPost("owner-requests/{id}/approve")]
         public async Task<IActionResult> Approve(int id)
         {
-            await _adminService.ApproveOwnerAsync(id);
-            return Ok("Approved");
+            var result = await _adminService.ApproveOwnerAsync(id);
+            return Ok(result);
         }
 
         [HttpPost("owner-requests/{id}/reject")]

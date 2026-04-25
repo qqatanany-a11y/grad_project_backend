@@ -20,7 +20,9 @@ namespace Event.Application.Services
         public async Task<List<VenueDto>> GetByCompanyIdAsync(int companyId)
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
-            return venues.Select(v => new VenueDto
+            return venues
+                .Where(v => v.IsActive)
+                .Select(v => new VenueDto
             {
                 Id = v.Id,
                 Name = v.Name,
@@ -43,7 +45,9 @@ namespace Event.Application.Services
                 throw new Exception("المستخدم ليس مالك");
 
             var venues = await _venueRepo.GetByOwnerId(OwnerId);
-            return venues.Select(v => new VenueDto
+            return venues
+                .Where(v => v.IsActive)
+                .Select(v => new VenueDto
             {
                 Id = v.Id,
                 Name = v.Name,
