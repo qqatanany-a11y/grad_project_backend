@@ -61,6 +61,9 @@ namespace Event.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("RejectionReason")
+                        .HasColumnType("text");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
@@ -132,11 +135,16 @@ namespace Event.Infrastructure.Migrations
                     b.Property<int?>("AprovedById")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("BasePrice")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("interval");
@@ -147,11 +155,20 @@ namespace Event.Infrastructure.Migrations
                     b.Property<int?>("GuestsCount")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("ReminderSent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("ServicesPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("interval");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -174,6 +191,38 @@ namespace Event.Infrastructure.Migrations
                     b.HasIndex("VenueId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("events.domain.Entities.BookingSelectedService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("VenueServiceOptionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("VenueServiceOptionId");
+
+                    b.ToTable("BookingSelectedServices");
                 });
 
             modelBuilder.Entity("events.domain.Entities.EditRequest", b =>
@@ -354,6 +403,34 @@ namespace Event.Infrastructure.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("events.domain.Entities.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("events.domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -496,13 +573,17 @@ namespace Event.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
-                    b.Property<decimal>("MinimalPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
+
+                    b.Property<decimal?>("PricePerHour")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PricingType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -522,24 +603,27 @@ namespace Event.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("interval");
+
+                    b.Property<bool>("IsBooked")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("interval");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -548,8 +632,6 @@ namespace Event.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("VenueId");
 
@@ -619,6 +701,44 @@ namespace Event.Infrastructure.Migrations
                     b.ToTable("VenueImages");
                 });
 
+            modelBuilder.Entity("events.domain.Entities.VenueServiceOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("VenueId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("VenueId", "ServiceId")
+                        .IsUnique();
+
+                    b.ToTable("VenueServiceOptions");
+                });
+
             modelBuilder.Entity("events.domain.Entites.Company", b =>
                 {
                     b.HasOne("events.domain.Entities.User", "User")
@@ -654,6 +774,25 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Venue");
+                });
+
+            modelBuilder.Entity("events.domain.Entities.BookingSelectedService", b =>
+                {
+                    b.HasOne("events.domain.Entities.Booking", "Booking")
+                        .WithMany("SelectedServices")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("events.domain.Entities.VenueServiceOption", "VenueServiceOption")
+                        .WithMany()
+                        .HasForeignKey("VenueServiceOptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("VenueServiceOption");
                 });
 
             modelBuilder.Entity("events.domain.Entities.EditRequest", b =>
@@ -721,7 +860,7 @@ namespace Event.Infrastructure.Migrations
                     b.HasOne("events.domain.Entites.Company", "Company")
                         .WithMany("Venues")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -729,19 +868,11 @@ namespace Event.Infrastructure.Migrations
 
             modelBuilder.Entity("events.domain.Entities.VenueAvailability", b =>
                 {
-                    b.HasOne("events.domain.Entites.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("events.domain.Entities.Venue", "Venue")
                         .WithMany("Availabilities")
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
 
                     b.Navigation("Venue");
                 });
@@ -784,6 +915,25 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Venue");
                 });
 
+            modelBuilder.Entity("events.domain.Entities.VenueServiceOption", b =>
+                {
+                    b.HasOne("events.domain.Entities.Service", "Service")
+                        .WithMany("VenueServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("events.domain.Entities.Venue", "Venue")
+                        .WithMany("VenueServices")
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("Venue");
+                });
+
             modelBuilder.Entity("events.domain.Entites.Company", b =>
                 {
                     b.Navigation("Venues");
@@ -794,11 +944,18 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Payment");
 
                     b.Navigation("Review");
+
+                    b.Navigation("SelectedServices");
                 });
 
             modelBuilder.Entity("events.domain.Entities.EventType", b =>
                 {
                     b.Navigation("VenueEventTypes");
+                });
+
+            modelBuilder.Entity("events.domain.Entities.Service", b =>
+                {
+                    b.Navigation("VenueServices");
                 });
 
             modelBuilder.Entity("events.domain.Entities.User", b =>
@@ -821,6 +978,8 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("VenueEventTypes");
+
+                    b.Navigation("VenueServices");
                 });
 #pragma warning restore 612, 618
         }

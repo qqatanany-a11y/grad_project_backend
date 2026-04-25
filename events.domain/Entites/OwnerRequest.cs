@@ -15,6 +15,8 @@ public class OwnerRequest : BaseEntity
 
     public string Status { get; private set; } = "Pending";
 
+    public string? RejectionReason { get; private set; }
+
     private OwnerRequest() { }
 
     public OwnerRequest(string email, string phone, string firstName, string lastName,
@@ -31,5 +33,9 @@ public class OwnerRequest : BaseEntity
     }
 
     public void Approve() => Status = "Approved";
-    public void Reject() => Status = "Rejected";
+    public void Reject(string reason)
+    {
+        Status = "Rejected";
+        RejectionReason = reason;
+    }
 }

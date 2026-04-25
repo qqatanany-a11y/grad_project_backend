@@ -20,31 +20,74 @@ namespace events.Controllers
         }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+        [HttpGet("venues")]
+        public async Task<IActionResult> GetVenues()
+=======
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
+>>>>>>> ef34a3bdcc7fd9a2a673f38430c111aaa29d3eec
+=======
 
         [HttpGet("venues")]
         [AllowAnonymous]
         public async Task<IActionResult> GetVenues()
+>>>>>>> origin/main
         {
 
             var venues = await _venueService.GetAllAsync();
             return Ok(venues);
         }
 
+<<<<<<< HEAD
+
+
+
+        [HttpPost]
+=======
   
         [HttpPost("venues")]
+>>>>>>> origin/main
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
-            return BadRequest("Submit a venue request for admin approval.");
+            var companyIdClaim = User.FindFirst("companyId");
+
+            if (companyIdClaim == null)
+                return Unauthorized("Owner company not found");
+
+            var companyId = int.Parse(companyIdClaim.Value);
+
+            try
+            {
+                var result = await _venueService.AddAsync(companyId, dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
-        [HttpPut("venues/{id}")]
-        public IActionResult UpdateVenue(int id, UpdateVenueDto dto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
-            return BadRequest("Submit a venue edit request for admin approval.");
+
+            try
+            {
+                var result = await _venueService.UpdateAsync(id, dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpDelete("venues/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
@@ -59,7 +102,7 @@ namespace events.Controllers
         }
 
         
-        [HttpGet("venues/{id}")]
+        [HttpGet("{id}")]
         [AllowAnonymous]
 
         public async Task<IActionResult> GetVenueById(int id)

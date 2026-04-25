@@ -1,11 +1,22 @@
-﻿bin/
-obj/
+# Visual Studio
 .vs/
 *.user
 *.suo
+
+# Build folders
+bin/
+obj/
+
+# Files
 *.cache
 *.dll
 *.pdb
 *.exe
-*.log
-/.vs
+*.logbin/
+obj/
+.vs/
+*.dll
+*.pdb
+*.exe
+*.cache
+*.deps.json

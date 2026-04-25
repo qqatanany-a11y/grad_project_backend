@@ -44,12 +44,18 @@ namespace Event.API.Controllers
             var result = await _adminService.ApproveOwnerAsync(id);
             return Ok(result);
         }
-
         [HttpPost("owner-requests/{id}/reject")]
-        public async Task<IActionResult> Reject(int id)
+        public async Task<IActionResult> Reject(int id, [FromBody] RejectEditRequestDto dto)
         {
-            await _adminService.RejectOwnerAsync(id);
-            return Ok("Rejected");
+            try
+            {
+                await _adminService.RejectOwnerAsync(id, dto.Reason);
+                return Ok("Rejected successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // ================= USERS =================
