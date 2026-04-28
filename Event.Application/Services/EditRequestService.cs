@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
@@ -59,6 +59,8 @@ namespace Event.Application.Services
             if (venue.Company.UserId != ownerId)
                 throw new Exception("Not allowed");
 
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
             var requestData = new VenueEditRequestDataDto
             {
                 VenueId = venue.Id,
@@ -73,7 +75,8 @@ namespace Event.Application.Services
                     IsActive = venue.IsActive,
                     Category = venue.Category,
                     PricingType = venue.PricingType,
-                    PricePerHour = venue.PricePerHour
+                    PricePerHour = venue.PricePerHour,
+                    TimeSlots = VenueSlotSupport.MapEditableSlots(venue.TimeSlots)
                 },
                 Requested = dto
             };
@@ -101,6 +104,8 @@ namespace Event.Application.Services
             if (company == null)
                 throw new Exception("Company not found for this owner");
 
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
             var requestData = new VenueCreateRequestDataDto
             {
                 Name = dto.Name,
@@ -111,6 +116,7 @@ namespace Event.Application.Services
                 Category = dto.Category,
                 PricingType = dto.PricingType,
                 PricePerHour = dto.PricePerHour,
+                TimeSlots = dto.TimeSlots,
                 CompanyName = company.Name
             };
 
@@ -210,19 +216,25 @@ namespace Event.Application.Services
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
+                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
+                venue.Update(
+                    dto.Name,
+                    dto.Description,
+                    dto.City,
+                    dto.Address,
+                    dto.Capacity,
+                    dto.IsActive,
+                    dto.Category,
+                    dto.PricingType,
+                    dto.PricePerHour
+                );
 
-                 venue.Update(
-                     dto.Name,
-                     dto.Description,
-                     dto.City,
-                     dto.Address,
-                     dto.Capacity,
-                     dto.IsActive,
-                     dto.Category,
-                     dto.PricingType,
-                     dto.PricePerHour
-                 );
+                if (dto.TimeSlots != null)
+                {
+                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+                }
+
                 await _venueRepo.UpdateAsync(venue);
             }
             else if (request.Type == EditRequestTypeEnum.VenueCreate)
@@ -235,6 +247,8 @@ namespace Event.Application.Services
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
+                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
                 var venue = new Venue(
                     dto.Name,
                     dto.Description,
@@ -246,6 +260,11 @@ namespace Event.Application.Services
                     dto.PricingType,
                     dto.PricePerHour
                 );
+
+                if (dto.TimeSlots != null)
+                {
+                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+                }
 
                 await _venueRepo.AddAsync(venue);
             }

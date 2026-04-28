@@ -40,7 +40,7 @@ namespace events.domain.Entities
             DateTime bookingDate,
             TimeSpan startTime,
             TimeSpan endTime,
-            int guestsCount,
+            int? guestsCount,
             decimal basePrice,
             decimal servicesPrice,
             decimal totalPrice,
@@ -62,7 +62,7 @@ namespace events.domain.Entities
             ReminderSent = false;
         }
 
-        public Booking(int venueId, int userId, DateTime bookingDateUtc, TimeSpan startTime, TimeSpan endTime, int guestsCount, decimal totalPrice)
+        public Booking(int venueId, int userId, DateTime bookingDateUtc, TimeSpan startTime, TimeSpan endTime, int? guestsCount, decimal totalPrice)
         {
             VenueId = venueId;
             UserId = userId;

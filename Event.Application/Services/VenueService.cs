@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
@@ -10,7 +10,7 @@ namespace Event.Application.Services
         private readonly IVenueRepo _venueRepo;
         private readonly IUserRepo _userRepo;
 
-        private static VenueDto MapVenue(Venue venue)
+        private static VenueDto MapVenue(Venue venue, bool activeSlotsOnly = false)
         {
             return new VenueDto
             {
@@ -25,7 +25,8 @@ namespace Event.Application.Services
                 CompanyId = venue.CompanyId,
                 Category = venue.Category,
                 PricingType = venue.PricingType,
-                PricePerHour = venue.PricePerHour
+                PricePerHour = venue.PricePerHour,
+                TimeSlots = VenueSlotSupport.MapSlots(venue.TimeSlots, activeSlotsOnly)
             };
         }
 
@@ -39,7 +40,7 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
 
-            return venues.Select(MapVenue).ToList();
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
@@ -54,7 +55,7 @@ namespace Event.Application.Services
 
             var venues = await _venueRepo.GetByOwnerId(ownerId);
 
-            return venues.Select(MapVenue).ToList();
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
@@ -62,15 +63,13 @@ namespace Event.Application.Services
             if (dto.ImageUrls == null || dto.ImageUrls.Count < 10)
                 throw new Exception("You must upload at least 10 images.");
 
-            if (dto.PricingType == PricingType.Hourly)
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            if (dto.PricingType != PricingType.Hourly && (dto.TimeSlots == null || dto.TimeSlots.Count == 0))
             {
-                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
-                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+                dto.PricePerHour = null;
             }
-            else
-            {
-                dto.PricePerHour = null; 
-            }
+
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
@@ -85,6 +84,11 @@ namespace Event.Application.Services
 
             venue.AddImages(dto.ImageUrls);
 
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
+
             await _venueRepo.AddAsync(venue);
 
             return MapVenue(venue);
@@ -97,12 +101,9 @@ namespace Event.Application.Services
             if (venue == null)
                 throw new Exception("القاعة غير موجودة");
 
-            if (dto.PricingType == PricingType.Hourly)
-            {
-                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
-                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
-            }
-            else
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            if (dto.PricingType != PricingType.Hourly && (dto.TimeSlots == null || dto.TimeSlots.Count == 0))
             {
                 dto.PricePerHour = null;
             }
@@ -118,6 +119,11 @@ namespace Event.Application.Services
                  dto.PricingType,
                  dto.PricePerHour
                 );
+
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
 
             await _venueRepo.UpdateAsync(venue);
 
@@ -147,14 +153,14 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetAllAsync();
 
-            return venues.Select(MapVenue).ToList();
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<List<VenueDto>> GetVenuesForGuestAsync()
         {
             var venues = await _venueRepo.GetAllActiveAsync();
 
-            return venues.Select(MapVenue).ToList();
+            return venues.Select(venue => MapVenue(venue, true)).ToList();
         }
     }
 }

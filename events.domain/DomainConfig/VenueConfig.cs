@@ -64,6 +64,11 @@ namespace events.domain.DomainConfig
                    .HasForeignKey(a => a.VenueId)
                    .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(v => v.TimeSlots)
+                   .WithOne(slot => slot.Venue)
+                   .HasForeignKey(slot => slot.VenueId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasMany(v => v.Bookings)
                    .WithOne(b => b.Venue)
                    .HasForeignKey(b => b.VenueId)
