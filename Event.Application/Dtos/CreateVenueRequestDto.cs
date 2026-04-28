@@ -10,5 +10,6 @@ namespace Event.Application.Dtos
         public VenueCategory Category { get; set; }
         public PricingType PricingType { get; set; }
         public decimal? PricePerHour { get; set; }
+        public List<VenueTimeSlotUpsertDto>? TimeSlots { get; set; }
     }
 }

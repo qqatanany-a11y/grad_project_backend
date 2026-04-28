@@ -21,6 +21,7 @@ namespace events.domain.Entities
         public List<VenueImage> Images { get; private set; } = new();
         public List<VenueEventType> VenueEventTypes { get; private set; } = new();
         public List<VenueAvailability> Availabilities { get; private set; } = new();
+        public List<VenueTimeSlot> TimeSlots { get; private set; } = new();
         public List<Booking> Bookings { get; private set; } = new();
         public List<Review> Reviews { get; private set; } = new();
         public List<VenueServiceOption> VenueServices { get; private set; } = new();
