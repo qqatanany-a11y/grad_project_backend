@@ -1,4 +1,6 @@
-﻿namespace Event.Application.Dtos
+﻿using events.domain.Entities;
+
+namespace Event.Application.Dtos
 {
     public class AddVenueDto
     {
@@ -7,8 +9,14 @@
         public string City { get; set; }
         public string Address { get; set; }
         public int Capacity { get; set; }
+
+        public VenueType Type { get; set; }
+
         public PricingType PricingType { get; set; }
         public decimal? PricePerHour { get; set; }
+
+        public decimal DepositPercentage { get; set; }
+
         public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

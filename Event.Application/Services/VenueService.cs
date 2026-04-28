@@ -20,18 +20,7 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(v => MapToDto(v)).ToList();
         }
 
         public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
@@ -46,34 +35,19 @@ namespace Event.Application.Services
 
             var venues = await _venueRepo.GetByOwnerId(ownerId);
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(v => MapToDto(v)).ToList();
         }
 
         public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
         {
+            ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
+
             if (dto.ImageUrls == null || dto.ImageUrls.Count < 10)
                 throw new Exception("You must upload at least 10 images.");
 
-            if (dto.PricingType == PricingType.Hourly)
-            {
-                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
-                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
-            }
-            else
-            {
-                dto.PricePerHour = null; 
-            }
+            if (dto.PricingType != PricingType.Hourly)
+                dto.PricePerHour = null;
+
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
@@ -81,25 +55,17 @@ namespace Event.Application.Services
                 dto.Address,
                 dto.Capacity,
                 companyId,
+                dto.Type,
                 dto.PricingType,
-                dto.PricePerHour
+                dto.PricePerHour,
+                dto.DepositPercentage
             );
 
             venue.AddImages(dto.ImageUrls);
 
             await _venueRepo.AddAsync(venue);
 
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId
-            };
+            return MapToDto(venue);
         }
 
         public async Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto)
@@ -107,43 +73,29 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue is not exist");
 
-            if (dto.PricingType == PricingType.Hourly)
-            {
-                if (!dto.PricePerHour.HasValue || dto.PricePerHour <= 0)
-                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
-            }
-            else
-            {
+            ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
+
+            if (dto.PricingType != PricingType.Hourly)
                 dto.PricePerHour = null;
-            }
 
             venue.Update(
-                 dto.Name,
-                 dto.Description,
-                 dto.City,
-                 dto.Address,
-                 dto.Capacity,
-                 dto.IsActive,
-                 dto.PricingType,
-                 dto.PricePerHour
-                );
+                dto.Name,
+                dto.Description,
+                dto.City,
+                dto.Address,
+                dto.Capacity,
+                dto.IsActive,
+                dto.Type,
+                dto.PricingType,
+                dto.PricePerHour,
+                dto.DepositPercentage
+            );
 
             await _venueRepo.UpdateAsync(venue);
 
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId,
-                CompanyName = venue.Company?.Name
-            };
+            return MapToDto(venue);
         }
 
         public async Task<VenueDto> GetByIdAsync(int venueId)
@@ -151,24 +103,9 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-<<<<<<< HEAD
                 throw new Exception("venue not exist");
 
-=======
-                throw new Exception("القاعة غير موجودة");
->>>>>>> qusay/main
-            return new VenueDto
-            {
-                Id = venue.Id,
-                Name = venue.Name,
-                Description = venue.Description,
-                City = venue.City,
-                Address = venue.Address,
-                Capacity = venue.Capacity,
-                IsActive = venue.IsActive,
-                CompanyId = venue.CompanyId,
-                CompanyName = venue.Company?.Name
-            };
+            return MapToDto(venue);
         }
 
         public async Task DeleteAsync(int venueId)
@@ -176,7 +113,7 @@ namespace Event.Application.Services
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("القاعة غير موجودة");
+                throw new Exception("venue is not exist");
 
             await _venueRepo.DeleteAsync(venue);
         }
@@ -185,36 +122,49 @@ namespace Event.Application.Services
         {
             var venues = await _venueRepo.GetAllAsync();
 
-            return venues.Select(v => new VenueDto
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name,
-                CompanyId = v.CompanyId
-            }).ToList();
+            return venues.Select(v => MapToDto(v)).ToList();
         }
 
         public async Task<List<VenueDto>> GetVenuesForGuestAsync()
         {
             var venues = await _venueRepo.GetAllActiveAsync();
 
-            return venues.Select(v => new VenueDto
+            return venues.Select(v => MapToDto(v)).ToList();
+        }
+
+        private static void ValidateVenue(
+            PricingType pricingType,
+            decimal? pricePerHour,
+            decimal depositPercentage)
+        {
+            if (pricingType == PricingType.Hourly)
             {
-                Id = v.Id,
-                Name = v.Name,
-                Description = v.Description,
-                City = v.City,
-                Address = v.Address,
-                Capacity = v.Capacity,
-                IsActive = v.IsActive,
-                CompanyName = v.Company?.Name ?? "N/A",
-                CompanyId = v.CompanyId
-            }).ToList();
+                if (!pricePerHour.HasValue || pricePerHour <= 0)
+                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
+            }
+
+            if (depositPercentage <= 0 || depositPercentage > 100)
+                throw new Exception("Deposit percentage must be between 1 and 100.");
+        }
+
+        private static VenueDto MapToDto(Venue venue)
+        {
+            return new VenueDto
+            {
+                Id = venue.Id,
+                Name = venue.Name,
+                Description = venue.Description,
+                City = venue.City,
+                Address = venue.Address,
+                Capacity = venue.Capacity,
+                IsActive = venue.IsActive,
+                CompanyName = venue.Company?.Name ?? "N/A",
+                CompanyId = venue.CompanyId,
+                Type = venue.Type,
+                PricingType = venue.PricingType,
+                PricePerHour = venue.PricePerHour,
+                DepositPercentage = venue.DepositPercentage
+            };
         }
     }
 }

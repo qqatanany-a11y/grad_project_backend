@@ -11,6 +11,10 @@ namespace events.domain.Entities
         public int Capacity { get; private set; }
         public bool IsActive { get; private set; } = true;
 
+        public VenueType Type { get; private set; }
+
+        public decimal DepositPercentage { get; private set; }
+
         public int CompanyId { get; private set; }
         public Company Company { get; private set; } = null!;
 
@@ -33,8 +37,10 @@ namespace events.domain.Entities
             string address,
             int capacity,
             int companyId,
+            VenueType type,
             PricingType pricingType,
-            decimal? pricePerHour)
+            decimal? pricePerHour,
+            decimal depositPercentage)
         {
             Name = name;
             Description = description;
@@ -42,8 +48,10 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             CompanyId = companyId;
+            Type = type;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
+            DepositPercentage = depositPercentage;
             IsActive = true;
         }
 
@@ -54,8 +62,10 @@ namespace events.domain.Entities
             string address,
             int capacity,
             bool isActive,
+            VenueType type,
             PricingType pricingType,
-            decimal? pricePerHour)
+            decimal? pricePerHour,
+            decimal depositPercentage)
         {
             Name = name;
             Description = description;
@@ -63,8 +73,10 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             IsActive = isActive;
+            Type = type;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
+            DepositPercentage = depositPercentage;
             UpdatedAt = DateTime.UtcNow;
         }
 

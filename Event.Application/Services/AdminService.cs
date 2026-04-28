@@ -63,15 +63,18 @@ namespace Event.Application.Services
 
             await _companyRepo.AddAsync(company);
 
-            var venue = new Venue(
+                 var venue = new Venue(
                 request.VenueName,
-                "Pending description",
-                "Amman",
+                "Initial venue description",
+                request.BusinessAddress,
                 request.BusinessAddress,
                 100,
-                0,
-                company.Id
-            );
+                company.Id,
+                VenueType.Hall,
+                PricingType.FixedSlots,
+                null,
+                20
+                );
 
             await _venueRepo.AddAsync(venue);
 

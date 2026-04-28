@@ -145,16 +145,18 @@ namespace Event.Application.Services
 
 
 
-                 venue.Update(
-                     dto.Name,
-                     dto.Description,
-                     dto.City,
-                     dto.Address,
-                     dto.Capacity,
-                     dto.IsActive,
-                     dto.PricingType,
-                     dto.PricePerHour
-                 );
+                venue.Update(
+                dto.Name,
+                dto.Description,
+                dto.City,
+                dto.Address,
+                dto.Capacity,
+                dto.IsActive,
+                venue.Type,
+                venue.PricingType,
+                venue.PricePerHour,
+                venue.DepositPercentage
+            );
                 await _venueRepo.UpdateAsync(venue);
             }
 

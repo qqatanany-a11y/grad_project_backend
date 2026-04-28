@@ -31,6 +31,7 @@ builder.Services.AddScoped<IServiceRepo, ServiceRepo>();
 builder.Services.AddScoped<IVenueServiceOptionRepo, VenueServiceOptionRepo>();
 builder.Services.AddScoped<IBookingSelectedServiceRepo, BookingSelectedServiceRepo>();
 builder.Services.AddScoped<IVenueAvailabilityRepo, VenueAvailabilityRepo>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
 
 // ================= Services =================
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -44,6 +45,7 @@ builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 builder.Services.AddScoped<IVenueServiceOptionService, VenueServiceOptionService>();
 builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>();
 builder.Services.AddHostedService<BookingReminderBackgroundService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -99,7 +101,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    if (!context.Users.Any())
+    if (!await context.Users.AnyAsync())
     {
         var user = new User(
             "admin@gmail.com",
