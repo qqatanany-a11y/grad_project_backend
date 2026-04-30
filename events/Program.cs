@@ -7,9 +7,14 @@ using events.domain.Repos;
 using events.Infrastructure.Persistence;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text;
+using System.Threading.RateLimiting;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,6 +68,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
         };
     });
+
+/////////////////////////////// Rate Limiting for Login ///////////////////////////////
+builder.Services.AddRateLimiter(options =>
+{
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsync("Too many login attempts. Try again later.");
+    };
+
+    options.AddPolicy("Login", context =>
+    {
+        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        return RateLimitPartition.GetFixedWindowLimiter(ip, _ =>
+            new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromSeconds(60)
+            });
+    });
+});
 
 // ================= Core =================
 builder.Services.AddAuthorization();
@@ -126,6 +153,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
