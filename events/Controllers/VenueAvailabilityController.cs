@@ -26,7 +26,8 @@ namespace events.Controllers
             if (ownerIdClaim == null)
                 return Unauthorized("Owner not authenticated");
 
-            var ownerId = int.Parse(ownerIdClaim.Value);
+            if (!int.TryParse(ownerIdClaim.Value, out int ownerId))
+                return Unauthorized("Invalid owner id");
 
             try
             {
@@ -48,7 +49,8 @@ namespace events.Controllers
             if (ownerIdClaim == null)
                 return Unauthorized("Owner not authenticated");
 
-            var ownerId = int.Parse(ownerIdClaim.Value);
+            if (!int.TryParse(ownerIdClaim.Value, out int ownerId))
+                return Unauthorized("Invalid owner id");
 
             try
             {

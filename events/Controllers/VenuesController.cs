@@ -58,9 +58,16 @@ namespace events.Controllers
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
+            var ownerIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+            if (ownerIdClaim == null)
+                return Unauthorized("Owner not authenticated");
+
+            var ownerId = int.Parse(ownerIdClaim.Value);
+
             try
             {
-                var result = await _venueService.UpdateAsync(id, dto);
+                var result = await _venueService.UpdateAsync(ownerId, id, dto);
                 return Ok(result);
             }
             catch (Exception ex)

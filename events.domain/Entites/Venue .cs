@@ -11,6 +11,10 @@ namespace events.domain.Entities
         public int Capacity { get; private set; }
         public bool IsActive { get; private set; } = true;
 
+        public string? FacebookUrl { get; private set; }
+        public string? InstagramUrl { get; private set; }
+        public string? WebsiteUrl { get; private set; }
+
         public VenueType Type { get; private set; }
 
         public decimal DepositPercentage { get; private set; }
@@ -40,7 +44,11 @@ namespace events.domain.Entities
             VenueType type,
             PricingType pricingType,
             decimal? pricePerHour,
-            decimal depositPercentage)
+            decimal depositPercentage,
+            string? facebookUrl,
+            string? instagramUrl,
+            string? websiteUrl
+            )
         {
             Name = name;
             Description = description;
@@ -53,6 +61,9 @@ namespace events.domain.Entities
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             DepositPercentage = depositPercentage;
             IsActive = true;
+            FacebookUrl = facebookUrl;
+            InstagramUrl = instagramUrl;
+            WebsiteUrl = websiteUrl;
         }
 
         public void Update(
@@ -65,7 +76,11 @@ namespace events.domain.Entities
             VenueType type,
             PricingType pricingType,
             decimal? pricePerHour,
-            decimal depositPercentage)
+            decimal depositPercentage,
+            string? facebookUrl,
+            string? instagramUrl,
+            string? websiteUrl
+            )
         {
             Name = name;
             Description = description;
@@ -77,6 +92,10 @@ namespace events.domain.Entities
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             DepositPercentage = depositPercentage;
+            FacebookUrl = facebookUrl;
+            InstagramUrl = instagramUrl;
+            WebsiteUrl = websiteUrl;
+
             UpdatedAt = DateTime.UtcNow;
         }
 

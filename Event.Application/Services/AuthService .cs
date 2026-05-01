@@ -23,6 +23,7 @@ namespace Event.Application.Services
         private readonly IValidator<LoginDto> _loginValidator;
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly IEmailService _emailService;
+        private readonly IOwnerRequestRepo _ownerRequestRepo;
 
         public AuthService(
             IUserRepo userRepo,
@@ -32,7 +33,8 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
             IValidator<RegisterOwnerDto> registerOwnerValidator,
             IValidator<LoginDto> loginValidator,
             IPasswordGenerator passwordGenerator,
-            IEmailService emailService
+            IEmailService emailService,
+    IOwnerRequestRepo ownerRequestRepo
         )
         {
             _userRepo = userRepo;
@@ -166,52 +168,40 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
             if (existing != null)
                 throw new Exception("Email already exists");
 
-            var role = await _roleRepo.GetRoleByNameAsync("Owner");
-            if (role == null)
-                throw new Exception("Role 'Owner' not found");
-
-            string rawPassword = _passwordGenerator.Generate(12);
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(rawPassword);
-
-            var user = new User(
+            var request = new OwnerRequest(
                 dto.Email,
-                passwordHash,
                 dto.PhoneNumber,
                 dto.FirstName,
                 dto.LastName,
-                role.Id
+                dto.CompanyName,
+                dto.BusinessAddress,
+                dto.BusinessPhone,
+                dto.VenueName
             );
 
-            await _userRepo.AddUserAsync(user);
+            await _ownerRequestRepo.AddAsync(request);
 
-            var company = new Company(
-                name: dto.CompanyName,
-                location: dto.BusinessAddress,
-                phoneNumber: dto.BusinessPhone,
-                email: dto.Email,
-                userId: user.Id
+            await _emailService.SendEmailAsync(
+                request.Email,
+                "Request Received",
+                $@"
+        <p>Dear {request.FirstName},</p>
+
+        <p>Your request to register as an owner has been received successfully.</p>
+
+        <p>We will review your request within <strong>24-48 hours</strong>.</p>
+
+        <p>Best regards,<br/>Events Team</p>
+        "
             );
-
-            await _companyRepo.AddCompanyAsync(company);
-
-            string emailSubject = "بيانات الدخول لحسابك الجديد";
-            string emailBody =
-                $"مرحباً {user.FullName},\n\n" +
-                $"تم إنشاء حساب المالك بنجاح.\n\n" +
-                $"كلمة المرور: {rawPassword}\n\n" +
-                $"يرجى تغييرها بعد تسجيل الدخول.";
-
-            await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
-
-            var token = GenerateJwtToken(user, role.Name, company.Id);
 
             return new AuthResponseDto
             {
-                Token = token,
-                FullName = user.FullName,
-                Email = user.Email,
-                Role = role.Name,
-                CompanyId = company.Id
+                Token = null,
+                FullName = dto.FirstName + " " + dto.LastName,
+                Email = dto.Email,
+                Role = "PendingOwner",
+                CompanyId = null
             };
         }
 

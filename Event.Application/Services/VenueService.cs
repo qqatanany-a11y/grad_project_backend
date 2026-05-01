@@ -1,19 +1,23 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
+using Event.Infrastructure.Repos;
 using events.domain.Entities;
 using events.domain.Repos;
-
+using System.Text.Json;
 namespace Event.Application.Services
 {
     public class VenueService : IVenueService
     {
         private readonly IVenueRepo _venueRepo;
         private readonly IUserRepo _userRepo;
-
+        private readonly IEmailService _emailService;
+        private readonly IEditRequestRepo _editRequestRepo;
         public VenueService(IVenueRepo venueRepo, IUserRepo userRepo)
         {
             _venueRepo = venueRepo;
             _userRepo = userRepo;
+            IEmailService emailService;
+            _editRequestRepo = _editRequestRepo;
         }
 
         public async Task<List<VenueDto>> GetByCompanyIdAsync(int companyId)
@@ -28,7 +32,9 @@ namespace Event.Application.Services
             var user = await _userRepo.GetUserByIdAsync(ownerId);
 
             if (user == null)
+            {
                 throw new Exception("user not found");
+            }
 
             if (user.Role.Name != "Owner")
                 throw new Exception("You do not have permission to access this resource.");
@@ -58,44 +64,82 @@ namespace Event.Application.Services
                 dto.Type,
                 dto.PricingType,
                 dto.PricePerHour,
-                dto.DepositPercentage
+                dto.DepositPercentage,
+                dto.FacebookUrl,
+    dto.InstagramUrl,
+    dto.WebsiteUrl
             );
 
             venue.AddImages(dto.ImageUrls);
 
             await _venueRepo.AddAsync(venue);
 
+            var owner = await _userRepo.GetUserByIdAsync(venue.Company.UserId);
+
+            await _emailService.SendEmailAsync(
+                owner.Email,
+                "Venue Submitted",
+                $@"
+    <p>Dear {owner.FirstName},</p>
+
+    <p>Your venue has been submitted successfully.</p>
+
+    <p>Our team will conduct a field inspection visit to verify your venue.</p>
+
+    <p>Best regards,<br/>Events Team</p>
+    "
+            );
+
             return MapToDto(venue);
         }
 
-        public async Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto)
+        public async Task<string> UpdateAsync(int ownerId, int venueId, UpdateVenueDto dto)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
 
             if (venue == null)
-                throw new Exception("venue is not exist");
+                throw new Exception("Venue not found");
+
+            
+            if (venue.Company.UserId != ownerId)
+                throw new Exception("Not allowed");
 
             ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
 
             if (dto.PricingType != PricingType.Hourly)
                 dto.PricePerHour = null;
 
-            venue.Update(
-                dto.Name,
-                dto.Description,
-                dto.City,
-                dto.Address,
-                dto.Capacity,
-                dto.IsActive,
-                dto.Type,
-                dto.PricingType,
-                dto.PricePerHour,
-                dto.DepositPercentage
+            var jsonData = JsonSerializer.Serialize(dto);
+
+            var editRequest = new EditRequest(
+                ownerId,
+                EditRequestTypeEnum.VenueUpdate,
+                venueId,
+                jsonData
             );
 
-            await _venueRepo.UpdateAsync(venue);
+            await _editRequestRepo.AddAsync(editRequest);
 
-            return MapToDto(venue);
+            var owner = await _userRepo.GetUserByIdAsync(ownerId);
+
+            if (owner == null)
+                throw new Exception("Owner not found");
+
+            await _emailService.SendEmailAsync(
+                owner.Email,
+                "Update Request Received",
+                $@"
+        <p>Dear {owner.FirstName},</p>
+
+        <p>Your venue update request has been received successfully.</p>
+
+        <p>We will review your request within <strong>24-48 hours</strong>.</p>
+
+        <p>Best regards,<br/>Events Team</p>
+        "
+            );
+
+            return "Your update request has been sent for review.";
         }
 
         public async Task<VenueDto> GetByIdAsync(int venueId)

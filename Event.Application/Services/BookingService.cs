@@ -101,6 +101,19 @@ namespace Event.Application.Services
                 if (slot.IsBooked)
                     throw new Exception("This slot is already booked");
 
+                var existingBooking = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
+
+                if (existingBooking.Any(b =>
+                    b.StartTime == dto.StartTime &&
+                    b.EndTime == dto.EndTime))
+                {
+                    throw new Exception("This slot has just been booked.");
+                }
+
+                basePrice = slot.Price;
+                slot.MarkAsBooked();
+
+
                 basePrice = slot.Price;
                 slot.MarkAsBooked();
             }
@@ -155,6 +168,22 @@ namespace Event.Application.Services
             {
                 await _venueAvailabilityRepo.SaveChangesAsync();
             }
+
+            var user = await _userRepo.GetUserByIdAsync(userId);
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "Booking Request Received",
+                $@"
+    <p>Dear {user.FirstName},</p>
+
+    <p>Your booking request has been received successfully.</p>
+
+    <p>We will review your request within <strong>24-48 hours</strong>.</p>
+
+    <p>Best regards,<br/>Events Team</p>
+    "
+            );
 
             return new CreateBookingResponseDto
             {
@@ -227,7 +256,7 @@ namespace Event.Application.Services
 
             await _emailService.SendEmailAsync(
                 booking.User.Email,
-                "Booking Approved",
+                "Your booking has been successfully confirmed 🎉",
                 $@"
                 <h2>Your booking has been approved ✅</h2>
                 <p>Venue: {booking.Venue.Name}</p>
@@ -254,7 +283,7 @@ namespace Event.Application.Services
 
             await _emailService.SendEmailAsync(
                 booking.User.Email,
-                "Booking Rejected",
+                "Unfortunately, your booking request has been rejected.",
                 $@"
                 <h2>Your booking has been rejected ❌</h2>
                 <p>Venue: {booking.Venue.Name}</p>
@@ -297,7 +326,7 @@ namespace Event.Application.Services
             await _bookingRepo.SaveChangesAsync();
 
             if (daysLeft < 14)
-                return "Booking cancelled successfully, but your deposit is non-refundable.";
+                return "Booking cancelled, but deposit is non-refundable (less than 14 days left).";
 
             return "Booking cancelled successfully.";
         }

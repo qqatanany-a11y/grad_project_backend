@@ -15,6 +15,9 @@ namespace Event.Application.Dtos
         public string CompanyName { get; set; }
         public int CompanyId { get; set; }
 
+        public string? FacebookUrl { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? WebsiteUrl { get; set; }
         public VenueType Type { get; set; }
 
         public PricingType PricingType { get; set; }

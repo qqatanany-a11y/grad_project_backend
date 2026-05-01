@@ -50,6 +50,7 @@ builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 builder.Services.AddScoped<IVenueServiceOptionService, VenueServiceOptionService>();
 builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>();
 builder.Services.AddHostedService<BookingReminderBackgroundService>();
+builder.Services.AddHostedService<BookingReminderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // ================= JWT =================

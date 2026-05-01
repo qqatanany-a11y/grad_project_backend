@@ -155,7 +155,10 @@ namespace Event.Application.Services
                 venue.Type,
                 venue.PricingType,
                 venue.PricePerHour,
-                venue.DepositPercentage
+                venue.DepositPercentage,
+                dto.FacebookUrl,
+                dto.InstagramUrl,
+                dto.WebsiteUrl
             );
                 await _venueRepo.UpdateAsync(venue);
             }

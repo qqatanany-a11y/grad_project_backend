@@ -10,5 +10,9 @@
         public bool IsActive { get; set; }
         public PricingType PricingType { get; set; }
         public decimal? PricePerHour { get; set; }
+
+        public string? FacebookUrl { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? WebsiteUrl { get; set; }
     }
 }

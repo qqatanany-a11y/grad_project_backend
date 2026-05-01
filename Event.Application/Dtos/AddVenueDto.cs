@@ -17,6 +17,10 @@ namespace Event.Application.Dtos
 
         public decimal DepositPercentage { get; set; }
 
+        public string? FacebookUrl { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? WebsiteUrl { get; set; }
+
         public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

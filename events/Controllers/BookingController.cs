@@ -24,7 +24,8 @@ public class BookingController : ControllerBase
         if (userIdClaim == null)
             return Unauthorized("User not authenticated");
 
-        var userId = int.Parse(userIdClaim.Value);
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+            return Unauthorized("Invalid user id");
 
         try
         {
@@ -67,7 +68,8 @@ public class BookingController : ControllerBase
         if (userIdClaim == null)
             return Unauthorized("User not authenticated");
 
-        var userId = int.Parse(userIdClaim.Value);
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+            return Unauthorized("Invalid user id");
 
         try
         {
