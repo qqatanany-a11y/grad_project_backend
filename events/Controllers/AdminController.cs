@@ -42,7 +42,7 @@ namespace Event.API.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             await _adminService.ApproveOwnerAsync(id);
-            return Ok("Approved");
+            return Ok("Approved successfully");
         }
         [HttpPost("owner-requests/{id}/reject")]
         public async Task<IActionResult> Reject(int id, [FromBody] RejectEditRequestDto dto)

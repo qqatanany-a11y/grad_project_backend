@@ -16,6 +16,8 @@ namespace events.domain.DomainConfig
             builder.Property(b => b.TotalPrice).IsRequired().HasColumnType("decimal(18,2)");
             builder.Property(b => b.Status).IsRequired();
             builder.Property(b => b.GuestsCount).IsRequired(false);
+            builder.Property(b => b.BrideIdDocumentDataUrl).HasColumnType("text").IsRequired(false);
+            builder.Property(b => b.BridegroomIdDocumentDataUrl).HasColumnType("text").IsRequired(false);
 
             builder.Property(b => b.ReminderSent)
                    .IsRequired()

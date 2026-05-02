@@ -21,6 +21,10 @@ namespace Event.Application.Dtos
         public string? InstagramUrl { get; set; }
         public string? WebsiteUrl { get; set; }
 
+        public VenueCategory Category { get; set; }
+        public PricingType PricingType { get; set; }
+        public decimal? PricePerHour { get; set; }
+        public List<VenueTimeSlotUpsertDto>? TimeSlots { get; set; }
         public List<string> ImageUrls { get; set; } = new List<string>();
     }
 }

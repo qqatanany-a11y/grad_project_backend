@@ -15,6 +15,7 @@ namespace Event.Application.Services
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly IEmailService _emailService;
         private readonly IEditRequestRepo _editRequestRepo;
+
         public AdminService(
             IOwnerRequestRepo ownerRequestRepo,
             IUserRepo userRepo,
@@ -24,6 +25,7 @@ namespace Event.Application.Services
     IEmailService emailService,
     IEditRequestRepo editRequestRepo
             )
+            IVenueRepo venueRepo)
         {
             _ownerRequestRepo = ownerRequestRepo;
             _userRepo = userRepo;
@@ -53,13 +55,14 @@ namespace Event.Application.Services
 
             var generatedPassword = _passwordGenerator.Generate(10);
 
+          
             var ownerUser = new User(
                 request.Email,
-                BCrypt.Net.BCrypt.HashPassword(generatedPassword),
+                BCrypt.Net.BCrypt.HashPassword("Owner1234"), // just for now 
                 request.PhoneNumber,
                 request.FirstName,
                 request.LastName,
-                3
+                3 
             );
 
             await _userRepo.AddUserAsync(ownerUser);
@@ -119,6 +122,16 @@ namespace Event.Application.Services
                 dto.CompanyName,
                 dto.BusinessAddress,
                 dto.BusinessPhone
+            var venue = new Venue(
+                request.VenueName,
+                "Pending description",
+                "Amman",
+                request.BusinessAddress,
+                100,
+                company.Id,
+                VenueCategory.WeddingHall,
+                PricingType.FixedSlots,
+                null
             );
             await _ownerRequestRepo.AddAsync(request);
                 
@@ -136,6 +149,10 @@ namespace Event.Application.Services
                 );
 
 
+            await _venueRepo.AddAsync(venue);
+
+            request.Approve();
+            await _ownerRequestRepo.UpdateAsync(request);
         }
         public async Task RejectOwnerAsync(int id, string reason)
         {
@@ -270,3 +287,5 @@ namespace Event.Application.Services
         }
     } }
 
+    }
+}

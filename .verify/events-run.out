@@ -1,0 +1,527 @@
+Using launch settings from events\Properties\launchSettings.json...
+Building...
+C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Migrations\20260405185321_la.cs(10,26): warning CS8981: The type name 'la' only contains lower-cased ascii characters. Such names may become reserved for the language. [C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Event.Infrastructure.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Migrations\20260405185321_la.Designer.cs(16,19): warning CS8981: The type name 'la' only contains lower-cased ascii characters. Such names may become reserved for the language. [C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Event.Infrastructure.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Repos\OwnerRequestRepo.cs(21,16): warning CS8603: Possible null reference return. [C:\Users\qusai\Desktop\grad_project_backend\Event.Infrastructure\Event.Infrastructure.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AddVenueDto.cs(5,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AddVenueDto.cs(6,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AddVenueDto.cs(7,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AddVenueDto.cs(8,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDto.cs(5,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDto.cs(6,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDto.cs(7,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDto.cs(8,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDataDto.cs(6,23): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDataDto.cs(7,36): warning CS8618: Non-nullable property 'Current' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueEditRequestDataDto.cs(8,36): warning CS8618: Non-nullable property 'Requested' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueDto.cs(6,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueDto.cs(7,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueDto.cs(8,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueDto.cs(9,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueDto.cs(12,23): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueCreateRequestDataDto.cs(5,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueCreateRequestDataDto.cs(6,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueCreateRequestDataDto.cs(7,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueCreateRequestDataDto.cs(8,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueCreateRequestDataDto.cs(14,23): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\VenueAvailabilityDto.cs(7,23): warning CS8618: Non-nullable property 'VenueName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(10,23): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(11,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(12,23): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(13,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(14,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UserDto.cs(15,23): warning CS8618: Non-nullable property 'SecondaryPhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UpdateVenueDto.cs(5,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UpdateVenueDto.cs(6,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UpdateVenueDto.cs(7,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\UpdateVenueDto.cs(8,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(6,34): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(7,34): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(8,48): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(9,34): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(11,34): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(12,34): warning CS8618: Non-nullable property 'BusinessPhone' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(13,34): warning CS8618: Non-nullable property 'BusinessAddress' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterOwnerDto.cs(14,23): warning CS8618: Non-nullable property 'VenueName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterDto.cs(8,23): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterDto.cs(9,23): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterDto.cs(10,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterDto.cs(11,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\RegisterDto.cs(13,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ProfileEditRequestDto.cs(5,23): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ProfileEditRequestDto.cs(6,23): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ProfileEditRequestDto.cs(7,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ProfileEditRequestDto.cs(8,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(6,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(7,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(8,23): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(9,23): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(10,23): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(11,23): warning CS8618: Non-nullable property 'BusinessAddress' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(12,23): warning CS8618: Non-nullable property 'BusinessPhone' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(13,23): warning CS8618: Non-nullable property 'VenueName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\OwnerRequestDto.cs(14,23): warning CS8618: Non-nullable property 'Status' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\LoginDto.cs(6,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\LoginDto.cs(7,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\EditRequestDto.cs(7,23): warning CS8618: Non-nullable property 'OwnerName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\EditRequestDto.cs(8,23): warning CS8618: Non-nullable property 'Type' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\EditRequestDto.cs(9,23): warning CS8618: Non-nullable property 'Status' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\EditRequestDto.cs(11,23): warning CS8618: Non-nullable property 'RequestedDataJson' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CreateVenueRequestDto.cs(5,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CreateVenueRequestDto.cs(6,23): warning CS8618: Non-nullable property 'Description' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CreateVenueRequestDto.cs(7,23): warning CS8618: Non-nullable property 'City' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CreateVenueRequestDto.cs(8,23): warning CS8618: Non-nullable property 'Address' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDto.cs(6,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDto.cs(7,23): warning CS8618: Non-nullable property 'Location' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDto.cs(8,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDto.cs(9,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDto.cs(11,31): warning CS8618: Non-nullable property 'Venues' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDetailsDto.cs(6,23): warning CS8618: Non-nullable property 'Name' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDetailsDto.cs(7,23): warning CS8618: Non-nullable property 'Location' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDetailsDto.cs(8,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDetailsDto.cs(9,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\CompanyDetailsDto.cs(10,31): warning CS8618: Non-nullable property 'Venues' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\BookingDto.cs(6,23): warning CS8618: Non-nullable property 'VenueName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\BookingDto.cs(8,23): warning CS8618: Non-nullable property 'Time' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\BookingDto.cs(12,23): warning CS8618: Non-nullable property 'Status' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AuthResponseDto.cs(7,23): warning CS8618: Non-nullable property 'Token' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AuthResponseDto.cs(8,23): warning CS8618: Non-nullable property 'FullName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AuthResponseDto.cs(9,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AuthResponseDto.cs(10,23): warning CS8618: Non-nullable property 'Role' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ApproveOwnerResponseDto.cs(5,23): warning CS8618: Non-nullable property 'Message' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ApproveOwnerResponseDto.cs(7,23): warning CS8618: Non-nullable property 'CompanyName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ApproveOwnerResponseDto.cs(8,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\ApproveOwnerResponseDto.cs(9,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(30,23): warning CS8618: Non-nullable property 'Token' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(31,23): warning CS8618: Non-nullable property 'FullName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(32,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(20,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(21,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(6,23): warning CS8618: Non-nullable property 'FirstName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(8,23): warning CS8618: Non-nullable property 'LastName' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(9,23): warning CS8618: Non-nullable property 'Email' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(10,23): warning CS8618: Non-nullable property 'PhoneNumber' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Dtos\AdminRegisterDto.cs(11,23): warning CS8618: Non-nullable property 'Password' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\VenueService.cs(24,31): warning CS8601: Possible null reference assignment. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\UserService.cs(64,24): warning CS8603: Possible null reference return. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\UserService.cs(83,24): warning CS8603: Possible null reference return. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\EmailService.cs(19,79): warning CS8604: Possible null reference argument for parameter 's' in 'int int.Parse(string s)'. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\EmailService.cs(24,47): warning CS8604: Possible null reference argument for parameter 'from' in 'MailMessage.MailMessage(string from, string to, string? subject, string? body)'. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\EditRequestService.cs(67,31): warning CS8601: Possible null reference assignment. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\EditRequestService.cs(144,29): warning CS8601: Possible null reference assignment. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Services\EditRequestService.cs(164,29): warning CS8601: Possible null reference assignment. [C:\Users\qusai\Desktop\grad_project_backend\Event.Application\Event.Application.csproj]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (35ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "MigrationId", "ProductVersion"
+      FROM "__EFMigrationsHistory"
+      ORDER BY "MigrationId";
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+          "MigrationId" character varying(150) NOT NULL,
+          "ProductVersion" character varying(32) NOT NULL,
+          CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+      );
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "MigrationId", "ProductVersion"
+      FROM "__EFMigrationsHistory"
+      ORDER BY "MigrationId";
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20260425182530_AddVenueCategory'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+      VALUES ('20260425182530_AddVenueCategory', '10.0.5');
+info: Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20260426061640_AddVenueOwnerTimeSlots'.
+info: Microsoft.EntityFrameworkCore.Migrations[20411]
+      Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (147ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE "VenueTimeSlots" (
+          "Id" integer GENERATED BY DEFAULT AS IDENTITY,
+          "VenueId" integer NOT NULL,
+          "StartTime" interval NOT NULL,
+          "EndTime" interval NOT NULL,
+          "Price" decimal(18,2) NOT NULL,
+          "IsActive" boolean NOT NULL DEFAULT TRUE,
+          "CreatedAt" timestamp with time zone NOT NULL,
+          "UpdatedAt" timestamp with time zone,
+          CONSTRAINT "PK_VenueTimeSlots" PRIMARY KEY ("Id"),
+          CONSTRAINT "FK_VenueTimeSlots_Venues_VenueId" FOREIGN KEY ("VenueId") REFERENCES "Venues" ("Id") ON DELETE CASCADE
+      );
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE UNIQUE INDEX "IX_VenueTimeSlots_VenueId_StartTime_EndTime" ON "VenueTimeSlots" ("VenueId", "StartTime", "EndTime");
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+      VALUES ('20260426061640_AddVenueOwnerTimeSlots', '10.0.5');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT EXISTS (
+          SELECT 1
+          FROM "Users" AS u)
+info: Event.Application.Services.BookingReminderBackgroundService[0]
+      Booking Reminder Background Service started.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:9000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\qusai\Desktop\grad_project_backend\events
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (133ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."IsActive"
+      ORDER BY v."Id", c."Id", v0."Id"
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@companyId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."CompanyId" = @companyId
+      ORDER BY v."Id", c."Id", v0."Id"
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT s."Id", s."Address", s."Capacity", s."Category", s."City", s."CompanyId", s."CreatedAt", s."Description", s."IsActive", s."Name", s."PricePerHour", s."PricingType", s."UpdatedAt", s."Id0", s."CreatedAt0", s."Email", s."Location", s."Name0", s."PhoneNumber", s."UpdatedAt0", s."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM (
+          SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id" AS "Id0", c."CreatedAt" AS "CreatedAt0", c."Email", c."Location", c."Name" AS "Name0", c."PhoneNumber", c."UpdatedAt" AS "UpdatedAt0", c."UserId"
+          FROM "Venues" AS v
+          INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+          WHERE v."Id" = @id
+          LIMIT 1
+      ) AS s
+      LEFT JOIN "VenueImages" AS v0 ON s."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON s."Id" = v1."VenueId"
+      ORDER BY s."Id", s."Id0", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (11ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (DbType = Int32), @p2='?', @p3='?', @p4='?' (DbType = DateTime), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Int32), @p8='?', @p9='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "EditRequests" ("CreatedAt", "OwnerId", "RejectionReason", "RequestedDataJson", "ReviewedAt", "ReviewedByAdminId", "Status", "TargetId", "Type", "UpdatedAt")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9)
+      RETURNING "Id";
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@companyId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."CompanyId" = @companyId
+      ORDER BY v."Id", c."Id", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@email='?'], CommandType='Text', CommandTimeout='30']
+      SELECT u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", u0."Id", u0."CreatedAt", u0."Name", u0."Permation", u0."UpdatedAt"
+      FROM "Users" AS u
+      INNER JOIN "UserRoles" AS u0 ON u."RoleId" = u0."Id"
+      WHERE u."Email" = @email
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT u."Id", u."CreatedAt", u."Name", u."Permation", u."UpdatedAt"
+      FROM "UserRoles" AS u
+      WHERE u."Id" = @id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT o."Id", o."BusinessAddress", o."BusinessPhone", o."CompanyName", o."CreatedAt", o."Email", o."FirstName", o."LastName", o."PhoneNumber", o."RejectionReason", o."Status", o."UpdatedAt", o."VenueName"
+      FROM "OwnerRequests" AS o
+      ORDER BY o."CreatedAt" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT o."Id", o."BusinessAddress", o."BusinessPhone", o."CompanyName", o."CreatedAt", o."Email", o."FirstName", o."LastName", o."PhoneNumber", o."RejectionReason", o."Status", o."UpdatedAt", o."VenueName"
+      FROM "OwnerRequests" AS o
+      ORDER BY o."CreatedAt" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT e."Id", e."CreatedAt", e."OwnerId", e."RejectionReason", e."RequestedDataJson", e."ReviewedAt", e."ReviewedByAdminId", e."Status", e."TargetId", e."Type", e."UpdatedAt", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt"
+      FROM "EditRequests" AS e
+      INNER JOIN "Users" AS u ON e."OwnerId" = u."Id"
+      ORDER BY e."CreatedAt" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT e."Id", e."CreatedAt", e."OwnerId", e."RejectionReason", e."RequestedDataJson", e."ReviewedAt", e."ReviewedByAdminId", e."Status", e."TargetId", e."Type", e."UpdatedAt", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt"
+      FROM "EditRequests" AS e
+      INNER JOIN "Users" AS u ON e."OwnerId" = u."Id"
+      ORDER BY e."CreatedAt" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT e."Id", e."CreatedAt", e."OwnerId", e."RejectionReason", e."RequestedDataJson", e."ReviewedAt", e."ReviewedByAdminId", e."Status", e."TargetId", e."Type", e."UpdatedAt", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt"
+      FROM "EditRequests" AS e
+      INNER JOIN "Users" AS u ON e."OwnerId" = u."Id"
+      WHERE e."Id" = @id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT s."Id", s."Address", s."Capacity", s."Category", s."City", s."CompanyId", s."CreatedAt", s."Description", s."IsActive", s."Name", s."PricePerHour", s."PricingType", s."UpdatedAt", s."Id0", s."CreatedAt0", s."Email", s."Location", s."Name0", s."PhoneNumber", s."UpdatedAt0", s."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM (
+          SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id" AS "Id0", c."CreatedAt" AS "CreatedAt0", c."Email", c."Location", c."Name" AS "Name0", c."PhoneNumber", c."UpdatedAt" AS "UpdatedAt0", c."UserId"
+          FROM "Venues" AS v
+          INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+          WHERE v."Id" = @id
+          LIMIT 1
+      ) AS s
+      LEFT JOIN "VenueImages" AS v0 ON s."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON s."Id" = v1."VenueId"
+      ORDER BY s."Id", s."Id0", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?' (DbType = Object), @p2='?' (DbType = Decimal), @p3='?' (DbType = Object), @p4='?' (DbType = DateTime), @p5='?' (DbType = Int32), @p18='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Int32), @p8='?', @p9='?', @p10='?' (DbType = Int32), @p11='?' (DbType = DateTime), @p12='?', @p13='?' (DbType = Boolean), @p14='?', @p15='?' (DbType = Decimal), @p16='?', @p17='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "VenueTimeSlots" ("CreatedAt", "EndTime", "Price", "StartTime", "UpdatedAt", "VenueId")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+      RETURNING "Id", "IsActive";
+      UPDATE "Venues" SET "Address" = @p6, "Capacity" = @p7, "Category" = @p8, "City" = @p9, "CompanyId" = @p10, "CreatedAt" = @p11, "Description" = @p12, "IsActive" = @p13, "Name" = @p14, "PricePerHour" = @p15, "PricingType" = @p16, "UpdatedAt" = @p17
+      WHERE "Id" = @p18;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p4='?' (DbType = Int32), @p0='?' (DbType = DateTime), @p1='?' (DbType = Int32), @p2='?', @p3='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      UPDATE "EditRequests" SET "ReviewedAt" = @p0, "ReviewedByAdminId" = @p1, "Status" = @p2, "UpdatedAt" = @p3
+      WHERE "Id" = @p4;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT e."Id", e."CreatedAt", e."OwnerId", e."RejectionReason", e."RequestedDataJson", e."ReviewedAt", e."ReviewedByAdminId", e."Status", e."TargetId", e."Type", e."UpdatedAt", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt"
+      FROM "EditRequests" AS e
+      INNER JOIN "Users" AS u ON e."OwnerId" = u."Id"
+      ORDER BY e."CreatedAt" DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@email='?'], CommandType='Text', CommandTimeout='30']
+      SELECT u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", u0."Id", u0."CreatedAt", u0."Name", u0."Permation", u0."UpdatedAt"
+      FROM "Users" AS u
+      INNER JOIN "UserRoles" AS u0 ON u."RoleId" = u0."Id"
+      WHERE u."Email" = @email
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT u."Id", u."CreatedAt", u."Name", u."Permation", u."UpdatedAt"
+      FROM "UserRoles" AS u
+      WHERE u."Id" = @id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."IsActive"
+      ORDER BY v."Id", c."Id", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."IsActive"
+      ORDER BY v."Id", c."Id", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (9ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", s0."Id", s0."BookingId", s0."CreatedAt", s0."Price", s0."UpdatedAt", s0."VenueServiceOptionId", s0."Id0", s0."CreatedAt0", s0."IsActive", s0."Price0", s0."ServiceId", s0."UpdatedAt0", s0."VenueId", s0."Id1", s0."CreatedAt1", s0."Description", s0."Name", s0."UpdatedAt1"
+      FROM "Bookings" AS b
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      LEFT JOIN (
+          SELECT b0."Id", b0."BookingId", b0."CreatedAt", b0."Price", b0."UpdatedAt", b0."VenueServiceOptionId", v0."Id" AS "Id0", v0."CreatedAt" AS "CreatedAt0", v0."IsActive", v0."Price" AS "Price0", v0."ServiceId", v0."UpdatedAt" AS "UpdatedAt0", v0."VenueId", s."Id" AS "Id1", s."CreatedAt" AS "CreatedAt1", s."Description", s."Name", s."UpdatedAt" AS "UpdatedAt1"
+          FROM "BookingSelectedServices" AS b0
+          INNER JOIN "VenueServiceOptions" AS v0 ON b0."VenueServiceOptionId" = v0."Id"
+          INNER JOIN "Services" AS s ON v0."ServiceId" = s."Id"
+      ) AS s0 ON b."Id" = s0."BookingId"
+      WHERE b."UserId" = @userId
+      ORDER BY b."Id", v."Id", s0."Id", s0."Id0"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", s0."Id", s0."BookingId", s0."CreatedAt", s0."Price", s0."UpdatedAt", s0."VenueServiceOptionId", s0."Id0", s0."CreatedAt0", s0."IsActive", s0."Price0", s0."ServiceId", s0."UpdatedAt0", s0."VenueId", s0."Id1", s0."CreatedAt1", s0."Description", s0."Name", s0."UpdatedAt1"
+      FROM "Bookings" AS b
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      LEFT JOIN (
+          SELECT b0."Id", b0."BookingId", b0."CreatedAt", b0."Price", b0."UpdatedAt", b0."VenueServiceOptionId", v0."Id" AS "Id0", v0."CreatedAt" AS "CreatedAt0", v0."IsActive", v0."Price" AS "Price0", v0."ServiceId", v0."UpdatedAt" AS "UpdatedAt0", v0."VenueId", s."Id" AS "Id1", s."CreatedAt" AS "CreatedAt1", s."Description", s."Name", s."UpdatedAt" AS "UpdatedAt1"
+          FROM "BookingSelectedServices" AS b0
+          INNER JOIN "VenueServiceOptions" AS v0 ON b0."VenueServiceOptionId" = v0."Id"
+          INNER JOIN "Services" AS s ON v0."ServiceId" = s."Id"
+      ) AS s0 ON b."Id" = s0."BookingId"
+      WHERE b."UserId" = @userId
+      ORDER BY b."Id", v."Id", s0."Id", s0."Id0"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@venueId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."CreatedAt", v."IsActive", v."Price", v."ServiceId", v."UpdatedAt", v."VenueId", s."Id", s."CreatedAt", s."Description", s."Name", s."UpdatedAt"
+      FROM "VenueServiceOptions" AS v
+      INNER JOIN "Services" AS s ON v."ServiceId" = s."Id"
+      WHERE v."VenueId" = @venueId AND v."IsActive"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT s."Id", s."Address", s."Capacity", s."Category", s."City", s."CompanyId", s."CreatedAt", s."Description", s."IsActive", s."Name", s."PricePerHour", s."PricingType", s."UpdatedAt", s."Id0", s."CreatedAt0", s."Email", s."Location", s."Name0", s."PhoneNumber", s."UpdatedAt0", s."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM (
+          SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id" AS "Id0", c."CreatedAt" AS "CreatedAt0", c."Email", c."Location", c."Name" AS "Name0", c."PhoneNumber", c."UpdatedAt" AS "UpdatedAt0", c."UserId"
+          FROM "Venues" AS v
+          INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+          WHERE v."Id" = @id
+          LIMIT 1
+      ) AS s
+      LEFT JOIN "VenueImages" AS v0 ON s."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON s."Id" = v1."VenueId"
+      ORDER BY s."Id", s."Id0", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT s."Id", s."Address", s."Capacity", s."Category", s."City", s."CompanyId", s."CreatedAt", s."Description", s."IsActive", s."Name", s."PricePerHour", s."PricingType", s."UpdatedAt", s."Id0", s."CreatedAt0", s."Email", s."Location", s."Name0", s."PhoneNumber", s."UpdatedAt0", s."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM (
+          SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id" AS "Id0", c."CreatedAt" AS "CreatedAt0", c."Email", c."Location", c."Name" AS "Name0", c."PhoneNumber", c."UpdatedAt" AS "UpdatedAt0", c."UserId"
+          FROM "Venues" AS v
+          INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+          WHERE v."Id" = @id
+          LIMIT 1
+      ) AS s
+      LEFT JOIN "VenueImages" AS v0 ON s."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON s."Id" = v1."VenueId"
+      ORDER BY s."Id", s."Id0", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[@venueId='?' (DbType = Int32), @date_Date='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId"
+      FROM "Bookings" AS b
+      WHERE b."VenueId" = @venueId AND date_trunc('day', b."BookingDate", 'UTC') = @date_Date
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Decimal), @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = DateTime), @p6='?' (DbType = Object), @p7='?' (DbType = Int32), @p8='?' (DbType = Int32), @p9='?' (DbType = Decimal), @p10='?' (DbType = Object), @p11='?', @p12='?' (DbType = Decimal), @p13='?' (DbType = DateTime), @p14='?' (DbType = Int32), @p15='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      INSERT INTO "Bookings" ("AprovedById", "BasePrice", "BookingDate", "BrideIdDocumentDataUrl", "BridegroomIdDocumentDataUrl", "CreatedAt", "EndTime", "EventTypeId", "GuestsCount", "ServicesPrice", "StartTime", "Status", "TotalPrice", "UpdatedAt", "UserId", "VenueId")
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15)
+      RETURNING "Id", "ReminderSent";
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", c."Id", c."CreatedAt", c."Email", c."Location", c."Name", c."PhoneNumber", c."UpdatedAt", c."UserId", v0."Id", v0."CreatedAt", v0."ImageUrl", v0."IsCover", v0."UpdatedAt", v0."VenueId", v1."Id", v1."CreatedAt", v1."EndTime", v1."IsActive", v1."Price", v1."StartTime", v1."UpdatedAt", v1."VenueId"
+      FROM "Venues" AS v
+      INNER JOIN "Companies" AS c ON v."CompanyId" = c."Id"
+      LEFT JOIN "VenueImages" AS v0 ON v."Id" = v0."VenueId"
+      LEFT JOIN "VenueTimeSlots" AS v1 ON v."Id" = v1."VenueId"
+      WHERE v."IsActive"
+      ORDER BY v."Id", c."Id", v0."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt", s0."Id", s0."BookingId", s0."CreatedAt", s0."Price", s0."UpdatedAt", s0."VenueServiceOptionId", s0."Id0", s0."CreatedAt0", s0."IsActive", s0."Price0", s0."ServiceId", s0."UpdatedAt0", s0."VenueId", s0."Id1", s0."CreatedAt1", s0."Description", s0."Name", s0."UpdatedAt1"
+      FROM "Bookings" AS b
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      LEFT JOIN (
+          SELECT b0."Id", b0."BookingId", b0."CreatedAt", b0."Price", b0."UpdatedAt", b0."VenueServiceOptionId", v0."Id" AS "Id0", v0."CreatedAt" AS "CreatedAt0", v0."IsActive", v0."Price" AS "Price0", v0."ServiceId", v0."UpdatedAt" AS "UpdatedAt0", v0."VenueId", s."Id" AS "Id1", s."CreatedAt" AS "CreatedAt1", s."Description", s."Name", s."UpdatedAt" AS "UpdatedAt1"
+          FROM "BookingSelectedServices" AS b0
+          INNER JOIN "VenueServiceOptions" AS v0 ON b0."VenueServiceOptionId" = v0."Id"
+          INNER JOIN "Services" AS s ON v0."ServiceId" = s."Id"
+      ) AS s0 ON b."Id" = s0."BookingId"
+      WHERE b."UserId" = @userId
+      ORDER BY b."Id", v."Id", s0."Id", s0."Id0"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (53ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (32ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (65ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (53ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (34ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (42ms) [Parameters=[@fromUtc='?' (DbType = DateTime), @toUtc='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT b."Id", b."AprovedById", b."BasePrice", b."BookingDate", b."BrideIdDocumentDataUrl", b."BridegroomIdDocumentDataUrl", b."CreatedAt", b."EndTime", b."EventTypeId", b."GuestsCount", b."ReminderSent", b."ServicesPrice", b."StartTime", b."Status", b."TotalPrice", b."UpdatedAt", b."UserId", b."VenueId", u."Id", u."CreatedAt", u."Email", u."FirstName", u."IsActive", u."LastName", u."PasswordHash", u."PhoneNumber", u."RoleId", u."SecondaryPhoneNumber", u."UpdatedAt", v."Id", v."Address", v."Capacity", v."Category", v."City", v."CompanyId", v."CreatedAt", v."Description", v."IsActive", v."Name", v."PricePerHour", v."PricingType", v."UpdatedAt"
+      FROM "Bookings" AS b
+      INNER JOIN "Users" AS u ON b."UserId" = u."Id"
+      INNER JOIN "Venues" AS v ON b."VenueId" = v."Id"
+      WHERE b."Status" = 'Confirmed' AND NOT (b."ReminderSent") AND b."BookingDate" >= @fromUtc AND b."BookingDate" <= @toUtc

@@ -12,4 +12,11 @@ obj/
 *.dll
 *.pdb
 *.exe
-*.log
+*.logbin/
+obj/
+.vs/
+*.dll
+*.pdb
+*.exe
+*.cache
+*.deps.json

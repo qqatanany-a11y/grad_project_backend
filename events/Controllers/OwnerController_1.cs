@@ -58,6 +58,19 @@ namespace events.Controllers
             {
                 await _adminService.OwnerRequestAsync(dto);
  
+                var request = new OwnerRequest(
+                    dto.Email,
+                    dto.PhoneNumber,
+                    dto.FirstName,
+                    dto.LastName,
+                    dto.CompanyName,
+                    dto.BusinessAddress,
+                    dto.BusinessPhone,
+                    dto.VenueName
+                );
+
+                await _ownerRequestRepo.AddAsync(request);
+
                 return Ok("Request sent, waiting for approval");
             }
             catch (Exception ex)
@@ -99,6 +112,26 @@ namespace events.Controllers
             {
                 await _editRequestService.CreateVenueEditRequestAsync(ownerId, venueId, dto);
                 return Ok("Venue edit request submitted");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("edit-requests/venue-create")]
+        public async Task<IActionResult> CreateVenueCreateRequest(CreateVenueRequestDto dto)
+        {
+            var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (ownerIdClaim == null)
+                return Unauthorized("Owner not authenticated");
+
+            var ownerId = int.Parse(ownerIdClaim.Value);
+
+            try
+            {
+                await _editRequestService.CreateVenueCreateRequestAsync(ownerId, dto);
+                return Ok("Venue creation request submitted");
             }
             catch (Exception ex)
             {
