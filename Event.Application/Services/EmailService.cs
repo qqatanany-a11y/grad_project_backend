@@ -13,12 +13,18 @@ namespace Event.Application.Services
         public async Task SendEmailAsync(string to, string subject, string body)
         {
             var smtpSettings = _config.GetSection("SmtpSettings");
+
             using var client = new SmtpClient(smtpSettings["Host"], int.Parse(smtpSettings["Port"]))
             {
                 Credentials = new NetworkCredential(smtpSettings["User"], smtpSettings["Pass"]),
                 EnableSsl = true
             };
-            var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body);
+
+            var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body)
+            {
+                IsBodyHtml = true 
+            };
+
             await client.SendMailAsync(mailMessage);
         }
     }

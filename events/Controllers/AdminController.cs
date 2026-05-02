@@ -128,6 +128,8 @@ namespace Event.API.Controllers
 
             var adminId = int.Parse(adminIdClaim.Value);
 
+            
+
             try
             {
                 await _editRequestService.ApproveAsync(id, adminId);
@@ -147,6 +149,7 @@ namespace Event.API.Controllers
                 return Unauthorized("Admin not authenticated");
 
             var adminId = int.Parse(adminIdClaim.Value);
+
 
             try
             {

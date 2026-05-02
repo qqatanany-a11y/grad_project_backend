@@ -74,23 +74,6 @@ namespace Event.Application.Services
 
             await _companyRepo.AddAsync(company);
 
-            var venue = new Venue(
-           request.VenueName,
-           "Initial venue description",
-           request.BusinessAddress,
-           request.BusinessAddress,
-           100,
-           company.Id,
-           VenueType.Hall,
-           PricingType.FixedSlots,
-           null,
-           20,
-            null,
-    null,
-    null
-           );
-
-            await _venueRepo.AddAsync(venue);
 
             request.Approve();
             await _ownerRequestRepo.UpdateAsync(request);
@@ -119,6 +102,41 @@ namespace Event.Application.Services
     "
 );
         }
+
+        public async Task OwnerRequestAsync(RegisterOwnerDto dto)
+        {
+            if(dto.Email == null || dto.FirstName == null || dto.LastName == null || dto.PhoneNumber == null || dto.CompanyName == null || dto.BusinessAddress == null || dto.BusinessPhone == null)
+                throw new Exception("All fields are required");
+
+            var existingUser = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (existingUser != null)
+                throw new Exception("User with this email already exists");
+            var request = new OwnerRequest(
+                dto.Email,
+                dto.PhoneNumber,
+                dto.FirstName,
+                dto.LastName,
+                dto.CompanyName,
+                dto.BusinessAddress,
+                dto.BusinessPhone
+            );
+            await _ownerRequestRepo.AddAsync(request);
+                
+            await _emailService.SendEmailAsync(
+                    dto.Email,
+                    "Owner Account Request Received",
+                    $@"
+                    <h2>Events Platform</h2>
+                    <p>Dear {dto.FirstName},</p>
+                    <p>Thank you for your interest in becoming an <strong>Owner</strong> on our platform. We have received your request and will review it shortly.</p>
+                    <p>You will receive an email notification once we have processed your request.</p>
+                    <br/>
+                    <p>Best regards,<br/>Events Team</p>
+                    "
+                );
+
+
+        }
         public async Task RejectOwnerAsync(int id, string reason)
         {
             var request = await _ownerRequestRepo.GetByIdAsync(id);
@@ -127,6 +145,27 @@ namespace Event.Application.Services
                 throw new Exception("Request not found");
 
             request.Reject(reason);
+
+            await _emailService.SendEmailAsync(
+  request.Email,
+  "Owner Account Request Update",
+  $@"
+    <h2>Events Platform</h2>
+
+    <p>Dear {request.FirstName},</p>
+
+    <p>We regret to inform you that your request to become an <strong>Owner</strong> has been <strong>rejected</strong>.</p>
+
+    <p><strong>Reason:</strong> {reason}</p>
+
+    <p>If you believe this was a mistake or need further clarification, please feel free to contact our support team.</p>
+
+    <br/>
+
+    <p>Best regards,<br/>Events Team</p>
+    "
+);
+
             await _ownerRequestRepo.UpdateAsync(request);
         }
 

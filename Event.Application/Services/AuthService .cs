@@ -175,8 +175,7 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
                 dto.LastName,
                 dto.CompanyName,
                 dto.BusinessAddress,
-                dto.BusinessPhone,
-                dto.VenueName
+                dto.BusinessPhone
             );
 
             await _ownerRequestRepo.AddAsync(request);

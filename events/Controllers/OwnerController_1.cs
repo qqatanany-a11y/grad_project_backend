@@ -17,15 +17,18 @@ namespace events.Controllers
         private readonly ICompanyRepo _companyRepo;
         private readonly IOwnerRequestRepo _ownerRequestRepo;
         private readonly IEditRequestService _editRequestService;
+        private readonly IAdminService _adminService;
 
         public OwnerController(
             IAuthService authService,
             IVenueService venueService,
             ICompanyRepo companyRepo,
             IOwnerRequestRepo ownerRequestRepo,
+            IAdminService adminService,
             IEditRequestService editRequestService)
         {
             _authService = authService;
+            _adminService = adminService;
             _venueService = venueService;
             _companyRepo = companyRepo;
             _ownerRequestRepo = ownerRequestRepo;
@@ -53,19 +56,8 @@ namespace events.Controllers
         {
             try
             {
-                var request = new OwnerRequest(
-                    dto.Email,
-                    dto.PhoneNumber,
-                    dto.FirstName,
-                    dto.LastName,
-                    dto.CompanyName,
-                    dto.BusinessAddress,
-                    dto.BusinessPhone,
-                    dto.VenueName
-                );
-
-                await _ownerRequestRepo.AddAsync(request);
-
+                await _adminService.OwnerRequestAsync(dto);
+ 
                 return Ok("Request sent, waiting for approval");
             }
             catch (Exception ex)
