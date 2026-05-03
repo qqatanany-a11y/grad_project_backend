@@ -40,6 +40,16 @@ namespace Event.Application.Services
             if (dto.Date < DateOnly.FromDateTime(DateTime.UtcNow))
                 throw new Exception("Date cannot be in the past.");
 
+            var existing = await _venueAvailabilityRepo.GetSlotAsync(
+    dto.VenueId,
+    dto.Date,
+    dto.StartTime,
+    dto.EndTime
+);
+
+            if (existing != null)
+                throw new Exception("This exact slot already exists.");
+
             var hasOverlap = await _venueAvailabilityRepo.HasOverlapAsync(
      dto.VenueId,
      dto.Date,

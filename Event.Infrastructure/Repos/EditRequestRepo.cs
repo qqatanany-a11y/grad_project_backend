@@ -47,5 +47,10 @@ namespace Event.Infrastructure.Repos
         {
             await _context.SaveChangesAsync();
         }
+        public async Task UpdateAsync(EditRequest request)
+        {
+            _context.EditRequests.Update(request);
+            await _context.SaveChangesAsync();
+        }
     }
 }

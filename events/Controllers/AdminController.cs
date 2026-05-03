@@ -128,6 +128,8 @@ namespace Event.API.Controllers
 
             var adminId = int.Parse(adminIdClaim.Value);
 
+            
+
             try
             {
                 await _editRequestService.ApproveAsync(id, adminId);
@@ -148,6 +150,7 @@ namespace Event.API.Controllers
 
             var adminId = int.Parse(adminIdClaim.Value);
 
+
             try
             {
                 await _editRequestService.RejectAsync(id, adminId, dto?.Reason);
@@ -158,5 +161,26 @@ namespace Event.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut("edit-requests/{id}/approve")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ApproveEditRequest2(int id)
+        {
+            var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            await _adminService.ApproveVenueUpdate(id, adminId);
+
+            return Ok("Approved successfully");
+        }
+        [HttpPut("edit-requests/{id}/reject")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RejectEditRequest(int id, [FromBody] string reason)
+        {
+            var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            await _adminService.RejectVenueUpdate(id, adminId, reason);
+
+            return Ok("Rejected successfully");
+        }
+
     }
 }

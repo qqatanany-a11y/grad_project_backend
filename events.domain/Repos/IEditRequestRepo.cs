@@ -8,6 +8,8 @@ namespace events.domain.Repos
         Task<EditRequest?> GetByIdAsync(int id);
         Task<List<EditRequest>> GetAllAsync();
         Task<List<EditRequest>> GetByOwnerIdAsync(int ownerId);
+
+        Task UpdateAsync(EditRequest request);
         Task SaveChangesAsync();
     }
 }

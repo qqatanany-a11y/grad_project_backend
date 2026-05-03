@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using events.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using events.Infrastructure.Persistence;
 namespace Event.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260428083514_AddVenueTypeAndDepositPercentage")]
+    partial class AddVenueTypeAndDepositPercentage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,12 +143,6 @@ namespace Event.Infrastructure.Migrations
 
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("BrideIdDocumentDataUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BridegroomIdDocumentDataUrl")
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -436,36 +433,6 @@ namespace Event.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Food and beverage service",
-                            Name = "Catering"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Decor and venue styling",
-                            Name = "Decoration"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Photo coverage package",
-                            Name = "Photography"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Music and sound setup",
-                            Name = "DJ"
-                        });
                 });
 
             modelBuilder.Entity("events.domain.Entities.User", b =>
@@ -591,10 +558,6 @@ namespace Event.Infrastructure.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("City")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -611,12 +574,6 @@ namespace Event.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("FacebookUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("InstagramUrl")
-                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -642,9 +599,6 @@ namespace Event.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("WebsiteUrl")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -795,45 +749,6 @@ namespace Event.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("VenueServiceOptions");
-                });
-
-            modelBuilder.Entity("events.domain.Entities.VenueTimeSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("interval");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("interval");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("VenueId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VenueId", "StartTime", "EndTime")
-                        .IsUnique();
-
-                    b.ToTable("VenueTimeSlots");
                 });
 
             modelBuilder.Entity("events.domain.Entites.Company", b =>
@@ -1031,17 +946,6 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Venue");
                 });
 
-            modelBuilder.Entity("events.domain.Entities.VenueTimeSlot", b =>
-                {
-                    b.HasOne("events.domain.Entities.Venue", "Venue")
-                        .WithMany("TimeSlots")
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Venue");
-                });
-
             modelBuilder.Entity("events.domain.Entites.Company", b =>
                 {
                     b.Navigation("Venues");
@@ -1084,8 +988,6 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("TimeSlots");
 
                     b.Navigation("VenueEventTypes");
 

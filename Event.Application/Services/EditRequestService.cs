@@ -3,6 +3,7 @@ using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Event.Application.Services
 {
@@ -17,17 +18,21 @@ namespace Event.Application.Services
         private readonly IEditRequestRepo _editRequestRepo;
         private readonly IUserRepo _userRepo;
         private readonly IVenueRepo _venueRepo;
+        private readonly IEmailService _emailService;
         private readonly ICompanyRepo _companyRepo;
 
         public EditRequestService(
             IEditRequestRepo editRequestRepo,
             IUserRepo userRepo,
+            IEmailService emailService,
+            IVenueRepo venueRepo)
             IVenueRepo venueRepo,
             ICompanyRepo companyRepo)
         {
             _editRequestRepo = editRequestRepo;
             _userRepo = userRepo;
             _venueRepo = venueRepo;
+            _emailService = emailService;
             _companyRepo = companyRepo;
         }
 
@@ -45,7 +50,41 @@ namespace Event.Application.Services
                 null,
                 json
             );
+            await _emailService.SendEmailAsync(
+     "laithalnobane323@gmail.com", 
+     "New Profile Edit Request",
+     $@"
+    <h2>New Profile Edit Request</h2>
 
+    <p>An owner has submitted a profile edit request.</p>
+
+    <p><strong>Owner Name:</strong> {owner.FirstName}</p>
+    <p><strong>Email:</strong> {owner.Email}</p>
+
+    <p>Please review the request in the admin dashboard.</p>
+
+    <br/>
+
+    <p>Best regards,<br/>Events System</p>
+    "
+ );
+            await _emailService.SendEmailAsync(
+    owner.Email,
+    "Profile Edit Request Submitted",
+    $@"
+    <h2>Events Platform</h2>
+
+    <p>Dear {owner.FirstName},</p>
+
+    <p>Your profile edit request has been successfully submitted and is currently under review.</p>
+
+    <p>You will be notified once it has been approved or rejected.</p>
+
+    <br/>
+
+    <p>Best regards,<br/>Events Team</p>
+    "
+);
             await _editRequestRepo.AddAsync(request);
             await _editRequestRepo.SaveChangesAsync();
         }
@@ -188,12 +227,54 @@ namespace Event.Application.Services
                 if (owner == null)
                     throw new Exception("Owner not found");
 
+
+                var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson);
                 var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson, RequestJsonOptions);
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
-                owner.UpdateName(dto.FirstName, dto.LastName);
-                owner.UpdateContactInfo(dto.Email, dto.PhoneNumber);
+                if(await _userRepo.GetUserByEmailAsync(dto.Email) is User existingUser && existingUser.Id != owner.Id)
+                    throw new Exception("Email already in use by another account");
+                if(!string.IsNullOrWhiteSpace(dto.FirstName) && !string.IsNullOrWhiteSpace(dto.LastName))
+                    owner.UpdateName(dto.FirstName, dto.LastName);
+
+                if (!string.IsNullOrWhiteSpace(dto.FirstName))
+                    owner.UpdateName(dto.FirstName, owner.LastName);
+
+                if (!string.IsNullOrWhiteSpace(dto.LastName))
+                    owner.UpdateName(owner.FirstName, dto.LastName);
+
+                if (!string.IsNullOrWhiteSpace(dto.Email) && !string.IsNullOrWhiteSpace(dto.PhoneNumber))
+                    owner.UpdateContactInfo(dto.Email, dto.PhoneNumber);
+
+                if (!string.IsNullOrWhiteSpace(dto.Email))
+                    owner.UpdateContactInfo(dto.Email, owner.PhoneNumber);
+
+                if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+                    owner.UpdateContactInfo(owner.Email, dto.PhoneNumber);
+
+
+                if (owner != null)
+                {
+                    await _emailService.SendEmailAsync(
+                        owner.Email,
+                        "Your Request Has Been Approved 🎉",
+                        $@"
+        <h2>Events Platform</h2>
+
+        <p>Dear {owner.FirstName},</p>
+
+        <p>Your <strong>{request.Type}</strong> edit request has been <strong>approved</strong>.</p>
+
+        <p>The changes are now live on your account.</p>
+
+        <br/>
+
+        <p>Best regards,<br/>Events Team</p>
+        "
+                    );
+                }
+
 
                 await _userRepo.UpdateUserAsync();
             }
@@ -235,6 +316,21 @@ namespace Event.Application.Services
                     VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
                 }
 
+                venue.Update(
+                dto.Name,
+                dto.Description,
+                dto.City,
+                dto.Address,
+                dto.Capacity,
+                dto.IsActive,
+                venue.Type,
+                venue.PricingType,
+                venue.PricePerHour,
+                venue.DepositPercentage,
+                dto.FacebookUrl,
+                dto.InstagramUrl,
+                dto.WebsiteUrl
+            );
                 await _venueRepo.UpdateAsync(venue);
             }
             else if (request.Type == EditRequestTypeEnum.VenueCreate)
@@ -270,6 +366,8 @@ namespace Event.Application.Services
             }
 
             request.Approve(adminId);
+
+
             await _editRequestRepo.SaveChangesAsync();
         }
 
@@ -283,6 +381,34 @@ namespace Event.Application.Services
                 throw new Exception("Already processed");
 
             request.Reject(adminId, reason);
+            var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
+
+            if (owner != null)
+            {
+                string requestTypeText = request.Type == EditRequestTypeEnum.Profile
+                    ? "profile"
+                    : "venue";
+
+                await _emailService.SendEmailAsync(
+                    owner.Email,
+                    "Your Request Has Been Rejected",
+                    $@"
+            <h2>Events Platform</h2>
+
+            <p>Dear {owner.FirstName},</p>
+
+            <p>We regret to inform you that your <strong>{requestTypeText}</strong> edit request has been <strong>rejected</strong>.</p>
+
+            <p><strong>Reason:</strong> {reason ?? "No reason provided"}</p>
+
+            <p>You can review your information and submit a new request if needed.</p>
+
+            <br/>
+
+            <p>Best regards,<br/>Events Team</p>
+            "
+                );
+            }
             await _editRequestRepo.SaveChangesAsync();
         }
     }

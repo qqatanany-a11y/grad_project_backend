@@ -11,6 +11,14 @@ namespace events.domain.Entities
         public int Capacity { get; private set; }
         public bool IsActive { get; private set; } = true;
 
+        public string? FacebookUrl { get; private set; }
+        public string? InstagramUrl { get; private set; }
+        public string? WebsiteUrl { get; private set; }
+
+        public VenueType Type { get; private set; }
+
+        public decimal DepositPercentage { get; private set; }
+
         public int CompanyId { get; private set; }
         public Company Company { get; private set; } = null!;
 
@@ -35,9 +43,15 @@ namespace events.domain.Entities
             string address,
             int capacity,
             int companyId,
+            VenueType type,
             VenueCategory category,
             PricingType pricingType,
-            decimal? pricePerHour)
+            decimal? pricePerHour,
+            decimal depositPercentage,
+            string? facebookUrl,
+            string? instagramUrl,
+            string? websiteUrl
+            )
         {
             Name = name;
             Description = description;
@@ -45,10 +59,16 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             CompanyId = companyId;
+            Type = type;
+
             Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
+            DepositPercentage = depositPercentage;
             IsActive = true;
+            FacebookUrl = facebookUrl;
+            InstagramUrl = instagramUrl;
+            WebsiteUrl = websiteUrl;
         }
 
         public void Update(
@@ -58,9 +78,15 @@ namespace events.domain.Entities
             string address,
             int capacity,
             bool isActive,
+            VenueType type,
             VenueCategory category,
             PricingType pricingType,
-            decimal? pricePerHour)
+            decimal? pricePerHour,
+            decimal depositPercentage,
+            string? facebookUrl,
+            string? instagramUrl,
+            string? websiteUrl
+            )
         {
             Name = name;
             Description = description;
@@ -68,9 +94,15 @@ namespace events.domain.Entities
             Address = address;
             Capacity = capacity;
             IsActive = isActive;
+            Type = type;
             Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
+            DepositPercentage = depositPercentage;
+            FacebookUrl = facebookUrl;
+            InstagramUrl = instagramUrl;
+            WebsiteUrl = websiteUrl;
+
             UpdatedAt = DateTime.UtcNow;
         }
 

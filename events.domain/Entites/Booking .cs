@@ -98,5 +98,9 @@ namespace events.domain.Entities
             ReminderSent = true;
             UpdatedAt = DateTime.UtcNow;
         }
+        public void SetPayment(Payment payment)
+        {
+            Payment = payment;
+        }
     }
 }

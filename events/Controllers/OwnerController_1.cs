@@ -17,15 +17,18 @@ namespace events.Controllers
         private readonly ICompanyRepo _companyRepo;
         private readonly IOwnerRequestRepo _ownerRequestRepo;
         private readonly IEditRequestService _editRequestService;
+        private readonly IAdminService _adminService;
 
         public OwnerController(
             IAuthService authService,
             IVenueService venueService,
             ICompanyRepo companyRepo,
             IOwnerRequestRepo ownerRequestRepo,
+            IAdminService adminService,
             IEditRequestService editRequestService)
         {
             _authService = authService;
+            _adminService = adminService;
             _venueService = venueService;
             _companyRepo = companyRepo;
             _ownerRequestRepo = ownerRequestRepo;
@@ -53,6 +56,8 @@ namespace events.Controllers
         {
             try
             {
+                await _adminService.OwnerRequestAsync(dto);
+ 
                 var request = new OwnerRequest(
                     dto.Email,
                     dto.PhoneNumber,

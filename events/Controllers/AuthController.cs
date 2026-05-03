@@ -1,10 +1,15 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace events.Controllers
 {
     [ApiController]
+    [Route("api/auth")]  
+    public class AuthController : ControllerBase
+    {
+        private readonly IAuthService _authService;  
     [Route("api/auth")]  // ← غيرنا الـ Route لـ auth لأنو Login للكل
     public class AuthController : ControllerBase
     {
@@ -30,8 +35,11 @@ namespace events.Controllers
             }
         }
 
+
+
         // POST api/auth/login → للكل (User, Owner, Admin)
         [HttpPost("login")]
+        [EnableRateLimiting("Login")] 
         public async Task<IActionResult> Login(LoginDto dto)
         {
             try

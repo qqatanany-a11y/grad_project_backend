@@ -32,6 +32,10 @@ namespace events.domain.DomainConfig
             builder.Property(v => v.IsActive)
                    .HasDefaultValue(true);
 
+            builder.Property(v => v.Type)
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(30);
             builder.Property(v => v.Category)
                    .IsRequired()
                    .HasConversion<string>();
@@ -43,6 +47,10 @@ namespace events.domain.DomainConfig
             builder.Property(v => v.PricePerHour)
                    .HasColumnType("decimal(18,2)")
                    .IsRequired(false);
+
+            builder.Property(v => v.DepositPercentage)
+                   .HasColumnType("decimal(5,2)")
+                   .IsRequired();
 
             builder.HasOne(v => v.Company)
                    .WithMany(c => c.Venues)

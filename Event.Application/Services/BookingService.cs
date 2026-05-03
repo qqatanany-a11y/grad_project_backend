@@ -32,8 +32,7 @@ namespace Event.Application.Services
             IVenueAvailabilityRepo venueAvailabilityRepo,
             IVenueServiceOptionRepo venueServiceOptionRepo,
             IBookingSelectedServiceRepo bookingSelectedServiceRepo,
-            IEmailService emailService
-            )
+            IEmailService emailService)
         {
             _bookingRepo = bookingRepo;
             _venueRepo = venueRepo;
@@ -133,6 +132,7 @@ namespace Event.Application.Services
                         throw new Exception("Time not available");
                 }
 
+                var duration = dto.EndTime - dto.StartTime;
                 var duration = endTime - startTime;
 
                 if (duration.TotalHours < 1)
@@ -165,6 +165,19 @@ namespace Event.Application.Services
                 if (slot.IsBooked)
                     throw new Exception("This slot is already booked");
 
+                var existingBooking = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
+
+                if (existingBooking.Any(b =>
+                    b.StartTime == dto.StartTime &&
+                    b.EndTime == dto.EndTime))
+                {
+                    throw new Exception("This slot has just been booked.");
+                }
+
+                basePrice = slot.Price;
+                slot.MarkAsBooked();
+
+
                 basePrice = slot.Price;
                 slot.MarkAsBooked();
             }
@@ -188,12 +201,18 @@ namespace Event.Application.Services
                 servicesPrice = selectedOptions.Sum(x => x.Price);
             }
 
-            totalPrice = basePrice + servicesPrice;
+            var totalPrice = basePrice + servicesPrice;
 
             var booking = new Booking(
                 dto.VenueId,
                 userId,
                 bookingDateUtc,
+                dto.StartTime,
+                dto.EndTime,
+                dto.GuestsCount,
+                basePrice,
+                servicesPrice,
+                totalPrice
                 startTime,
                 endTime,
                 dto.GuestsCount,
@@ -214,12 +233,29 @@ namespace Event.Application.Services
                     .ToList();
 
                 await _bookingSelectedServiceRepo.AddRangeAsync(bookingServices);
+                await _bookingRepo.SaveChangesAsync();
             }
 
             if (venue.PricingType == PricingType.FixedSlots && !dto.TimeSlotId.HasValue)
             {
                 await _venueAvailabilityRepo.SaveChangesAsync();
             }
+
+            var user = await _userRepo.GetUserByIdAsync(userId);
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "Booking Request Received",
+                $@"
+    <p>Dear {user.FirstName},</p>
+
+    <p>Your booking request has been received successfully.</p>
+
+    <p>We will review your request within <strong>24-48 hours</strong>.</p>
+
+    <p>Best regards,<br/>Events Team</p>
+    "
+            );
 
             return new CreateBookingResponseDto
             {
@@ -259,8 +295,6 @@ namespace Event.Application.Services
                 BridegroomIdDocumentDataUrl = b.BridegroomIdDocumentDataUrl,
                 Services = MapSelectedServices(b)
             }).ToList();
-
-
         }
 
         public async Task<List<BookingDto>> GetOwnerBookings(int ownerId)
@@ -296,20 +330,21 @@ namespace Event.Application.Services
             if (booking.Status != BookingStatusEnum.Pending)
                 throw new Exception("Only pending bookings can be approved.");
 
+            if (booking.Payment == null || booking.Payment.Status != PaymentStatus.Paid)
+                throw new Exception("Booking cannot be approved before payment.");
+
             booking.Approve(ownerId);
             await _bookingRepo.SaveChangesAsync();
 
-            await _bookingRepo.SaveChangesAsync();
-
             await _emailService.SendEmailAsync(
-    booking.User.Email,
-    "Booking Approved",
-    $@"
-    <h2>Your booking has been approved ✅</h2>
-    <p>Venue: {booking.Venue.Name}</p>
-    <p>Date: {booking.BookingDate:yyyy-MM-dd}</p>
-    <p>Time: {booking.StartTime} - {booking.EndTime}</p>
-    ");
+                booking.User.Email,
+                "Your booking has been successfully confirmed 🎉",
+                $@"
+                <h2>Your booking has been approved ✅</h2>
+                <p>Venue: {booking.Venue.Name}</p>
+                <p>Date: {booking.BookingDate:yyyy-MM-dd}</p>
+                <p>Time: {booking.StartTime} - {booking.EndTime}</p>
+                ");
         }
 
         public async Task Reject(int bookingId, int ownerId)
@@ -329,14 +364,14 @@ namespace Event.Application.Services
             await _bookingRepo.SaveChangesAsync();
 
             await _emailService.SendEmailAsync(
-    booking.User.Email,
-    "Booking Rejected",
-    $@"
-    <h2>Your booking has been rejected ❌</h2>
-    <p>Venue: {booking.Venue.Name}</p>
-    <p>Date: {booking.BookingDate:yyyy-MM-dd}</p>
-    <p>Time: {booking.StartTime} - {booking.EndTime}</p>
-    ");
+                booking.User.Email,
+                "Unfortunately, your booking request has been rejected.",
+                $@"
+                <h2>Your booking has been rejected ❌</h2>
+                <p>Venue: {booking.Venue.Name}</p>
+                <p>Date: {booking.BookingDate:yyyy-MM-dd}</p>
+                <p>Time: {booking.StartTime} - {booking.EndTime}</p>
+                ");
         }
 
         public async Task<string> Cancel(int bookingId, int userId)
@@ -373,7 +408,7 @@ namespace Event.Application.Services
             await _bookingRepo.SaveChangesAsync();
 
             if (daysLeft < 14)
-                return "Booking cancelled successfully, but your deposit is non-refundable.";
+                return "Booking cancelled, but deposit is non-refundable (less than 14 days left).";
 
             return "Booking cancelled successfully.";
         }

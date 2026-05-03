@@ -6,7 +6,7 @@ namespace Event.Application.IServices
     {
         Task<List<VenueDto>> GetByCompanyIdAsync(int companyId);
         Task<VenueDto> AddAsync(int companyId, AddVenueDto dto);
-        Task<VenueDto> UpdateAsync(int venueId, UpdateVenueDto dto);
+        Task<string> UpdateAsync(int ownerId, int venueId, UpdateVenueDto dto);
         Task DeleteAsync(int venueId);
         Task<List<VenueDto>> GetAllAsync();
         Task<VenueDto> GetByIdAsync(int id);

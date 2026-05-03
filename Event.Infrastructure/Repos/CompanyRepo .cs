@@ -53,9 +53,10 @@ namespace Event.Infrastructure.Repos
                 .ToListAsync();
         }
 
-        public Task AddCompanyAsync(Company company)
+        public async Task AddCompanyAsync(Company company)
         {
-            throw new NotImplementedException();
+            await _db.Companies.AddAsync(company);
+            await _db.SaveChangesAsync();
         }
     }
 }

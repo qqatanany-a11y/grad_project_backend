@@ -18,23 +18,29 @@ namespace Event.Application.Services
         private readonly IUserRepo _userRepo;
         private readonly IRoleRepo _roleRepo;
         private readonly ICompanyRepo _companyRepo;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _config; private readonly IValidator<RegisterDto> _registerValidator;
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
         private readonly IValidator<RegisterDto> _registerValidator;
         private readonly IValidator<RegisterOwnerDto> _registerOwnerValidator;
         private readonly IValidator<LoginDto> _loginValidator;
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly IEmailService _emailService;
+        private readonly IOwnerRequestRepo _ownerRequestRepo;
 
         public AuthService(
             IUserRepo userRepo,
             IRoleRepo roleRepo,
             ICompanyRepo companyRepo,
+Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto> registerValidator,
+
             Microsoft.Extensions.Configuration.IConfiguration config,
             IValidator<RegisterDto> registerValidator,
             IValidator<RegisterOwnerDto> registerOwnerValidator,
             IValidator<LoginDto> loginValidator,
             IPasswordGenerator passwordGenerator,
-            IEmailService emailService)
+            IEmailService emailService,
+    IOwnerRequestRepo ownerRequestRepo
+        )
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
@@ -70,6 +76,7 @@ namespace Event.Application.Services
             );
 
             await _userRepo.AddUserAsync(user);
+
             var token = GenerateJwtToken(user, role.Name);
 
             return new AuthResponseDto
@@ -185,6 +192,31 @@ namespace Event.Application.Services
             };
         }
 
+        public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
+        {
+            var validationResult = await _loginValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var user = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (user == null)
+                throw new Exception("Incorrect Email or Password");
+
+            var isValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+            if (!isValid)
+                throw new Exception("Incorrect Email or Password");
+
+            var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
+            var roleName = role?.Name ?? "User";
+
+            int? companyId = null;
+            if (roleName == "Owner")
+            {
+                var company = await _companyRepo.GetByUserIdAsync(user.Id);
+                companyId = company?.Id;
+            }
+
+            var token = GenerateJwtToken(user, roleName, companyId);
 
 
         public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
@@ -242,9 +274,84 @@ namespace Event.Application.Services
                 Token = token,
                 FullName = user.FullName,
                 Email = user.Email,
-                Role = role.Name,
-                CompanyId = company.Id
+                Role = roleName,
+                CompanyId = companyId
             };
+        }
+
+        public async Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto)
+        {
+            var validationResult = await _registerOwnerValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var existing = await _userRepo.GetUserByEmailAsync(dto.Email);
+            if (existing != null)
+                throw new Exception("Email already exists");
+
+            var request = new OwnerRequest(
+                dto.Email,
+                dto.PhoneNumber,
+                dto.FirstName,
+                dto.LastName,
+                dto.CompanyName,
+                dto.BusinessAddress,
+                dto.BusinessPhone
+            );
+
+            await _ownerRequestRepo.AddAsync(request);
+
+            await _emailService.SendEmailAsync(
+                request.Email,
+                "Request Received",
+                $@"
+        <p>Dear {request.FirstName},</p>
+
+        <p>Your request to register as an owner has been received successfully.</p>
+
+        <p>We will review your request within <strong>24-48 hours</strong>.</p>
+
+        <p>Best regards,<br/>Events Team</p>
+        "
+            );
+
+            return new AuthResponseDto
+            {
+                Token = null,
+                FullName = dto.FirstName + " " + dto.LastName,
+                Email = dto.Email,
+                Role = "PendingOwner",
+                CompanyId = null
+            };
+        }
+
+        private string GenerateJwtToken(User user, string roleName, int? companyId = null)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim(ClaimTypes.Role, roleName)
+            };
+
+            if (companyId.HasValue)
+                claims.Add(new Claim("CompanyId", companyId.Value.ToString()));
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
