@@ -9,5 +9,6 @@ namespace Event.Application.IServices
         Task<AuthResponseDto> RegisterAdminAsync(RegisterDto dto);
 
         Task<AuthResponseDto> RegisterOwnerAsync(RegisterOwnerDto dto);
+        Task ChangePasswordAsync(int userId, ChangePasswordDto dto);
     }
 }

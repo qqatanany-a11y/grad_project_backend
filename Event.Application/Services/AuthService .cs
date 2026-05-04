@@ -118,7 +118,9 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
                 FullName = user.FullName,
                 Email = user.Email,
                 Role = role.Name,
-                CompanyId = null
+                CompanyId = null,
+                IsOwner = false,
+                IsFirstLogin = true
             };
         }
 
@@ -139,6 +141,14 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
             var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "User";
 
+            var isFirstLogin = user.LastLoginAt == null;
+
+            if (isFirstLogin)
+            {
+                user.RecordLogin();
+                await _userRepo.UpdateUserAsync();
+            }
+
             int? companyId = null;
             if (roleName == "Owner")
             {
@@ -154,7 +164,9 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
                 FullName = user.FullName,
                 Email = user.Email,
                 Role = roleName,
-                CompanyId = companyId
+                CompanyId = companyId,
+                IsFirstLogin = isFirstLogin,
+                IsOwner = roleName == "Owner"
             };
         }
 
@@ -200,7 +212,9 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
                 FullName = dto.FirstName + " " + dto.LastName,
                 Email = dto.Email,
                 Role = "PendingOwner",
-                CompanyId = null
+                CompanyId = null,
+                IsFirstLogin = true,
+                IsOwner = true
             };
         }
 
@@ -231,6 +245,21 @@ Microsoft.Extensions.Configuration.IConfiguration config, IValidator<RegisterDto
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task ChangePasswordAsync(int userId, ChangePasswordDto dto)
+        {
+            var user = await _userRepo.GetUserByIdAsync(userId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            var isValid = BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash);
+            if (!isValid)
+                throw new Exception("Current password is incorrect");
+
+            var newHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            user.changePassword(newHash);
+            await _userRepo.UpdateUserAsync();
         }
     }
 }
