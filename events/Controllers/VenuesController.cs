@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +7,7 @@ namespace events.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Owner")]
     public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
@@ -34,6 +35,12 @@ namespace events.Controllers
 
         [HttpPost("venues")]
         [Authorize(Roles = "Owner")]
+            var venues = await _venueService.GetVenuesForGuestAsync();
+            return Ok(venues);
+        }
+
+        [HttpPost]
+        [HttpPost("venues")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
             var companyIdClaim = User.FindFirst("CompanyId");
@@ -65,6 +72,9 @@ namespace events.Controllers
 
             var ownerId = int.Parse(ownerIdClaim.Value);
 
+        [HttpPut("venues/{id}")]
+        public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
+        {
             try
             {
                 var result = await _venueService.UpdateAsync(ownerId, id, dto);
@@ -78,12 +88,14 @@ namespace events.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Owner")]
+        [HttpDelete("venues/{id}")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
             {
                 await _venueService.DeleteAsync(id);
                 return Ok("VENUE DELETED SUCCESSFULLY");
+                return Ok("Venue deleted successfully");
             }
             catch (Exception ex)
             {
@@ -92,6 +104,7 @@ namespace events.Controllers
         }
 
         [HttpGet("{id}")]
+        [HttpGet("venues/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetVenueById(int id)
         {

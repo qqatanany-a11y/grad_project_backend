@@ -22,12 +22,14 @@ namespace events.domain.Entities
         public int CompanyId { get; private set; }
         public Company Company { get; private set; } = null!;
 
+        public VenueCategory Category { get; private set; }
         public PricingType PricingType { get; private set; }
         public decimal? PricePerHour { get; private set; }
 
         public List<VenueImage> Images { get; private set; } = new();
         public List<VenueEventType> VenueEventTypes { get; private set; } = new();
         public List<VenueAvailability> Availabilities { get; private set; } = new();
+        public List<VenueTimeSlot> TimeSlots { get; private set; } = new();
         public List<Booking> Bookings { get; private set; } = new();
         public List<Review> Reviews { get; private set; } = new();
         public List<VenueServiceOption> VenueServices { get; private set; } = new();
@@ -43,6 +45,7 @@ namespace events.domain.Entities
             int capacity,
             int companyId,
             VenueType type,
+            VenueCategory category,
             PricingType pricingType,
             decimal? pricePerHour,
             decimal depositPercentage,
@@ -58,6 +61,8 @@ namespace events.domain.Entities
             Capacity = capacity;
             CompanyId = companyId;
             Type = type;
+
+            Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             DepositPercentage = depositPercentage;
@@ -75,6 +80,7 @@ namespace events.domain.Entities
             int capacity,
             bool isActive,
             VenueType type,
+            VenueCategory category,
             PricingType pricingType,
             decimal? pricePerHour,
             decimal depositPercentage,
@@ -90,6 +96,7 @@ namespace events.domain.Entities
             Capacity = capacity;
             IsActive = isActive;
             Type = type;
+            Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
             DepositPercentage = depositPercentage;
@@ -120,3 +127,4 @@ namespace events.domain.Entities
 
     }
     }
+}

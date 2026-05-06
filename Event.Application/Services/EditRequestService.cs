@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
@@ -9,21 +9,31 @@ namespace Event.Application.Services
 {
     public class EditRequestService : IEditRequestService
     {
+        private static readonly JsonSerializerOptions RequestJsonOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true
+        };
+
         private readonly IEditRequestRepo _editRequestRepo;
         private readonly IUserRepo _userRepo;
         private readonly IVenueRepo _venueRepo;
         private readonly IEmailService _emailService;
+        private readonly ICompanyRepo _companyRepo;
 
         public EditRequestService(
             IEditRequestRepo editRequestRepo,
             IUserRepo userRepo,
             IEmailService emailService,
             IVenueRepo venueRepo)
+            IVenueRepo venueRepo,
+            ICompanyRepo companyRepo)
         {
             _editRequestRepo = editRequestRepo;
             _userRepo = userRepo;
             _venueRepo = venueRepo;
             _emailService = emailService;
+            _companyRepo = companyRepo;
         }
 
         public async Task CreateProfileEditRequestAsync(int ownerId, ProfileEditRequestDto dto)
@@ -32,7 +42,7 @@ namespace Event.Application.Services
             if (owner == null)
                 throw new Exception("Owner not found");
 
-            var json = JsonSerializer.Serialize(dto);
+            var json = JsonSerializer.Serialize(dto, RequestJsonOptions);
 
             var request = new EditRequest(
                 ownerId,
@@ -88,12 +98,73 @@ namespace Event.Application.Services
             if (venue.Company.UserId != ownerId)
                 throw new Exception("Not allowed");
 
-            var json = JsonSerializer.Serialize(dto);
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            var requestData = new VenueEditRequestDataDto
+            {
+                VenueId = venue.Id,
+                CompanyName = venue.Company?.Name,
+                Current = new VenueEditRequestDto
+                {
+                    Name = venue.Name,
+                    Description = venue.Description,
+                    City = venue.City,
+                    Address = venue.Address,
+                    Capacity = venue.Capacity,
+                    IsActive = venue.IsActive,
+                    Category = venue.Category,
+                    PricingType = venue.PricingType,
+                    PricePerHour = venue.PricePerHour,
+                    TimeSlots = VenueSlotSupport.MapEditableSlots(venue.TimeSlots)
+                },
+                Requested = dto
+            };
+
+            var json = JsonSerializer.Serialize(requestData, RequestJsonOptions);
 
             var request = new EditRequest(
                 ownerId,
                 EditRequestTypeEnum.Venue,
                 venueId,
+                json
+            );
+
+            await _editRequestRepo.AddAsync(request);
+            await _editRequestRepo.SaveChangesAsync();
+        }
+
+        public async Task CreateVenueCreateRequestAsync(int ownerId, CreateVenueRequestDto dto)
+        {
+            var owner = await _userRepo.GetUserByIdAsync(ownerId);
+            if (owner == null)
+                throw new Exception("Owner not found");
+
+            var company = await _companyRepo.GetByUserIdAsync(ownerId);
+            if (company == null)
+                throw new Exception("Company not found for this owner");
+
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            var requestData = new VenueCreateRequestDataDto
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                City = dto.City,
+                Address = dto.Address,
+                Capacity = dto.Capacity,
+                Category = dto.Category,
+                PricingType = dto.PricingType,
+                PricePerHour = dto.PricePerHour,
+                TimeSlots = dto.TimeSlots,
+                CompanyName = company.Name
+            };
+
+            var json = JsonSerializer.Serialize(requestData, RequestJsonOptions);
+
+            var request = new EditRequest(
+                ownerId,
+                EditRequestTypeEnum.VenueCreate,
+                null,
                 json
             );
 
@@ -158,6 +229,7 @@ namespace Event.Application.Services
 
 
                 var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson);
+                var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson, RequestJsonOptions);
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
@@ -218,11 +290,31 @@ namespace Event.Application.Services
                 if (venue.Company.UserId != request.OwnerId)
                     throw new Exception("Not allowed");
 
-                var dto = JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson);
+                var wrappedDto = JsonSerializer.Deserialize<VenueEditRequestDataDto>(request.RequestedDataJson, RequestJsonOptions);
+                var dto = wrappedDto?.Requested
+                    ?? JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson, RequestJsonOptions);
+
                 if (dto == null)
                     throw new Exception("Invalid request data");
 
+                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
+                venue.Update(
+                    dto.Name,
+                    dto.Description,
+                    dto.City,
+                    dto.Address,
+                    dto.Capacity,
+                    dto.IsActive,
+                    dto.Category,
+                    dto.PricingType,
+                    dto.PricePerHour
+                );
+
+                if (dto.TimeSlots != null)
+                {
+                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+                }
 
                 venue.Update(
                 dto.Name,
@@ -240,6 +332,37 @@ namespace Event.Application.Services
                 dto.WebsiteUrl
             );
                 await _venueRepo.UpdateAsync(venue);
+            }
+            else if (request.Type == EditRequestTypeEnum.VenueCreate)
+            {
+                var company = await _companyRepo.GetByUserIdAsync(request.OwnerId);
+                if (company == null)
+                    throw new Exception("Company not found for this owner");
+
+                var dto = JsonSerializer.Deserialize<VenueCreateRequestDataDto>(request.RequestedDataJson, RequestJsonOptions);
+                if (dto == null)
+                    throw new Exception("Invalid request data");
+
+                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+                var venue = new Venue(
+                    dto.Name,
+                    dto.Description,
+                    dto.City,
+                    dto.Address,
+                    dto.Capacity,
+                    company.Id,
+                    dto.Category,
+                    dto.PricingType,
+                    dto.PricePerHour
+                );
+
+                if (dto.TimeSlots != null)
+                {
+                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+                }
+
+                await _venueRepo.AddAsync(venue);
             }
 
             request.Approve(adminId);

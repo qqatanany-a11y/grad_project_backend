@@ -1,5 +1,6 @@
 ﻿using Event.Application.IServices;
 using Microsoft.Extensions.Configuration;
+
 using System.Net;
 using System.Net.Mail;
 
@@ -9,6 +10,12 @@ namespace Event.Application.Services
     {
         private readonly IConfiguration _config;
         public EmailService(IConfiguration config) => _config = config;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
+
+        public EmailService(Microsoft.Extensions.Configuration.IConfiguration config)
+        {
+            _config = config;
+        }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
@@ -25,6 +32,7 @@ namespace Event.Application.Services
                 IsBodyHtml = true 
             };
 
+            var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body);
             await client.SendMailAsync(mailMessage);
         }
     }

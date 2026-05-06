@@ -21,6 +21,8 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Company)
                 .Include(v => v.Reviews)
                 .Include(v => v.Bookings)
+
+                .Include(v => v.Images)
                 .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
@@ -31,6 +33,7 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Company)
                 .Include(v => v.Reviews)
                 .Include(v => v.Bookings)
+                .Include(v => v.Images)
                 .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
@@ -42,6 +45,7 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Images)
                 .Include(v => v.Reviews)
                 .Include(v => v.Bookings)
+
                 .Include(v => v.TimeSlots)
                 .FirstOrDefaultAsync(v => v.Id == id);
         }
@@ -53,6 +57,7 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Company)
                 .Include(v => v.Reviews)
                 .Include(v => v.Bookings)
+                .Include(v => v.Images)
                 .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
@@ -80,6 +85,7 @@ namespace Event.Infrastructure.Repos
             return await _db.Venues
                 .Where(v => v.CompanyId == companyId)
                 .Include(v => v.Availabilities)
+                .Include(v => v.TimeSlots)
                 .Include(v => v.Images)
                 .Include(v => v.VenueEventTypes)
                 .Include(v => v.Reviews)

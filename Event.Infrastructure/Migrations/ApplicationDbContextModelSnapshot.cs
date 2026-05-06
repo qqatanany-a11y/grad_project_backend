@@ -71,6 +71,10 @@ namespace Event.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("VenueName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("OwnerRequests");
@@ -136,6 +140,12 @@ namespace Event.Infrastructure.Migrations
 
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("BrideIdDocumentDataUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BridegroomIdDocumentDataUrl")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -426,6 +436,36 @@ namespace Event.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Food and beverage service",
+                            Name = "Catering"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Decor and venue styling",
+                            Name = "Decoration"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Photo coverage package",
+                            Name = "Photography"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Music and sound setup",
+                            Name = "DJ"
+                        });
                 });
 
             modelBuilder.Entity("events.domain.Entities.User", b =>
@@ -553,6 +593,10 @@ namespace Event.Infrastructure.Migrations
 
                     b.Property<int>("Capacity")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("City")
                         .HasMaxLength(100)
@@ -756,6 +800,45 @@ namespace Event.Infrastructure.Migrations
                     b.ToTable("VenueServiceOptions");
                 });
 
+            modelBuilder.Entity("events.domain.Entities.VenueTimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("interval");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("VenueId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VenueId", "StartTime", "EndTime")
+                        .IsUnique();
+
+                    b.ToTable("VenueTimeSlots");
+                });
+
             modelBuilder.Entity("events.domain.Entites.Company", b =>
                 {
                     b.HasOne("events.domain.Entities.User", "User")
@@ -951,6 +1034,17 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Venue");
                 });
 
+            modelBuilder.Entity("events.domain.Entities.VenueTimeSlot", b =>
+                {
+                    b.HasOne("events.domain.Entities.Venue", "Venue")
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Venue");
+                });
+
             modelBuilder.Entity("events.domain.Entites.Company", b =>
                 {
                     b.Navigation("Venues");
@@ -993,6 +1087,8 @@ namespace Event.Infrastructure.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("TimeSlots");
 
                     b.Navigation("VenueEventTypes");
 

@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using Event.Infrastructure.Repos;
 using events.domain.Entities;
@@ -17,6 +17,28 @@ namespace Event.Application.Services
      IUserRepo userRepo,
      IEmailService emailService,
      IEditRequestRepo editRequestRepo)
+
+        private static VenueDto MapVenue(Venue venue, bool activeSlotsOnly = false)
+        {
+            return new VenueDto
+            {
+                Id = venue.Id,
+                Name = venue.Name,
+                Description = venue.Description,
+                City = venue.City,
+                Address = venue.Address,
+                Capacity = venue.Capacity,
+                IsActive = venue.IsActive,
+                CompanyName = venue.Company?.Name,
+                CompanyId = venue.CompanyId,
+                Category = venue.Category,
+                PricingType = venue.PricingType,
+                PricePerHour = venue.PricePerHour,
+                TimeSlots = VenueSlotSupport.MapSlots(venue.TimeSlots, activeSlotsOnly)
+            };
+        }
+
+        public VenueService(IVenueRepo venueRepo, IUserRepo userRepo)
         {
             _venueRepo = venueRepo;
             _userRepo = userRepo;
@@ -29,6 +51,7 @@ namespace Event.Application.Services
             var venues = await _venueRepo.GetByCompanyIdAsync(companyId);
 
             return venues.Select(v => MapToDto(v)).ToList();
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<List<VenueDto>> GetByOwnerIdAsync(int ownerId)
@@ -46,6 +69,8 @@ namespace Event.Application.Services
             var venues = await _venueRepo.GetByOwnerId(ownerId);
 
             return venues.Select(v => MapToDto(v)).ToList();
+
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
@@ -61,6 +86,13 @@ namespace Event.Application.Services
             if (dto.PricingType != PricingType.Hourly)
                 dto.PricePerHour = null;
 
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            if (dto.PricingType != PricingType.Hourly && (dto.TimeSlots == null || dto.TimeSlots.Count == 0))
+            {
+                dto.PricePerHour = null;
+            }
+
             var venue = new Venue(
                 dto.Name,
                 dto.Description,
@@ -69,6 +101,7 @@ namespace Event.Application.Services
                 dto.Capacity,
                 companyId,
                 dto.Type,
+                dto.Category,
                 dto.PricingType,
                 dto.PricePerHour,
                 dto.DepositPercentage,
@@ -86,6 +119,11 @@ namespace Event.Application.Services
             }
 
             venue.AddImages(dto.ImageUrls);
+
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
 
             await _venueRepo.AddAsync(venue);
 
@@ -106,6 +144,7 @@ namespace Event.Application.Services
             );
 
             return MapToDto(venue);
+            return MapVenue(venue);
         }
 
         public async Task<string> UpdateAsync(int ownerId, int venueId, UpdateVenueDto dto)
@@ -122,6 +161,12 @@ namespace Event.Application.Services
             ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
 
             if (dto.PricingType != PricingType.Hourly)
+                throw new Exception("القاعة غير موجودة");
+
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            if (dto.PricingType != PricingType.Hourly && (dto.TimeSlots == null || dto.TimeSlots.Count == 0))
+            {
                 dto.PricePerHour = null;
 
             var jsonData = JsonSerializer.Serialize(dto);
@@ -155,6 +200,26 @@ namespace Event.Application.Services
             );
 
             return "Your update request has been sent for review.";
+            venue.Update(
+                 dto.Name,
+                 dto.Description,
+                 dto.City,
+                 dto.Address,
+                 dto.Capacity,
+                 dto.IsActive,
+                 dto.Category,
+                 dto.PricingType,
+                 dto.PricePerHour
+                );
+
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
+
+            await _venueRepo.UpdateAsync(venue);
+
+            return MapVenue(venue);
         }
 
         public async Task<VenueDto> GetByIdAsync(int venueId)
@@ -165,6 +230,8 @@ namespace Event.Application.Services
                 throw new Exception("venue not exist");
 
             return MapToDto(venue);
+                throw new Exception("القاعة غير موجودة");
+            return MapVenue(venue);
         }
 
         public async Task DeleteAsync(int venueId)
@@ -173,6 +240,7 @@ namespace Event.Application.Services
 
             if (venue == null)
                 throw new Exception("venue is not exist");
+                throw new Exception("القاعة غير موجودة");
 
             await _venueRepo.DeleteAsync(venue);
         }
@@ -182,6 +250,7 @@ namespace Event.Application.Services
             var venues = await _venueRepo.GetAllAsync();
 
             return venues.Select(v => MapToDto(v)).ToList();
+            return venues.Select(venue => MapVenue(venue)).ToList();
         }
 
         public async Task<List<VenueDto>> GetVenuesForGuestAsync()
@@ -364,6 +433,8 @@ namespace Event.Application.Services
                 .Take(query.PageSize);
 
             return result.Select(v => MapVenue(v, true)).ToList();
+
+            return venues.Select(venue => MapVenue(venue, true)).ToList();
         }
 
 
@@ -371,5 +442,7 @@ namespace Event.Application.Services
 
     }
 
+
+}
 
 }

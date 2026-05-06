@@ -36,6 +36,9 @@ namespace events.domain.DomainConfig
                    .IsRequired()
                    .HasConversion<string>()
                    .HasMaxLength(30);
+            builder.Property(v => v.Category)
+                   .IsRequired()
+                   .HasConversion<string>();
 
             builder.Property(v => v.PricingType)
                    .IsRequired()
@@ -67,6 +70,11 @@ namespace events.domain.DomainConfig
             builder.HasMany(v => v.Availabilities)
                    .WithOne(a => a.Venue)
                    .HasForeignKey(a => a.VenueId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(v => v.TimeSlots)
+                   .WithOne(slot => slot.Venue)
+                   .HasForeignKey(slot => slot.VenueId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(v => v.Bookings)

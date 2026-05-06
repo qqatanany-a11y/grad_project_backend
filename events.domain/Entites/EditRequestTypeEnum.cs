@@ -5,5 +5,6 @@
         Profile = 1,
         Venue = 2,
             VenueUpdate
+        VenueCreate = 3
     }
 }

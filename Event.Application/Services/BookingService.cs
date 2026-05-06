@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
@@ -14,6 +14,16 @@ namespace Event.Application.Services
         private readonly IVenueServiceOptionRepo _venueServiceOptionRepo;
         private readonly IBookingSelectedServiceRepo _bookingSelectedServiceRepo;
         private readonly IEmailService _emailService;
+
+        private static List<SelectedServiceResponseDto> MapSelectedServices(Booking booking)
+        {
+            return booking.SelectedServices.Select(x => new SelectedServiceResponseDto
+            {
+                VenueServiceOptionId = x.VenueServiceOptionId,
+                ServiceName = x.VenueServiceOption?.Service?.Name ?? string.Empty,
+                Price = x.Price
+            }).ToList();
+        }
 
         public BookingService(
             IBookingRepo bookingRepo,
@@ -43,18 +53,21 @@ namespace Event.Application.Services
             if (!venue.IsActive)
                 throw new Exception("This venue is currently inactive.");
 
-            if (dto.EndTime <= dto.StartTime)
-                throw new Exception("End time must be after start time");
+            var bookingDateSource = dto.BookingDate ?? dto.Date;
 
-            if (dto.GuestsCount <= 0)
+            if (!bookingDateSource.HasValue)
+                throw new Exception("Booking date is required.");
+
+            if (dto.GuestsCount.HasValue && dto.GuestsCount.Value <= 0)
                 throw new Exception("Guests count must be greater than zero.");
 
-            if (dto.GuestsCount > venue.Capacity)
+            if (dto.GuestsCount.HasValue && dto.GuestsCount.Value > venue.Capacity)
                 throw new Exception("Guests count exceeds venue capacity.");
 
-            var bookingDateUtc = dto.Date.Kind == DateTimeKind.Utc
-                ? dto.Date
-                : DateTime.SpecifyKind(dto.Date, DateTimeKind.Utc);
+            var bookingDateValue = bookingDateSource.Value;
+            var bookingDateUtc = bookingDateValue.Kind == DateTimeKind.Utc
+                ? bookingDateValue
+                : DateTime.SpecifyKind(bookingDateValue, DateTimeKind.Utc);
 
             var eventDate = bookingDateUtc.Date;
             var today = DateTime.UtcNow.Date;
@@ -64,21 +77,63 @@ namespace Event.Application.Services
 
             decimal basePrice = 0;
             decimal servicesPrice = 0;
+            decimal totalPrice = 0;
+            TimeSpan startTime;
+            TimeSpan endTime;
 
-            if (venue.PricingType == PricingType.Hourly)
+            if (dto.TimeSlotId.HasValue)
             {
+                var selectedSlot = venue.TimeSlots.FirstOrDefault(slot => slot.Id == dto.TimeSlotId.Value);
+
+                if (selectedSlot == null)
+                    throw new Exception("The selected time slot does not belong to this venue.");
+
+                if (!selectedSlot.IsActive)
+                    throw new Exception("The selected time slot is inactive.");
+
+                startTime = selectedSlot.StartTime;
+                endTime = selectedSlot.EndTime;
+                basePrice = selectedSlot.Price;
+
+                var existingBookings = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
+
+                foreach (var bookingItem in existingBookings)
+                {
+                    if (startTime < bookingItem.EndTime && endTime > bookingItem.StartTime)
+                        throw new Exception("Time not available");
+                }
+            }
+            else if (venue.TimeSlots.Any(slot => slot.IsActive))
+            {
+                throw new Exception("Select one of the available venue time slots.");
+            }
+            else if (venue.PricingType == PricingType.Hourly)
+            {
+                if (!dto.StartTime.HasValue)
+                    throw new Exception("Start time is required.");
+
+                if (!dto.EndTime.HasValue)
+                    throw new Exception("End time is required.");
+
+                if (dto.EndTime.Value <= dto.StartTime.Value)
+                    throw new Exception("End time must be after start time");
+
                 if (!venue.PricePerHour.HasValue || venue.PricePerHour.Value <= 0)
                     throw new Exception("This venue does not have a valid hourly price");
 
-                var existing = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
+                startTime = dto.StartTime.Value;
+                endTime = dto.EndTime.Value;
 
-                foreach (var b in existing)
+                var existingBookings = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
+
+                foreach (var bookingItem in existingBookings)
                 {
-                    if (dto.StartTime < b.EndTime && dto.EndTime > b.StartTime)
+                    if (startTime < bookingItem.EndTime && endTime > bookingItem.StartTime)
                         throw new Exception("Time not available");
                 }
 
                 var duration = dto.EndTime - dto.StartTime;
+                var duration = endTime - startTime;
 
                 if (duration.TotalHours < 1)
                     throw new Exception("Minimum booking duration is 1 hour.");
@@ -87,13 +142,22 @@ namespace Event.Application.Services
             }
             else if (venue.PricingType == PricingType.FixedSlots)
             {
+                if (!dto.StartTime.HasValue)
+                    throw new Exception("Start time is required.");
+
+                if (!dto.EndTime.HasValue)
+                    throw new Exception("End time is required.");
+
+                startTime = dto.StartTime.Value;
+                endTime = dto.EndTime.Value;
+
                 var slotDate = DateOnly.FromDateTime(bookingDateUtc);
 
                 var slot = await _venueAvailabilityRepo.GetSlotAsync(
                     dto.VenueId,
                     slotDate,
-                    dto.StartTime,
-                    dto.EndTime);
+                    startTime,
+                    endTime);
 
                 if (slot == null)
                     throw new Exception("This slot does not exist");
@@ -149,6 +213,14 @@ namespace Event.Application.Services
                 basePrice,
                 servicesPrice,
                 totalPrice
+                startTime,
+                endTime,
+                dto.GuestsCount,
+                basePrice,
+                servicesPrice,
+                totalPrice,
+                dto.BrideIdDocumentDataUrl,
+                dto.BridegroomIdDocumentDataUrl
             );
 
             await _bookingRepo.AddAsync(booking);
@@ -164,7 +236,7 @@ namespace Event.Application.Services
                 await _bookingRepo.SaveChangesAsync();
             }
 
-            if (venue.PricingType == PricingType.FixedSlots)
+            if (venue.PricingType == PricingType.FixedSlots && !dto.TimeSlotId.HasValue)
             {
                 await _venueAvailabilityRepo.SaveChangesAsync();
             }
@@ -215,8 +287,13 @@ namespace Event.Application.Services
                 VenueName = b.Venue.Name,
                 Date = b.BookingDate,
                 Time = $"{b.StartTime} - {b.EndTime}",
+                BasePrice = b.BasePrice,
+                ServicesPrice = b.ServicesPrice,
                 TotalPrice = b.TotalPrice,
-                Status = b.Status.ToString()
+                Status = b.Status.ToString(),
+                BrideIdDocumentDataUrl = b.BrideIdDocumentDataUrl,
+                BridegroomIdDocumentDataUrl = b.BridegroomIdDocumentDataUrl,
+                Services = MapSelectedServices(b)
             }).ToList();
         }
 
@@ -230,8 +307,13 @@ namespace Event.Application.Services
                 VenueName = b.Venue.Name,
                 Date = b.BookingDate,
                 Time = $"{b.StartTime} - {b.EndTime}",
+                BasePrice = b.BasePrice,
+                ServicesPrice = b.ServicesPrice,
                 TotalPrice = b.TotalPrice,
-                Status = b.Status.ToString()
+                Status = b.Status.ToString(),
+                BrideIdDocumentDataUrl = b.BrideIdDocumentDataUrl,
+                BridegroomIdDocumentDataUrl = b.BridegroomIdDocumentDataUrl,
+                Services = MapSelectedServices(b)
             }).ToList();
         }
 

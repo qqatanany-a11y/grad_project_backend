@@ -28,5 +28,9 @@ namespace Event.Application.Dtos
         public List<VenueTimeSlotDto>? TimeSlots { get; set; }
         public double AverageRating { get; set; }
 
+        public VenueCategory Category { get; set; }
+        public PricingType PricingType { get; set; }
+        public decimal? PricePerHour { get; set; }
+        public List<VenueTimeSlotDto> TimeSlots { get; set; } = new();
     }
 }
