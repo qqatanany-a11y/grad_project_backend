@@ -19,6 +19,9 @@ namespace Event.Infrastructure.Repos
             return await _db.Venues
                 .Where(v => v.CompanyId == companyId)
                 .Include(v => v.Company)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
+                .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
 
@@ -26,6 +29,9 @@ namespace Event.Infrastructure.Repos
         {
             return await _db.Venues
                 .Include(v => v.Company)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
+                .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
 
@@ -34,6 +40,9 @@ namespace Event.Infrastructure.Repos
             return await _db.Venues
                 .Include(v => v.Company)
                 .Include(v => v.Images)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
+                .Include(v => v.TimeSlots)
                 .FirstOrDefaultAsync(v => v.Id == id);
         }
 
@@ -42,6 +51,9 @@ namespace Event.Infrastructure.Repos
             return await _db.Venues
                 .Where(v => v.Company != null && v.Company.UserId == ownerId)
                 .Include(v => v.Company)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
+                .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
 
@@ -70,6 +82,8 @@ namespace Event.Infrastructure.Repos
                 .Include(v => v.Availabilities)
                 .Include(v => v.Images)
                 .Include(v => v.VenueEventTypes)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
                 .ToListAsync();
         }
 
@@ -79,6 +93,9 @@ namespace Event.Infrastructure.Repos
                 .Where(v => v.IsActive)
                 .Include(v => v.Company)
                 .Include(v => v.Images)
+                .Include(v => v.Reviews)
+                .Include(v => v.Bookings)
+                .Include(v => v.TimeSlots)
                 .ToListAsync();
         }
     }

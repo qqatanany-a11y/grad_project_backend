@@ -24,5 +24,9 @@ namespace Event.Application.Dtos
         public decimal? PricePerHour { get; set; }
 
         public decimal DepositPercentage { get; set; }
+
+        public List<VenueTimeSlotDto>? TimeSlots { get; set; }
+        public double AverageRating { get; set; }
+
     }
 }

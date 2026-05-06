@@ -139,5 +139,20 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Search([FromQuery] VenueQueryParams query)
+        {
+            try
+            {
+                var result = await _venueService.SearchAsync(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
