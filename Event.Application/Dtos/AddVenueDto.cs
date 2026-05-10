@@ -20,6 +20,8 @@ namespace Event.Application.Dtos
         public string? FacebookUrl { get; set; }
         public string? InstagramUrl { get; set; }
         public string? WebsiteUrl { get; set; }
+public List<string> ImageUrls { get; set; } = new List<string>();
+        public List<VenueTimeSlotDto>? TimeSlots { get; set; }
 
         public VenueCategory Category { get; set; }
         public PricingType PricingType { get; set; }

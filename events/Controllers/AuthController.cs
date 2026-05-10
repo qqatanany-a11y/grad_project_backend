@@ -1,7 +1,9 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Security.Claims;
 
 namespace events.Controllers
 {
@@ -52,5 +54,28 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+       
+
+        [Authorize]
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userId == null)
+                    return Unauthorized("User ID not found");
+
+                await _authService.ChangePasswordAsync(int.Parse(userId), dto);
+                return Ok("Password changed successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -34,6 +34,7 @@ namespace events.domain.Entities
         public List<Review> Reviews { get; private set; } = new();
         public List<VenueServiceOption> VenueServices { get; private set; } = new();
 
+        public List<VenueTimeSlot> TimeSlots { get; private set; } = new();
         private Venue() { }
 
         public Venue(
@@ -118,5 +119,12 @@ namespace events.domain.Entities
                 Images.Add(new VenueImage(imageUrls[i], i == 0));
             }
         }
+
+            public void SetTimeSlots(List<VenueTimeSlot> slots)
+        {
+            TimeSlots = slots;
+        }
+
+    }
     }
 }

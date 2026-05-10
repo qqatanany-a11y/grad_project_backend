@@ -37,7 +37,7 @@ builder.Services.AddScoped<IVenueServiceOptionRepo, VenueServiceOptionRepo>();
 builder.Services.AddScoped<IBookingSelectedServiceRepo, BookingSelectedServiceRepo>();
 builder.Services.AddScoped<IVenueAvailabilityRepo, VenueAvailabilityRepo>();
 builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
-
+builder.Services.AddScoped<IReviewRepo, ReviewRepo>();
 // ================= Services =================
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
@@ -52,7 +52,7 @@ builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>(
 builder.Services.AddHostedService<BookingReminderBackgroundService>();
 builder.Services.AddHostedService<BookingReminderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-
+builder.Services.AddScoped<ReviewService>();
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

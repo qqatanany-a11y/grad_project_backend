@@ -10,8 +10,8 @@ namespace events.domain.Entities
         public string FirstName { get; private set; } 
         public string LastName { get; private set; }
         public string? SecondaryPhoneNumber { get; private set; }
-        public string FullName => $"{FirstName} {LastName}"
-            ;
+        public string FullName => $"{FirstName} {LastName}";
+        public DateTime? LastLoginAt { get; private set; }
         public bool IsActive { get; private set; } 
         public int RoleId { get; private set; }
         public UserRole Role { get; private set; }
@@ -31,7 +31,11 @@ namespace events.domain.Entities
             IsActive = true;
             RoleId = roleId;
         }
-
+        public void RecordLogin()
+        {
+            LastLoginAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
         public void UpdateName(string firstName, string lastName)
         {
             FirstName = firstName;
@@ -42,6 +46,12 @@ namespace events.domain.Entities
         {
             Email = email;
             PhoneNumber = phoneNumber;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void changePassword(string newPasswordHash)
+        {
+            PasswordHash = newPasswordHash;
             UpdatedAt = DateTime.UtcNow;
         }
         public void Activate() { IsActive = true; UpdatedAt = DateTime.UtcNow; }
