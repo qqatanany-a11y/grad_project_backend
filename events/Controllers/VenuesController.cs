@@ -2,12 +2,12 @@ using Event.Application.Dtos;
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace events.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Owner")]
     public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
@@ -17,7 +17,9 @@ namespace events.Controllers
             _venueService = venueService;
         }
 
+        [HttpGet]
         [HttpGet("all")]
+        [HttpGet("venues")]
         [AllowAnonymous]
         public async Task<ActionResult<List<VenueDto>>> GetAllForGuest()
         {
@@ -25,34 +27,20 @@ namespace events.Controllers
             return Ok(venues);
         }
 
-        [HttpGet("venues")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetVenues()
-        {
-            var venues = await _venueService.GetAllAsync();
-            return Ok(venues);
-        }
-
-        [HttpPost("venues")]
-        [Authorize(Roles = "Owner")]
-            var venues = await _venueService.GetVenuesForGuestAsync();
-            return Ok(venues);
-        }
-
         [HttpPost]
         [HttpPost("venues")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> AddVenue(AddVenueDto dto)
         {
             var companyIdClaim = User.FindFirst("CompanyId");
-
             if (companyIdClaim == null)
+            {
                 return Unauthorized("Owner company not found");
-
-            var companyId = int.Parse(companyIdClaim.Value);
+            }
 
             try
             {
-                var result = await _venueService.AddAsync(companyId, dto);
+                var result = await _venueService.AddAsync(int.Parse(companyIdClaim.Value), dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -62,22 +50,19 @@ namespace events.Controllers
         }
 
         [HttpPut("{id}")]
+        [HttpPut("venues/{id}")]
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
         {
-            var ownerIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-
+            var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (ownerIdClaim == null)
+            {
                 return Unauthorized("Owner not authenticated");
+            }
 
-            var ownerId = int.Parse(ownerIdClaim.Value);
-
-        [HttpPut("venues/{id}")]
-        public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
-        {
             try
             {
-                var result = await _venueService.UpdateAsync(ownerId, id, dto);
+                var result = await _venueService.UpdateAsync(int.Parse(ownerIdClaim.Value), id, dto);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -87,14 +72,13 @@ namespace events.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Owner")]
         [HttpDelete("venues/{id}")]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> DeleteVenue(int id)
         {
             try
             {
                 await _venueService.DeleteAsync(id);
-                return Ok("VENUE DELETED SUCCESSFULLY");
                 return Ok("Venue deleted successfully");
             }
             catch (Exception ex)
@@ -111,10 +95,6 @@ namespace events.Controllers
             try
             {
                 var venue = await _venueService.GetByIdAsync(id);
-
-                if (venue == null)
-                    return NotFound("Venue not found");
-
                 return Ok(venue);
             }
             catch (Exception ex)
@@ -123,6 +103,7 @@ namespace events.Controllers
             }
         }
 
+        [HttpGet("owner/{ownerId}")]
         [HttpGet("VienuesByOwnerId/{ownerId}")]
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> GetVenuesByOwnerId(int ownerId)
@@ -138,6 +119,7 @@ namespace events.Controllers
             }
         }
 
+        [HttpGet("company/{companyId}")]
         [HttpGet("VienuesByCompanyId/{companyId}")]
         [Authorize(Roles = "Owner")]
         public async Task<IActionResult> GetVenuesByCompanyId(int companyId)
@@ -152,6 +134,7 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpGet("search")]
         [AllowAnonymous]
         public async Task<IActionResult> Search([FromQuery] VenueQueryParams query)
@@ -166,6 +149,5 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

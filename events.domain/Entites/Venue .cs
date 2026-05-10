@@ -1,4 +1,6 @@
-﻿using events.domain.Entites;
+using events.domain.Entites;
+using System;
+using System.Collections.Generic;
 
 namespace events.domain.Entities
 {
@@ -16,7 +18,6 @@ namespace events.domain.Entities
         public string? WebsiteUrl { get; private set; }
 
         public VenueType Type { get; private set; }
-
         public decimal DepositPercentage { get; private set; }
 
         public int CompanyId { get; private set; }
@@ -34,7 +35,6 @@ namespace events.domain.Entities
         public List<Review> Reviews { get; private set; } = new();
         public List<VenueServiceOption> VenueServices { get; private set; } = new();
 
-        public List<VenueTimeSlot> TimeSlots { get; private set; } = new();
         private Venue() { }
 
         public Venue(
@@ -51,8 +51,7 @@ namespace events.domain.Entities
             decimal depositPercentage,
             string? facebookUrl,
             string? instagramUrl,
-            string? websiteUrl
-            )
+            string? websiteUrl)
         {
             Name = name;
             Description = description;
@@ -61,7 +60,6 @@ namespace events.domain.Entities
             Capacity = capacity;
             CompanyId = companyId;
             Type = type;
-
             Category = category;
             PricingType = pricingType;
             PricePerHour = pricingType == PricingType.Hourly ? pricePerHour : null;
@@ -86,8 +84,7 @@ namespace events.domain.Entities
             decimal depositPercentage,
             string? facebookUrl,
             string? instagramUrl,
-            string? websiteUrl
-            )
+            string? websiteUrl)
         {
             Name = name;
             Description = description;
@@ -103,28 +100,27 @@ namespace events.domain.Entities
             FacebookUrl = facebookUrl;
             InstagramUrl = instagramUrl;
             WebsiteUrl = websiteUrl;
-
             UpdatedAt = DateTime.UtcNow;
         }
 
         public void AddImages(List<string> imageUrls)
         {
             if (imageUrls == null || imageUrls.Count < 10)
+            {
                 throw new Exception("Minimum 10 images are required for a venue.");
+            }
 
             Images.Clear();
 
-            for (int i = 0; i < imageUrls.Count; i++)
+            for (var i = 0; i < imageUrls.Count; i++)
             {
                 Images.Add(new VenueImage(imageUrls[i], i == 0));
             }
         }
 
-            public void SetTimeSlots(List<VenueTimeSlot> slots)
+        public void SetTimeSlots(List<VenueTimeSlot> slots)
         {
             TimeSlots = slots;
         }
-
-    }
     }
 }

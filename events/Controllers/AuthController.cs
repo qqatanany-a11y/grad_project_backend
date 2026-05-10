@@ -1,4 +1,4 @@
-﻿using Event.Application.Dtos;
+using Event.Application.Dtos;
 using Event.Application.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,21 +8,16 @@ using System.Security.Claims;
 namespace events.Controllers
 {
     [ApiController]
-    [Route("api/auth")]  
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;  
-    [Route("api/auth")]  // ← غيرنا الـ Route لـ auth لأنو Login للكل
-    public class AuthController : ControllerBase
-    {
-        private readonly IAuthService _authService;  // ← وحدنا الـ Service
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
 
-        // POST api/auth/register → للـ User العادي
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
@@ -37,11 +32,23 @@ namespace events.Controllers
             }
         }
 
+        [HttpPost("register-owner")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterOwner(RegisterOwnerDto dto)
+        {
+            try
+            {
+                var result = await _authService.RegisterOwnerAsync(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-
-        // POST api/auth/login → للكل (User, Owner, Admin)
         [HttpPost("login")]
-        [EnableRateLimiting("Login")] 
+        [EnableRateLimiting("Login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
             try
@@ -55,8 +62,6 @@ namespace events.Controllers
             }
         }
 
-       
-
         [Authorize]
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
@@ -64,9 +69,10 @@ namespace events.Controllers
             try
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
                 if (userId == null)
+                {
                     return Unauthorized("User ID not found");
+                }
 
                 await _authService.ChangePasswordAsync(int.Parse(userId), dto);
                 return Ok("Password changed successfully");
@@ -76,6 +82,5 @@ namespace events.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

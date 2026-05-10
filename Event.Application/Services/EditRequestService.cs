@@ -3,7 +3,6 @@ using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Event.Application.Services
 {
@@ -25,14 +24,13 @@ namespace Event.Application.Services
             IEditRequestRepo editRequestRepo,
             IUserRepo userRepo,
             IEmailService emailService,
-            IVenueRepo venueRepo)
             IVenueRepo venueRepo,
             ICompanyRepo companyRepo)
         {
             _editRequestRepo = editRequestRepo;
             _userRepo = userRepo;
-            _venueRepo = venueRepo;
             _emailService = emailService;
+            _venueRepo = venueRepo;
             _companyRepo = companyRepo;
         }
 
@@ -40,70 +38,47 @@ namespace Event.Application.Services
         {
             var owner = await _userRepo.GetUserByIdAsync(ownerId);
             if (owner == null)
+            {
                 throw new Exception("Owner not found");
-
-            var json = JsonSerializer.Serialize(dto, RequestJsonOptions);
+            }
 
             var request = new EditRequest(
                 ownerId,
                 EditRequestTypeEnum.Profile,
                 null,
-                json
-            );
-            await _emailService.SendEmailAsync(
-     "laithalnobane323@gmail.com", 
-     "New Profile Edit Request",
-     $@"
-    <h2>New Profile Edit Request</h2>
+                JsonSerializer.Serialize(dto, RequestJsonOptions));
 
-    <p>An owner has submitted a profile edit request.</p>
-
-    <p><strong>Owner Name:</strong> {owner.FirstName}</p>
-    <p><strong>Email:</strong> {owner.Email}</p>
-
-    <p>Please review the request in the admin dashboard.</p>
-
-    <br/>
-
-    <p>Best regards,<br/>Events System</p>
-    "
- );
-            await _emailService.SendEmailAsync(
-    owner.Email,
-    "Profile Edit Request Submitted",
-    $@"
-    <h2>Events Platform</h2>
-
-    <p>Dear {owner.FirstName},</p>
-
-    <p>Your profile edit request has been successfully submitted and is currently under review.</p>
-
-    <p>You will be notified once it has been approved or rejected.</p>
-
-    <br/>
-
-    <p>Best regards,<br/>Events Team</p>
-    "
-);
             await _editRequestRepo.AddAsync(request);
             await _editRequestRepo.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(
+                owner.Email,
+                "Profile Edit Request Submitted",
+                $@"
+<p>Dear {owner.FirstName},</p>
+<p>Your profile edit request has been submitted successfully.</p>
+<p>Best regards,<br/>Events Team</p>");
         }
 
         public async Task CreateVenueEditRequestAsync(int ownerId, int venueId, VenueEditRequestDto dto)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
             if (venue == null)
+            {
                 throw new Exception("Venue not found");
+            }
 
             if (venue.Company.UserId != ownerId)
+            {
                 throw new Exception("Not allowed");
+            }
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
             var requestData = new VenueEditRequestDataDto
             {
                 VenueId = venue.Id,
-                CompanyName = venue.Company?.Name,
+                CompanyName = venue.Company?.Name ?? string.Empty,
                 Current = new VenueEditRequestDto
                 {
                     Name = venue.Name,
@@ -112,22 +87,24 @@ namespace Event.Application.Services
                     Address = venue.Address,
                     Capacity = venue.Capacity,
                     IsActive = venue.IsActive,
+                    Type = venue.Type,
                     Category = venue.Category,
                     PricingType = venue.PricingType,
                     PricePerHour = venue.PricePerHour,
+                    DepositPercentage = venue.DepositPercentage,
+                    FacebookUrl = venue.FacebookUrl,
+                    InstagramUrl = venue.InstagramUrl,
+                    WebsiteUrl = venue.WebsiteUrl,
                     TimeSlots = VenueSlotSupport.MapEditableSlots(venue.TimeSlots)
                 },
                 Requested = dto
             };
 
-            var json = JsonSerializer.Serialize(requestData, RequestJsonOptions);
-
             var request = new EditRequest(
                 ownerId,
-                EditRequestTypeEnum.Venue,
+                EditRequestTypeEnum.VenueUpdate,
                 venueId,
-                json
-            );
+                JsonSerializer.Serialize(requestData, RequestJsonOptions));
 
             await _editRequestRepo.AddAsync(request);
             await _editRequestRepo.SaveChangesAsync();
@@ -137,11 +114,15 @@ namespace Event.Application.Services
         {
             var owner = await _userRepo.GetUserByIdAsync(ownerId);
             if (owner == null)
+            {
                 throw new Exception("Owner not found");
+            }
 
             var company = await _companyRepo.GetByUserIdAsync(ownerId);
             if (company == null)
+            {
                 throw new Exception("Company not found for this owner");
+            }
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -152,21 +133,24 @@ namespace Event.Application.Services
                 City = dto.City,
                 Address = dto.Address,
                 Capacity = dto.Capacity,
+                Type = dto.Type,
                 Category = dto.Category,
                 PricingType = dto.PricingType,
                 PricePerHour = dto.PricePerHour,
+                DepositPercentage = dto.DepositPercentage,
+                FacebookUrl = dto.FacebookUrl,
+                InstagramUrl = dto.InstagramUrl,
+                WebsiteUrl = dto.WebsiteUrl,
                 TimeSlots = dto.TimeSlots,
+                ImageUrls = dto.ImageUrls,
                 CompanyName = company.Name
             };
-
-            var json = JsonSerializer.Serialize(requestData, RequestJsonOptions);
 
             var request = new EditRequest(
                 ownerId,
                 EditRequestTypeEnum.VenueCreate,
                 null,
-                json
-            );
+                JsonSerializer.Serialize(requestData, RequestJsonOptions));
 
             await _editRequestRepo.AddAsync(request);
             await _editRequestRepo.SaveChangesAsync();
@@ -175,241 +159,232 @@ namespace Event.Application.Services
         public async Task<List<EditRequestDto>> GetMyRequestsAsync(int ownerId)
         {
             var requests = await _editRequestRepo.GetByOwnerIdAsync(ownerId);
-
-            return requests.Select(x => new EditRequestDto
-            {
-                Id = x.Id,
-                OwnerId = x.OwnerId,
-                OwnerName = x.Owner?.FullName,
-                Type = x.Type.ToString(),
-                Status = x.Status.ToString(),
-                TargetId = x.TargetId,
-                RequestedDataJson = x.RequestedDataJson,
-                CreatedAt = x.CreatedAt,
-                ReviewedByAdminId = x.ReviewedByAdminId,
-                ReviewedAt = x.ReviewedAt,
-                RejectionReason = x.RejectionReason
-            }).ToList();
+            return requests.Select(MapRequest).ToList();
         }
 
         public async Task<List<EditRequestDto>> GetAllRequestsAsync()
         {
             var requests = await _editRequestRepo.GetAllAsync();
-
-            return requests.Select(x => new EditRequestDto
-            {
-                Id = x.Id,
-                OwnerId = x.OwnerId,
-                OwnerName = x.Owner?.FullName,
-                Type = x.Type.ToString(),
-                Status = x.Status.ToString(),
-                TargetId = x.TargetId,
-                RequestedDataJson = x.RequestedDataJson,
-                CreatedAt = x.CreatedAt,
-                ReviewedByAdminId = x.ReviewedByAdminId,
-                ReviewedAt = x.ReviewedAt,
-                RejectionReason = x.RejectionReason
-            }).ToList();
+            return requests.Select(MapRequest).ToList();
         }
 
         public async Task ApproveAsync(int requestId, int adminId)
         {
             var request = await _editRequestRepo.GetByIdAsync(requestId);
             if (request == null)
+            {
                 throw new Exception("Edit request not found");
+            }
 
             if (request.Status != EditRequestStatusEnum.Pending)
+            {
                 throw new Exception("Already processed");
-
-            if (request.Type == EditRequestTypeEnum.Profile)
-            {
-                var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
-                if (owner == null)
-                    throw new Exception("Owner not found");
-
-
-                var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson);
-                var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson, RequestJsonOptions);
-                if (dto == null)
-                    throw new Exception("Invalid request data");
-
-                if(await _userRepo.GetUserByEmailAsync(dto.Email) is User existingUser && existingUser.Id != owner.Id)
-                    throw new Exception("Email already in use by another account");
-                if(!string.IsNullOrWhiteSpace(dto.FirstName) && !string.IsNullOrWhiteSpace(dto.LastName))
-                    owner.UpdateName(dto.FirstName, dto.LastName);
-
-                if (!string.IsNullOrWhiteSpace(dto.FirstName))
-                    owner.UpdateName(dto.FirstName, owner.LastName);
-
-                if (!string.IsNullOrWhiteSpace(dto.LastName))
-                    owner.UpdateName(owner.FirstName, dto.LastName);
-
-                if (!string.IsNullOrWhiteSpace(dto.Email) && !string.IsNullOrWhiteSpace(dto.PhoneNumber))
-                    owner.UpdateContactInfo(dto.Email, dto.PhoneNumber);
-
-                if (!string.IsNullOrWhiteSpace(dto.Email))
-                    owner.UpdateContactInfo(dto.Email, owner.PhoneNumber);
-
-                if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
-                    owner.UpdateContactInfo(owner.Email, dto.PhoneNumber);
-
-
-                if (owner != null)
-                {
-                    await _emailService.SendEmailAsync(
-                        owner.Email,
-                        "Your Request Has Been Approved 🎉",
-                        $@"
-        <h2>Events Platform</h2>
-
-        <p>Dear {owner.FirstName},</p>
-
-        <p>Your <strong>{request.Type}</strong> edit request has been <strong>approved</strong>.</p>
-
-        <p>The changes are now live on your account.</p>
-
-        <br/>
-
-        <p>Best regards,<br/>Events Team</p>
-        "
-                    );
-                }
-
-
-                await _userRepo.UpdateUserAsync();
             }
-            else if (request.Type == EditRequestTypeEnum.Venue)
+
+            switch (request.Type)
             {
-                if (!request.TargetId.HasValue)
-                    throw new Exception("Venue target not found");
+                case EditRequestTypeEnum.Profile:
+                    await ApproveProfileRequestAsync(request);
+                    break;
 
-                var venue = await _venueRepo.GetByIdAsync(request.TargetId.Value);
-                if (venue == null)
-                    throw new Exception("Venue not found");
+                case EditRequestTypeEnum.Venue:
+                case EditRequestTypeEnum.VenueUpdate:
+                    await ApproveVenueRequestAsync(request);
+                    break;
 
-                if (venue.Company.UserId != request.OwnerId)
-                    throw new Exception("Not allowed");
+                case EditRequestTypeEnum.VenueCreate:
+                    await ApproveVenueCreateRequestAsync(request);
+                    break;
 
-                var wrappedDto = JsonSerializer.Deserialize<VenueEditRequestDataDto>(request.RequestedDataJson, RequestJsonOptions);
-                var dto = wrappedDto?.Requested
-                    ?? JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson, RequestJsonOptions);
-
-                if (dto == null)
-                    throw new Exception("Invalid request data");
-
-                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
-
-                venue.Update(
-                    dto.Name,
-                    dto.Description,
-                    dto.City,
-                    dto.Address,
-                    dto.Capacity,
-                    dto.IsActive,
-                    dto.Category,
-                    dto.PricingType,
-                    dto.PricePerHour
-                );
-
-                if (dto.TimeSlots != null)
-                {
-                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
-                }
-
-                venue.Update(
-                dto.Name,
-                dto.Description,
-                dto.City,
-                dto.Address,
-                dto.Capacity,
-                dto.IsActive,
-                venue.Type,
-                venue.PricingType,
-                venue.PricePerHour,
-                venue.DepositPercentage,
-                dto.FacebookUrl,
-                dto.InstagramUrl,
-                dto.WebsiteUrl
-            );
-                await _venueRepo.UpdateAsync(venue);
-            }
-            else if (request.Type == EditRequestTypeEnum.VenueCreate)
-            {
-                var company = await _companyRepo.GetByUserIdAsync(request.OwnerId);
-                if (company == null)
-                    throw new Exception("Company not found for this owner");
-
-                var dto = JsonSerializer.Deserialize<VenueCreateRequestDataDto>(request.RequestedDataJson, RequestJsonOptions);
-                if (dto == null)
-                    throw new Exception("Invalid request data");
-
-                VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
-
-                var venue = new Venue(
-                    dto.Name,
-                    dto.Description,
-                    dto.City,
-                    dto.Address,
-                    dto.Capacity,
-                    company.Id,
-                    dto.Category,
-                    dto.PricingType,
-                    dto.PricePerHour
-                );
-
-                if (dto.TimeSlots != null)
-                {
-                    VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
-                }
-
-                await _venueRepo.AddAsync(venue);
+                default:
+                    throw new Exception("Unsupported edit request type");
             }
 
             request.Approve(adminId);
-
-
             await _editRequestRepo.SaveChangesAsync();
+
+            var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
+            if (owner != null)
+            {
+                await _emailService.SendEmailAsync(
+                    owner.Email,
+                    "Your Request Has Been Approved",
+                    $@"
+<p>Dear {owner.FirstName},</p>
+<p>Your <strong>{request.Type}</strong> request has been approved.</p>
+<p>Best regards,<br/>Events Team</p>");
+            }
         }
 
         public async Task RejectAsync(int requestId, int adminId, string? reason)
         {
             var request = await _editRequestRepo.GetByIdAsync(requestId);
             if (request == null)
+            {
                 throw new Exception("Edit request not found");
+            }
 
             if (request.Status != EditRequestStatusEnum.Pending)
+            {
                 throw new Exception("Already processed");
+            }
 
             request.Reject(adminId, reason);
-            var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
+            await _editRequestRepo.SaveChangesAsync();
 
+            var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
             if (owner != null)
             {
-                string requestTypeText = request.Type == EditRequestTypeEnum.Profile
-                    ? "profile"
-                    : "venue";
-
                 await _emailService.SendEmailAsync(
                     owner.Email,
                     "Your Request Has Been Rejected",
                     $@"
-            <h2>Events Platform</h2>
-
-            <p>Dear {owner.FirstName},</p>
-
-            <p>We regret to inform you that your <strong>{requestTypeText}</strong> edit request has been <strong>rejected</strong>.</p>
-
-            <p><strong>Reason:</strong> {reason ?? "No reason provided"}</p>
-
-            <p>You can review your information and submit a new request if needed.</p>
-
-            <br/>
-
-            <p>Best regards,<br/>Events Team</p>
-            "
-                );
+<p>Dear {owner.FirstName},</p>
+<p>Your <strong>{request.Type}</strong> request has been rejected.</p>
+<p><strong>Reason:</strong> {reason ?? "No reason provided"}</p>
+<p>Best regards,<br/>Events Team</p>");
             }
-            await _editRequestRepo.SaveChangesAsync();
+        }
+
+        private async Task ApproveProfileRequestAsync(EditRequest request)
+        {
+            var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
+            if (owner == null)
+            {
+                throw new Exception("Owner not found");
+            }
+
+            var dto = JsonSerializer.Deserialize<ProfileEditRequestDto>(request.RequestedDataJson, RequestJsonOptions)
+                ?? throw new Exception("Invalid request data");
+
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                var existingUser = await _userRepo.GetUserByEmailAsync(dto.Email);
+                if (existingUser != null && existingUser.Id != owner.Id)
+                {
+                    throw new Exception("Email already in use by another account");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.FirstName) || !string.IsNullOrWhiteSpace(dto.LastName))
+            {
+                owner.UpdateName(
+                    string.IsNullOrWhiteSpace(dto.FirstName) ? owner.FirstName : dto.FirstName,
+                    string.IsNullOrWhiteSpace(dto.LastName) ? owner.LastName : dto.LastName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Email) || !string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            {
+                owner.UpdateContactInfo(
+                    string.IsNullOrWhiteSpace(dto.Email) ? owner.Email : dto.Email,
+                    string.IsNullOrWhiteSpace(dto.PhoneNumber) ? owner.PhoneNumber : dto.PhoneNumber);
+            }
+
+            await _userRepo.UpdateUserAsync();
+        }
+
+        private async Task ApproveVenueRequestAsync(EditRequest request)
+        {
+            if (!request.TargetId.HasValue)
+            {
+                throw new Exception("Venue target not found");
+            }
+
+            var venue = await _venueRepo.GetByIdAsync(request.TargetId.Value);
+            if (venue == null)
+            {
+                throw new Exception("Venue not found");
+            }
+
+            var wrappedDto = JsonSerializer.Deserialize<VenueEditRequestDataDto>(request.RequestedDataJson, RequestJsonOptions);
+            var dto = wrappedDto?.Requested
+                ?? JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson, RequestJsonOptions)
+                ?? throw new Exception("Invalid request data");
+
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            venue.Update(
+                dto.Name,
+                dto.Description,
+                dto.City,
+                dto.Address,
+                dto.Capacity,
+                dto.IsActive,
+                dto.Type,
+                dto.Category,
+                dto.PricingType,
+                dto.PricePerHour,
+                dto.DepositPercentage,
+                dto.FacebookUrl,
+                dto.InstagramUrl,
+                dto.WebsiteUrl);
+
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
+
+            await _venueRepo.UpdateAsync(venue);
+        }
+
+        private async Task ApproveVenueCreateRequestAsync(EditRequest request)
+        {
+            var company = await _companyRepo.GetByUserIdAsync(request.OwnerId);
+            if (company == null)
+            {
+                throw new Exception("Company not found for this owner");
+            }
+
+            var dto = JsonSerializer.Deserialize<VenueCreateRequestDataDto>(request.RequestedDataJson, RequestJsonOptions)
+                ?? throw new Exception("Invalid request data");
+
+            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+
+            var venue = new Venue(
+                dto.Name,
+                dto.Description,
+                dto.City,
+                dto.Address,
+                dto.Capacity,
+                company.Id,
+                dto.Type,
+                dto.Category,
+                dto.PricingType,
+                dto.PricePerHour,
+                dto.DepositPercentage,
+                dto.FacebookUrl,
+                dto.InstagramUrl,
+                dto.WebsiteUrl);
+
+            if (dto.ImageUrls.Count > 0)
+            {
+                venue.AddImages(dto.ImageUrls);
+            }
+
+            if (dto.TimeSlots != null)
+            {
+                VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
+            }
+
+            await _venueRepo.AddAsync(venue);
+        }
+
+        private static EditRequestDto MapRequest(EditRequest request)
+        {
+            return new EditRequestDto
+            {
+                Id = request.Id,
+                OwnerId = request.OwnerId,
+                OwnerName = request.Owner?.FullName ?? string.Empty,
+                Type = request.Type.ToString(),
+                Status = request.Status.ToString(),
+                TargetId = request.TargetId,
+                RequestedDataJson = request.RequestedDataJson,
+                CreatedAt = request.CreatedAt,
+                ReviewedByAdminId = request.ReviewedByAdminId,
+                ReviewedAt = request.ReviewedAt,
+                RejectionReason = request.RejectionReason
+            };
         }
     }
 }

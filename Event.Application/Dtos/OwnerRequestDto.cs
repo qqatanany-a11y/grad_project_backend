@@ -10,7 +10,6 @@ namespace Event.Application.Dtos
         public string CompanyName { get; set; }
         public string BusinessAddress { get; set; }
         public string BusinessPhone { get; set; }
-        public string VenueName { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }

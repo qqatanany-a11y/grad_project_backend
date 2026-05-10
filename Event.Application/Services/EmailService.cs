@@ -1,6 +1,5 @@
-﻿using Event.Application.IServices;
+using Event.Application.IServices;
 using Microsoft.Extensions.Configuration;
-
 using System.Net;
 using System.Net.Mail;
 
@@ -9,10 +8,8 @@ namespace Event.Application.Services
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _config;
-        public EmailService(IConfiguration config) => _config = config;
-        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
-        public EmailService(Microsoft.Extensions.Configuration.IConfiguration config)
+        public EmailService(IConfiguration config)
         {
             _config = config;
         }
@@ -21,18 +18,17 @@ namespace Event.Application.Services
         {
             var smtpSettings = _config.GetSection("SmtpSettings");
 
-            using var client = new SmtpClient(smtpSettings["Host"], int.Parse(smtpSettings["Port"]))
+            using var client = new SmtpClient(smtpSettings["Host"], int.Parse(smtpSettings["Port"]!))
             {
                 Credentials = new NetworkCredential(smtpSettings["User"], smtpSettings["Pass"]),
                 EnableSsl = true
             };
 
-            var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body)
+            using var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body)
             {
-                IsBodyHtml = true 
+                IsBodyHtml = true
             };
 
-            var mailMessage = new MailMessage(smtpSettings["User"], to, subject, body);
             await client.SendMailAsync(mailMessage);
         }
     }
