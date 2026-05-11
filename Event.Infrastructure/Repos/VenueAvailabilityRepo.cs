@@ -14,6 +14,12 @@ namespace Event.Infrastructure.Repos
             _context = context;
         }
 
+        public async Task<VenueAvailability?> GetByIdAsync(int id)
+        {
+            return await _context.VenueAvailabilities
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<VenueAvailability?> GetSlotAsync(
             int venueId,
             DateOnly date,

@@ -1,10 +1,10 @@
-﻿namespace events.domain.Entities
+namespace events.domain.Entities
 {
     public enum EditRequestTypeEnum
     {
         Profile = 1,
         Venue = 2,
-            VenueUpdate
-        VenueCreate = 3
+        VenueCreate = 3,
+        VenueUpdate = 4
     }
 }

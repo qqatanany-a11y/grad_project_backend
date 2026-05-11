@@ -27,6 +27,10 @@ namespace events.domain.DomainConfig
             builder.Property(p => p.PaidAt)
                    .IsRequired(false);
 
+            builder.Property(p => p.CliqTransferImageDataUrl)
+                   .HasColumnType("text")
+                   .IsRequired(false);
+
             builder.Property(p => p.CreatedAt)
                    .HasDefaultValueSql("now()");
 

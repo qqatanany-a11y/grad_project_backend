@@ -31,6 +31,7 @@ namespace Event.Infrastructure.Repos
             return await _context.Bookings
                 .Where(b => b.UserId == userId)
                 .Include(b => b.Venue)
+                .Include(b => b.Payment)
                 .Include(b => b.SelectedServices)
                 .ThenInclude(bs => bs.VenueServiceOption)
                 .ThenInclude(vso => vso.Service)
@@ -42,6 +43,7 @@ namespace Event.Infrastructure.Repos
             return await _context.Bookings
                 .Include(b => b.Venue)
                 .ThenInclude(v => v.Company)
+                .Include(b => b.Payment)
                 .Include(b => b.SelectedServices)
                 .ThenInclude(bs => bs.VenueServiceOption)
                 .ThenInclude(vso => vso.Service)
@@ -55,6 +57,7 @@ namespace Event.Infrastructure.Repos
                 .Include(b => b.Venue)
                 .ThenInclude(v => v.Company)
                 .Include(b => b.User)
+                .Include(b => b.Payment)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
