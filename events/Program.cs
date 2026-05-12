@@ -18,11 +18,14 @@ using System.Threading.RateLimiting;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = DatabaseConnectionStringResolver.Resolve(builder.Configuration);
+
+// Render injects PORT at runtime, so bind Kestrel explicitly when it is present.
+ConfigureRenderPort(builder);
 
 // ================= DB =================
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 // ================= Repositories =================
 builder.Services.AddScoped<IUserRepo, UserRepo>();
@@ -105,11 +108,13 @@ builder.Services.AddControllers()
 });
 
 // ================= CORS =================
+var allowedCorsOrigins = BuildAllowedCorsOrigins(builder.Configuration);
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("FrontendClients", policy =>
     {
-        policy.AllowAnyOrigin()
+        // Keep local frontend origins and add the deployed frontend URL from configuration.
+        policy.WithOrigins(allowedCorsOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -147,13 +152,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // ================= Pipeline =================
-if (app.Environment.IsDevelopment())
+var swaggerEnabledInProduction = builder.Configuration.GetValue<bool>("Swagger:EnableInProduction");
+if (app.Environment.IsDevelopment() || swaggerEnabledInProduction)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+app.UseCors("FrontendClients");
 
 app.UseRateLimiter();
 
@@ -163,3 +169,33 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void ConfigureRenderPort(WebApplicationBuilder builder)
+{
+    var portValue = builder.Configuration["PORT"];
+
+    if (int.TryParse(portValue, out var port))
+    {
+        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+    }
+}
+
+static string[] BuildAllowedCorsOrigins(IConfiguration configuration)
+{
+    var origins = new List<string>
+    {
+        "http://localhost:5173",
+        "http://localhost:3000"
+    };
+
+    var frontendUrl = configuration["FRONTEND_URL"];
+
+    if (!string.IsNullOrWhiteSpace(frontendUrl))
+    {
+        origins.Add(frontendUrl.TrimEnd('/'));
+    }
+
+    return origins
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToArray();
+}
