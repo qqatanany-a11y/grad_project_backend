@@ -1,0 +1,5 @@
+.git
+.verify
+.vs
+**/bin
+**/obj

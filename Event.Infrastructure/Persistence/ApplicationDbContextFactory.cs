@@ -31,10 +31,7 @@ namespace events.Infrastructure.Persistence
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new InvalidOperationException("The DefaultConnection string is missing.");
+            var connectionString = DatabaseConnectionStringResolver.Resolve(configuration);
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
