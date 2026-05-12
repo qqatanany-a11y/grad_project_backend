@@ -113,10 +113,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendClients", policy =>
     {
-        // Keep local frontend origins and add the deployed frontend URL from configuration.
         policy.WithOrigins(allowedCorsOrigins)
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
