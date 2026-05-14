@@ -1,31 +1,114 @@
 using Event.Application.IServices;
-using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Net.Mail;
+using MailKitSmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Event.Application.Services
 {
     public class EmailService : IEmailService
     {
+        private const string ResendEmailEndpoint = "emails";
         private readonly IConfiguration _config;
+        private readonly HttpClient _httpClient;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration config, ILogger<EmailService> logger)
+        public EmailService(HttpClient httpClient, IConfiguration config, ILogger<EmailService> logger)
         {
+            _httpClient = httpClient;
             _config = config;
             _logger = logger;
         }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
+            var resendSettings = ResolveResendSettings();
+
+            if (resendSettings.IsConfigured)
+            {
+                await SendWithResendAsync(resendSettings, to, subject, body);
+                return;
+            }
+
+            if (!IsDevelopmentEnvironment())
+            {
+                throw new InvalidOperationException(
+                    "Email delivery is not configured. Set Resend__ApiKey and Resend__FromEmail.");
+            }
+
+            _logger.LogWarning(
+                "Resend email delivery is not configured. Falling back to SMTP because the application is running in Development.");
+
+            await SendWithSmtpAsync(to, subject, body);
+        }
+
+        private async Task SendWithResendAsync(ResolvedResendSettings resendSettings, string to, string subject, string body)
+        {
+            var normalizedFrom = NormalizeEmailAddress(resendSettings.FromEmail, "Resend__FromEmail");
+            var normalizedRecipient = NormalizeEmailAddress(to, "Recipient");
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, ResendEmailEndpoint)
+            {
+                Content = JsonContent.Create(new
+                {
+                    from = normalizedFrom,
+                    to = normalizedRecipient,
+                    subject,
+                    html = body
+                })
+            };
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", resendSettings.ApiKey);
+
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await _httpClient.SendAsync(request);
+            }
+            catch (TaskCanceledException ex)
+            {
+                _logger.LogError(ex, "Resend email request timed out for {Recipient}", normalizedRecipient);
+                throw new InvalidOperationException("Email delivery timed out while calling Resend.", ex);
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Resend email request failed for {Recipient}", normalizedRecipient);
+                throw new InvalidOperationException("Email delivery failed while calling Resend.", ex);
+            }
+
+            using (response)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+
+                _logger.LogError(
+                    "Resend rejected email for {Recipient}. StatusCode: {StatusCode}. Response: {ResponseBody}",
+                    normalizedRecipient,
+                    (int)response.StatusCode,
+                    Truncate(responseBody, 2000));
+
+                throw new InvalidOperationException(
+                    $"Email delivery failed with Resend status code {(int)response.StatusCode}.");
+            }
+        }
+
+        private async Task SendWithSmtpAsync(string to, string subject, string body)
+        {
             var smtpSettings = ResolveSmtpSettings();
             var normalizedPassword = NormalizePassword(smtpSettings.Host, smtpSettings.Password);
             var message = BuildMessage(smtpSettings, to, subject, body);
             var socketOptions = ResolveSocketOptions(smtpSettings.Port, smtpSettings.Security);
 
-            using var client = new SmtpClient();
+            using var client = new MailKitSmtpClient();
 
             try
             {
@@ -46,6 +129,38 @@ namespace Event.Application.Services
                     smtpSettings.Port);
                 throw new InvalidOperationException("Email delivery failed. Check SMTP settings or network access.", ex);
             }
+        }
+
+        private ResolvedResendSettings ResolveResendSettings()
+        {
+            var apiKey = GetSettingValue("Resend:ApiKey", "Resend__ApiKey");
+            var fromEmail = GetSettingValue("Resend:FromEmail", "Resend__FromEmail");
+            var hasAnyValue = !string.IsNullOrWhiteSpace(apiKey) || !string.IsNullOrWhiteSpace(fromEmail);
+
+            if (!hasAnyValue)
+            {
+                return ResolvedResendSettings.Empty;
+            }
+
+            var missingSettings = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                missingSettings.Add("Resend__ApiKey");
+            }
+
+            if (string.IsNullOrWhiteSpace(fromEmail))
+            {
+                missingSettings.Add("Resend__FromEmail");
+            }
+
+            if (missingSettings.Count > 0)
+            {
+                throw new InvalidOperationException(
+                    $"Resend settings are not configured correctly. Missing: {string.Join(", ", missingSettings)}.");
+            }
+
+            return new ResolvedResendSettings(apiKey!, fromEmail!);
         }
 
         private MimeMessage BuildMessage(ResolvedSmtpSettings smtpSettings, string to, string subject, string body)
@@ -73,6 +188,18 @@ namespace Event.Application.Services
             }.ToMessageBody();
 
             return message;
+        }
+
+        private static string NormalizeEmailAddress(string value, string label)
+        {
+            try
+            {
+                return new MailAddress(value).ToString();
+            }
+            catch (FormatException ex)
+            {
+                throw new InvalidOperationException($"{label} email address is invalid.", ex);
+            }
         }
 
         private ResolvedSmtpSettings ResolveSmtpSettings()
@@ -203,6 +330,31 @@ namespace Event.Application.Services
             }
 
             return null;
+        }
+
+        private bool IsDevelopmentEnvironment()
+        {
+            var environmentName = GetSettingValue("ASPNETCORE_ENVIRONMENT", "DOTNET_ENVIRONMENT");
+            return string.Equals(environmentName, "Development", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
+            {
+                return value;
+            }
+
+            return value[..maxLength];
+        }
+
+        private sealed record ResolvedResendSettings(string ApiKey, string FromEmail)
+        {
+            public static readonly ResolvedResendSettings Empty = new(string.Empty, string.Empty);
+
+            public bool IsConfigured =>
+                !string.IsNullOrWhiteSpace(ApiKey) &&
+                !string.IsNullOrWhiteSpace(FromEmail);
         }
 
         private sealed record ResolvedSmtpSettings(
