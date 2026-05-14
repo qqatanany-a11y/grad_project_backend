@@ -124,7 +124,12 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegisterVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterOwnerVaildator>();
 builder.Services.AddValidatorsFromAssemblyContaining<LoginVaildator>();
 builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddHttpClient<IEmailService, EmailService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.resend.com/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("events-backend/1.0");
+});
 builder.Services.AddScoped<IVenueAvailabilityRepo, VenueAvailabilityRepo>();
 var app = builder.Build();
 
