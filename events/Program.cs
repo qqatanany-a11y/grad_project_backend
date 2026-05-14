@@ -53,7 +53,6 @@ builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 builder.Services.AddScoped<IVenueServiceOptionService, VenueServiceOptionService>();
 builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>();
 builder.Services.AddHostedService<BookingReminderBackgroundService>();
-builder.Services.AddHostedService<BookingReminderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ReviewService>();
 // ================= JWT =================
@@ -182,20 +181,31 @@ static void ConfigureRenderPort(WebApplicationBuilder builder)
 
 static string[] BuildAllowedCorsOrigins(IConfiguration configuration)
 {
-    var origins = new List<string>
+    var origins = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "http://localhost:5173",
         "http://localhost:3000"
     };
 
-    var frontendUrl = configuration["FRONTEND_URL"];
+    AddConfiguredOrigins(origins, configuration["FRONTEND_URL"]);
+    AddConfiguredOrigins(origins, configuration["FRONTEND_URLS"]);
+    AddConfiguredOrigins(origins, configuration["CORS_ALLOWED_ORIGINS"]);
+    AddConfiguredOrigins(origins, configuration["CORS_ORIGINS"]);
 
-    if (!string.IsNullOrWhiteSpace(frontendUrl))
+    return origins.ToArray();
+}
+
+static void AddConfiguredOrigins(ISet<string> origins, string rawOrigins)
+{
+    if (string.IsNullOrWhiteSpace(rawOrigins))
     {
-        origins.Add(frontendUrl.TrimEnd('/'));
+        return;
     }
 
-    return origins
-        .Distinct(StringComparer.OrdinalIgnoreCase)
-        .ToArray();
+    var values = rawOrigins.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+    foreach (var value in values)
+    {
+        origins.Add(value.TrimEnd('/'));
+    }
 }
