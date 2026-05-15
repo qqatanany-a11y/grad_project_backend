@@ -74,6 +74,9 @@ namespace Event.Application.Services
                 throw new Exception("Not allowed");
             }
 
+            dto.PricingType = PricingType.FixedSlots;
+            dto.PricePerHour = null;
+
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
             var requestData = new VenueEditRequestDataDto
@@ -90,8 +93,8 @@ namespace Event.Application.Services
                     IsActive = venue.IsActive,
                     Type = venue.Type,
                     Category = venue.Category,
-                    PricingType = venue.PricingType,
-                    PricePerHour = venue.PricePerHour,
+                    PricingType = PricingType.FixedSlots,
+                    PricePerHour = null,
                     DepositPercentage = venue.DepositPercentage,
                     FacebookUrl = venue.FacebookUrl,
                     InstagramUrl = venue.InstagramUrl,
@@ -124,6 +127,9 @@ namespace Event.Application.Services
             {
                 throw new Exception("Company not found for this owner");
             }
+
+            dto.PricingType = PricingType.FixedSlots;
+            dto.PricePerHour = null;
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -304,6 +310,9 @@ namespace Event.Application.Services
                 ?? JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson, RequestJsonOptions)
                 ?? throw new Exception("Invalid request data");
 
+            dto.PricingType = PricingType.FixedSlots;
+            dto.PricePerHour = null;
+
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
             venue.Update(
@@ -340,6 +349,9 @@ namespace Event.Application.Services
 
             var dto = JsonSerializer.Deserialize<VenueCreateRequestDataDto>(request.RequestedDataJson, RequestJsonOptions)
                 ?? throw new Exception("Invalid request data");
+
+            dto.PricingType = PricingType.FixedSlots;
+            dto.PricePerHour = null;
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 

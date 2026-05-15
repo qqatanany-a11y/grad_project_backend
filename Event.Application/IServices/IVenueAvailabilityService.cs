@@ -7,5 +7,6 @@ namespace Event.Application.IServices
         Task<VenueAvailabilityItemDto> AddAsync(int ownerId, CreateVenueAvailabilityDto dto);
         Task<List<VenueAvailabilityItemDto>> GetByVenueIdAsync(int ownerId, int venueId);
         Task<List<VenueAvailabilityItemDto>> GetAvailableSlotsAsync(int venueId, DateOnly date);
+        Task DeleteAsync(int ownerId, int venueAvailabilityId);
     }
 }

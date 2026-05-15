@@ -58,6 +58,12 @@ namespace Event.Infrastructure.Repos
             await _context.VenueAvailabilities.AddAsync(venueAvailability);
         }
 
+        public Task DeleteAsync(VenueAvailability venueAvailability)
+        {
+            _context.VenueAvailabilities.Remove(venueAvailability);
+            return Task.CompletedTask;
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

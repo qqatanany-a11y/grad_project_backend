@@ -63,6 +63,29 @@ namespace events.Controllers
             }
         }
 
+        [HttpDelete("{availabilityId}")]
+        [Authorize(Roles = "Owner")]
+        public async Task<IActionResult> Delete(int availabilityId)
+        {
+            var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (ownerIdClaim == null)
+                return Unauthorized("Owner not authenticated");
+
+            if (!int.TryParse(ownerIdClaim.Value, out int ownerId))
+                return Unauthorized("Invalid owner id");
+
+            try
+            {
+                await _venueAvailabilityService.DeleteAsync(ownerId, availabilityId);
+                return Ok("Venue slot deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{venueId}/available")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAvailableSlots(int venueId, [FromQuery] DateOnly date)

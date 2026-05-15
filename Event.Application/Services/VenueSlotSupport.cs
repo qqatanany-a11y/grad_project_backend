@@ -66,16 +66,6 @@ namespace Event.Application.Services
                 }
             }
 
-            if (pricingType == PricingType.Hourly)
-            {
-                if (!pricePerHour.HasValue || pricePerHour.Value <= 0)
-                {
-                    throw new Exception("Price per hour must be greater than 0 for hourly venues.");
-                }
-
-                return;
-            }
-
             if (pricePerHour.HasValue && pricePerHour.Value < 0)
             {
                 throw new Exception("Venue price must be greater than or equal to 0.");

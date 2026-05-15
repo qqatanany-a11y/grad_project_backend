@@ -36,8 +36,11 @@ namespace Event.Application.Services
 
         public async Task<VenueDto> AddAsync(int companyId, AddVenueDto dto)
         {
-            ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
-            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+            var pricingType = PricingType.FixedSlots;
+            decimal? pricePerHour = null;
+
+            ValidateVenue(pricingType, pricePerHour, dto.DepositPercentage);
+            VenueSlotSupport.ValidateVenuePricing(pricingType, pricePerHour, dto.TimeSlots);
 
             var venue = new Venue(
                 dto.Name,
@@ -48,8 +51,8 @@ namespace Event.Application.Services
                 companyId,
                 dto.Type,
                 dto.Category,
-                dto.PricingType,
-                dto.PricePerHour,
+                pricingType,
+                pricePerHour,
                 dto.DepositPercentage,
                 dto.FacebookUrl,
                 dto.InstagramUrl,
@@ -79,8 +82,11 @@ namespace Event.Application.Services
                 throw new Exception("Not allowed");
             }
 
-            ValidateVenue(dto.PricingType, dto.PricePerHour, dto.DepositPercentage);
-            VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
+            var pricingType = PricingType.FixedSlots;
+            decimal? pricePerHour = null;
+
+            ValidateVenue(pricingType, pricePerHour, dto.DepositPercentage);
+            VenueSlotSupport.ValidateVenuePricing(pricingType, pricePerHour, dto.TimeSlots);
 
             venue.Update(
                 dto.Name,
@@ -91,8 +97,8 @@ namespace Event.Application.Services
                 dto.IsActive,
                 dto.Type,
                 dto.Category,
-                dto.PricingType,
-                dto.PricePerHour,
+                pricingType,
+                pricePerHour,
                 dto.DepositPercentage,
                 dto.FacebookUrl,
                 dto.InstagramUrl,
@@ -251,8 +257,8 @@ namespace Event.Application.Services
                 CompanyId = venue.CompanyId,
                 Type = venue.Type,
                 Category = venue.Category,
-                PricingType = venue.PricingType,
-                PricePerHour = venue.PricePerHour,
+                PricingType = PricingType.FixedSlots,
+                PricePerHour = null,
                 DepositPercentage = venue.DepositPercentage,
                 FacebookUrl = venue.FacebookUrl,
                 InstagramUrl = venue.InstagramUrl,
@@ -264,11 +270,6 @@ namespace Event.Application.Services
 
         private static void ValidateVenue(PricingType pricingType, decimal? pricePerHour, decimal depositPercentage)
         {
-            if (pricingType == PricingType.Hourly && (!pricePerHour.HasValue || pricePerHour.Value <= 0))
-            {
-                throw new Exception("Price per hour must be greater than 0 for hourly venues.");
-            }
-
             if (pricePerHour.HasValue && pricePerHour.Value < 0)
             {
                 throw new Exception("Venue price must be greater than or equal to 0.");

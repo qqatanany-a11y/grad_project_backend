@@ -11,6 +11,7 @@ namespace events.domain.Repos
 
         Task<bool> HasOverlapAsync(int venueId, DateOnly date, TimeSpan startTime, TimeSpan endTime);
         Task AddAsync(VenueAvailability venueAvailability);
+        Task DeleteAsync(VenueAvailability venueAvailability);
 
         Task SaveChangesAsync();
     }
