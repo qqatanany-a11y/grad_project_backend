@@ -179,7 +179,7 @@ namespace Event.API.Controllers
         }
         [HttpPut("edit-requests/{id}/reject")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RejectEditRequest(
+        public async Task<IActionResult> RejectEditRequest2(
             int id,
             [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement? payload = null)
         {
