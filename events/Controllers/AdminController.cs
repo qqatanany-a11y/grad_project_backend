@@ -3,7 +3,9 @@ using Event.Application.IServices;
 using events.domain.Repos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Event.API.Controllers
 {
@@ -45,16 +47,18 @@ namespace Event.API.Controllers
             return Ok("Approved successfully");
         }
         [HttpPost("owner-requests/{id}/reject")]
-        public async Task<IActionResult> Reject(int id, [FromBody] RejectEditRequestDto dto)
+        public async Task<IActionResult> Reject(
+            int id,
+            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement? payload = null)
         {
             try
             {
-                await _adminService.RejectOwnerAsync(id, dto.Reason);
+                await _adminService.RejectOwnerAsync(id, ExtractReason(payload));
                 return Ok("Rejected successfully");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return HandleRejectFailure(ex);
             }
         }
 
@@ -142,7 +146,9 @@ namespace Event.API.Controllers
         }
 
         [HttpPost("edit-requests/{id}/reject")]
-        public async Task<IActionResult> RejectEditRequest(int id, RejectEditRequestDto dto)
+        public async Task<IActionResult> RejectEditRequest(
+            int id,
+            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement? payload = null)
         {
             var adminIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (adminIdClaim == null)
@@ -153,12 +159,12 @@ namespace Event.API.Controllers
 
             try
             {
-                await _editRequestService.RejectAsync(id, adminId, dto?.Reason);
+                await _editRequestService.RejectAsync(id, adminId, ExtractReason(payload));
                 return Ok("Edit request rejected");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return HandleRejectFailure(ex);
             }
         }
         [HttpPut("edit-requests/{id}/approve")]
@@ -173,13 +179,72 @@ namespace Event.API.Controllers
         }
         [HttpPut("edit-requests/{id}/reject")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RejectEditRequest(int id, [FromBody] string reason)
+        public async Task<IActionResult> RejectEditRequest(
+            int id,
+            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement? payload = null)
         {
             var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            await _adminService.RejectVenueUpdate(id, adminId, reason);
+            try
+            {
+                await _adminService.RejectVenueUpdate(id, adminId, ExtractReason(payload));
+            }
+            catch (Exception ex)
+            {
+                return HandleRejectFailure(ex);
+            }
 
             return Ok("Rejected successfully");
+        }
+
+        private IActionResult HandleRejectFailure(Exception ex)
+        {
+            return ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase)
+                ? NotFound(ex.Message)
+                : BadRequest(ex.Message);
+        }
+
+        private static string? ExtractReason(JsonElement? payload)
+        {
+            if (!payload.HasValue)
+            {
+                return null;
+            }
+
+            var value = payload.Value;
+            if (value.ValueKind == JsonValueKind.Null || value.ValueKind == JsonValueKind.Undefined)
+            {
+                return null;
+            }
+
+            if (value.ValueKind == JsonValueKind.String)
+            {
+                return value.GetString();
+            }
+
+            if (value.ValueKind != JsonValueKind.Object)
+            {
+                return null;
+            }
+
+            foreach (var property in value.EnumerateObject())
+            {
+                if (!property.Name.Equals("reason", StringComparison.OrdinalIgnoreCase) &&
+                    !property.Name.Equals("rejectionReason", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                return property.Value.ValueKind switch
+                {
+                    JsonValueKind.Null => null,
+                    JsonValueKind.Undefined => null,
+                    JsonValueKind.String => property.Value.GetString(),
+                    _ => property.Value.ToString()
+                };
+            }
+
+            return null;
         }
 
     }

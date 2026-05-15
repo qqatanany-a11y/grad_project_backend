@@ -1,4 +1,5 @@
 using Event.Application.Dtos;
+using Event.Application.Helpers;
 using Event.Application.IServices;
 using events.domain.Entites;
 using events.domain.Entities;
@@ -101,7 +102,7 @@ namespace Event.Application.Services
 <p>Best regards,<br/>Events Team</p>");
         }
 
-        public async Task RejectOwnerAsync(int id, string reason)
+        public async Task RejectOwnerAsync(int id, string? reason)
         {
             var request = await _ownerRequestRepo.GetByIdAsync(id);
             if (request == null)
@@ -109,7 +110,9 @@ namespace Event.Application.Services
                 throw new Exception("Request not found");
             }
 
-            request.Reject(reason);
+            var normalizedReason = RejectReasonHelper.Normalize(reason);
+
+            request.Reject(normalizedReason);
             await _ownerRequestRepo.UpdateAsync(request);
 
             await _emailService.SendEmailAsync(
@@ -118,7 +121,7 @@ namespace Event.Application.Services
                 $@"
 <p>Dear {request.FirstName},</p>
 <p>Your owner request has been rejected.</p>
-<p><strong>Reason:</strong> {reason}</p>
+<p><strong>Reason:</strong> {normalizedReason}</p>
 <p>Best regards,<br/>Events Team</p>");
         }
 
@@ -216,7 +219,7 @@ namespace Event.Application.Services
 <p>Best regards,<br/>Events Team</p>");
         }
 
-        public async Task RejectVenueUpdate(int requestId, int adminId, string reason)
+        public async Task RejectVenueUpdate(int requestId, int adminId, string? reason)
         {
             var request = await _editRequestRepo.GetByIdAsync(requestId);
             if (request == null)
@@ -224,7 +227,9 @@ namespace Event.Application.Services
                 throw new Exception("Request not found");
             }
 
-            request.Reject(adminId, reason);
+            var normalizedReason = RejectReasonHelper.Normalize(reason);
+
+            request.Reject(adminId, normalizedReason);
             await _editRequestRepo.SaveChangesAsync();
 
             var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
@@ -243,7 +248,7 @@ namespace Event.Application.Services
                     "Venue Update Rejected",
                     $@"
 <p>Your venue update request has been rejected.</p>
-<p><strong>Reason:</strong> {reason}</p>
+<p><strong>Reason:</strong> {normalizedReason}</p>
 <p>Best regards,<br/>Events Team</p>");
             }
         }

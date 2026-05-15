@@ -8,11 +8,11 @@ namespace Event.Application.IServices
     {
         Task<List<OwnerRequest>> GetOwnerRequestsAsync();
         Task ApproveOwnerAsync(int requestId);
-        Task RejectOwnerAsync(int id, string reason);
+        Task RejectOwnerAsync(int id, string? reason);
 
         Task OwnerRequestAsync(RegisterOwnerDto dto);
         Task ApproveVenueUpdate(int requestId, int adminId);
-        Task RejectVenueUpdate(int requestId, int adminId, string reason);
+        Task RejectVenueUpdate(int requestId, int adminId, string? reason);
 
 
         Task<List<Company>> GetCompaniesAsync();

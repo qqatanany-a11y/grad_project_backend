@@ -89,7 +89,8 @@ namespace Event.Application.Services
                 Email = user.Email,
                 Role = role.Name,
                 CompanyId = null,
-                IsFirstLogin = true,
+                IsFirstLogin = false,
+                RequiresPasswordChange = false,
                 IsOwner = false
             };
         }
@@ -125,7 +126,8 @@ namespace Event.Application.Services
                 Email = user.Email,
                 Role = role.Name,
                 CompanyId = null,
-                IsFirstLogin = true,
+                IsFirstLogin = false,
+                RequiresPasswordChange = false,
                 IsOwner = false
             };
         }
@@ -147,6 +149,7 @@ namespace Event.Application.Services
             var role = await _roleRepo.GetRoleByIdAsync(user.RoleId);
             var roleName = role?.Name ?? "User";
             var isFirstLogin = user.LastLoginAt == null;
+            var requiresPasswordChange = RequiresPasswordChange(roleName, isFirstLogin);
 
             int? companyId = null;
             if (roleName == "Owner")
@@ -165,7 +168,8 @@ namespace Event.Application.Services
                 Email = user.Email,
                 Role = roleName,
                 CompanyId = companyId,
-                IsFirstLogin = isFirstLogin,
+                IsFirstLogin = requiresPasswordChange,
+                RequiresPasswordChange = requiresPasswordChange,
                 IsOwner = roleName == "Owner"
             };
         }
@@ -211,7 +215,8 @@ namespace Event.Application.Services
                 Email = dto.Email,
                 Role = "PendingOwner",
                 CompanyId = null,
-                IsFirstLogin = true,
+                IsFirstLogin = false,
+                RequiresPasswordChange = false,
                 IsOwner = true
             };
         }
@@ -265,6 +270,11 @@ namespace Event.Application.Services
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private static bool RequiresPasswordChange(string roleName, bool isFirstLogin)
+        {
+            return roleName == "Owner" && isFirstLogin;
         }
     }
 }
