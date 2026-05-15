@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Event.Application.Dtos;
+using Event.Application.Helpers;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
@@ -229,7 +230,9 @@ namespace Event.Application.Services
                 throw new Exception("Already processed");
             }
 
-            request.Reject(adminId, reason);
+            var normalizedReason = RejectReasonHelper.Normalize(reason);
+
+            request.Reject(adminId, normalizedReason);
             await _editRequestRepo.SaveChangesAsync();
 
             var owner = await _userRepo.GetUserByIdAsync(request.OwnerId);
@@ -241,7 +244,7 @@ namespace Event.Application.Services
                     $@"
 <p>Dear {owner.FirstName},</p>
 <p>Your <strong>{request.Type}</strong> request has been rejected.</p>
-<p><strong>Reason:</strong> {reason ?? "No reason provided"}</p>
+<p><strong>Reason:</strong> {normalizedReason}</p>
 <p>Best regards,<br/>Events Team</p>");
             }
         }

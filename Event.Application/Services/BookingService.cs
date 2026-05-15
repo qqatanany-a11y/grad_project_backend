@@ -1,4 +1,5 @@
 using Event.Application.Dtos;
+using Event.Application.Helpers;
 using Event.Application.IServices;
 using events.domain.Entities;
 using events.domain.Repos;
@@ -338,7 +339,7 @@ namespace Event.Application.Services
 <p>You can now complete the payment from your My Bookings page.</p>");
         }
 
-        public async Task Reject(int bookingId, int ownerId)
+        public async Task Reject(int bookingId, int ownerId, string? reason)
         {
             var booking = await _bookingRepo.GetByIdAsync(bookingId);
             if (booking == null)
@@ -356,6 +357,8 @@ namespace Event.Application.Services
                 throw new Exception("Only pending bookings can be rejected.");
             }
 
+            var normalizedReason = RejectReasonHelper.Normalize(reason);
+
             booking.Reject(ownerId);
             await _bookingRepo.SaveChangesAsync();
 
@@ -366,7 +369,8 @@ namespace Event.Application.Services
 <h2>Your booking has been rejected</h2>
 <p>Venue: {booking.Venue.Name}</p>
 <p>Date: {booking.BookingDate:yyyy-MM-dd}</p>
-<p>Time: {booking.StartTime} - {booking.EndTime}</p>");
+<p>Time: {booking.StartTime} - {booking.EndTime}</p>
+<p>Reason: {normalizedReason}</p>");
         }
 
         public async Task<string> Cancel(int bookingId, int userId)
