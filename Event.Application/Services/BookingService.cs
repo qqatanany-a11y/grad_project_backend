@@ -75,81 +75,30 @@ namespace Event.Application.Services
 
             var existingBookings = await _bookingRepo.GetByVenueAndDate(dto.VenueId, bookingDateUtc);
 
-            decimal basePrice;
+            decimal basePrice = 0;
             decimal servicesPrice = 0;
-            TimeSpan startTime;
-            TimeSpan endTime;
+            TimeSpan startTime = default;
+            TimeSpan endTime = default;
+            VenueAvailability? selectedAvailabilitySlot = null;
 
-            if (venue.PricingType == PricingType.FixedSlots)
+            if (dto.VenueAvailabilityId.HasValue)
             {
-                VenueAvailability? availabilitySlot = null;
+                selectedAvailabilitySlot = await _venueAvailabilityRepo.GetByIdAsync(dto.VenueAvailabilityId.Value);
 
-                if (dto.VenueAvailabilityId.HasValue)
+                if (selectedAvailabilitySlot == null)
                 {
-                    availabilitySlot = await _venueAvailabilityRepo.GetByIdAsync(dto.VenueAvailabilityId.Value);
-
-                    if (availabilitySlot == null)
-                    {
-                        throw new Exception("The selected venue availability was not found.");
-                    }
-
-                    if (availabilitySlot.VenueId != dto.VenueId)
-                    {
-                        throw new Exception("The selected venue availability does not belong to this venue.");
-                    }
-
-                    if (availabilitySlot.Date != DateOnly.FromDateTime(bookingDateUtc))
-                    {
-                        throw new Exception("The selected venue availability does not match the booking date.");
-                    }
-                }
-                else if (dto.TimeSlotId.HasValue)
-                {
-                    var selectedSlot = venue.TimeSlots.FirstOrDefault(slot => slot.Id == dto.TimeSlotId.Value);
-                    if (selectedSlot == null)
-                    {
-                        throw new Exception("The selected time slot does not belong to this venue.");
-                    }
-
-                    if (!selectedSlot.IsActive)
-                    {
-                        throw new Exception("The selected time slot is inactive.");
-                    }
-
-                    startTime = selectedSlot.StartTime;
-                    endTime = selectedSlot.EndTime;
-                    basePrice = selectedSlot.Price;
-                    EnsureNoOverlap(existingBookings, startTime, endTime);
-                    goto SelectedOptions;
-                }
-                else if (dto.StartTime.HasValue && dto.EndTime.HasValue)
-                {
-                    availabilitySlot = await _venueAvailabilityRepo.GetSlotAsync(
-                        dto.VenueId,
-                        DateOnly.FromDateTime(bookingDateUtc),
-                        dto.StartTime.Value,
-                        dto.EndTime.Value);
-                }
-                else
-                {
-                    throw new Exception("Select one of the available venue availability slots.");
+                    throw new Exception("The selected venue availability was not found.");
                 }
 
-                if (availabilitySlot == null)
+                if (selectedAvailabilitySlot.VenueId != dto.VenueId)
                 {
-                    throw new Exception("This slot does not exist.");
+                    throw new Exception("The selected venue availability does not belong to this venue.");
                 }
 
-                if (availabilitySlot.IsBooked)
+                if (selectedAvailabilitySlot.Date != DateOnly.FromDateTime(bookingDateUtc))
                 {
-                    throw new Exception("This slot is already booked.");
+                    throw new Exception("The selected venue availability does not match the booking date.");
                 }
-
-                startTime = availabilitySlot.StartTime;
-                endTime = availabilitySlot.EndTime;
-                EnsureNoOverlap(existingBookings, startTime, endTime);
-                basePrice = availabilitySlot.Price;
-                availabilitySlot.MarkAsBooked();
             }
             else if (dto.TimeSlotId.HasValue)
             {
@@ -169,46 +118,38 @@ namespace Event.Application.Services
                 basePrice = selectedSlot.Price;
                 EnsureNoOverlap(existingBookings, startTime, endTime);
             }
-            else if (venue.TimeSlots.Any(slot => slot.IsActive))
+            else if (dto.StartTime.HasValue && dto.EndTime.HasValue)
             {
-                throw new Exception("Select one of the available venue time slots.");
-            }
-            else if (venue.PricingType == PricingType.Hourly)
-            {
-                if (!dto.StartTime.HasValue || !dto.EndTime.HasValue)
+                selectedAvailabilitySlot = await _venueAvailabilityRepo.GetSlotAsync(
+                    dto.VenueId,
+                    DateOnly.FromDateTime(bookingDateUtc),
+                    dto.StartTime.Value,
+                    dto.EndTime.Value);
+
+                if (selectedAvailabilitySlot == null)
                 {
-                    throw new Exception("Start time and end time are required.");
+                    throw new Exception("Select one of the available venue slots.");
                 }
-
-                startTime = dto.StartTime.Value;
-                endTime = dto.EndTime.Value;
-
-                if (endTime <= startTime)
-                {
-                    throw new Exception("End time must be after start time.");
-                }
-
-                if (!venue.PricePerHour.HasValue || venue.PricePerHour.Value <= 0)
-                {
-                    throw new Exception("This venue does not have a valid hourly price.");
-                }
-
-                EnsureNoOverlap(existingBookings, startTime, endTime);
-
-                var duration = endTime - startTime;
-                if (duration.TotalHours < 1)
-                {
-                    throw new Exception("Minimum booking duration is 1 hour.");
-                }
-
-                basePrice = (decimal)duration.TotalHours * venue.PricePerHour.Value;
             }
             else
             {
-                throw new Exception("Invalid pricing type.");
+                throw new Exception("Select one of the available venue slots.");
             }
 
-        SelectedOptions:
+            if (selectedAvailabilitySlot != null)
+            {
+                if (selectedAvailabilitySlot.IsBooked)
+                {
+                    throw new Exception("This slot is already booked.");
+                }
+
+                startTime = selectedAvailabilitySlot.StartTime;
+                endTime = selectedAvailabilitySlot.EndTime;
+                EnsureNoOverlap(existingBookings, startTime, endTime);
+                basePrice = selectedAvailabilitySlot.Price;
+                selectedAvailabilitySlot.MarkAsBooked();
+            }
+
             var selectedOptions = new List<VenueServiceOption>();
             if (dto.VenueServiceOptionIds.Count > 0)
             {
@@ -254,7 +195,7 @@ namespace Event.Application.Services
                 await _bookingSelectedServiceRepo.AddRangeAsync(bookingServices);
             }
 
-            if (venue.PricingType == PricingType.FixedSlots && !dto.TimeSlotId.HasValue)
+            if (selectedAvailabilitySlot != null)
             {
                 await _venueAvailabilityRepo.SaveChangesAsync();
             }
@@ -405,19 +346,16 @@ namespace Event.Application.Services
 
             booking.Cancel();
 
-            if (booking.Venue.PricingType == PricingType.FixedSlots)
-            {
-                var slot = await _venueAvailabilityRepo.GetSlotAsync(
-                    booking.VenueId,
-                    DateOnly.FromDateTime(booking.BookingDate),
-                    booking.StartTime,
-                    booking.EndTime);
+            var slot = await _venueAvailabilityRepo.GetSlotAsync(
+                booking.VenueId,
+                DateOnly.FromDateTime(booking.BookingDate),
+                booking.StartTime,
+                booking.EndTime);
 
-                if (slot != null)
-                {
-                    slot.MarkAsAvailable();
-                    await _venueAvailabilityRepo.SaveChangesAsync();
-                }
+            if (slot != null)
+            {
+                slot.MarkAsAvailable();
+                await _venueAvailabilityRepo.SaveChangesAsync();
             }
 
             await _bookingRepo.SaveChangesAsync();

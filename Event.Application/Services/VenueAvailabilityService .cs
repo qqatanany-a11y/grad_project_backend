@@ -28,9 +28,6 @@ namespace Event.Application.Services
             if (venue.Company.UserId != ownerId)
                 throw new Exception("Access denied. You can only manage your own venues.");
 
-            if (venue.PricingType != PricingType.FixedSlots)
-                throw new Exception("Availability slots can only be added to fixed-slots venues.");
-
             if (dto.EndTime <= dto.StartTime)
                 throw new Exception("End time must be after start time.");
 
@@ -82,6 +79,28 @@ namespace Event.Application.Services
             };
         }
 
+        public async Task DeleteAsync(int ownerId, int venueAvailabilityId)
+        {
+            var availability = await _venueAvailabilityRepo.GetByIdAsync(venueAvailabilityId);
+
+            if (availability == null)
+                throw new Exception("Venue slot not found.");
+
+            var venue = await _venueRepo.GetByIdAsync(availability.VenueId);
+
+            if (venue == null)
+                throw new Exception("Venue not found.");
+
+            if (venue.Company.UserId != ownerId)
+                throw new Exception("Access denied. You can only manage your own venues.");
+
+            if (availability.IsBooked)
+                throw new Exception("Booked slots cannot be deleted.");
+
+            await _venueAvailabilityRepo.DeleteAsync(availability);
+            await _venueAvailabilityRepo.SaveChangesAsync();
+        }
+
         public async Task<List<VenueAvailabilityItemDto>> GetByVenueIdAsync(int ownerId, int venueId)
         {
             var venue = await _venueRepo.GetByIdAsync(venueId);
@@ -112,9 +131,6 @@ namespace Event.Application.Services
 
             if (venue == null)
                 throw new Exception("Venue not found");
-
-            if (venue.PricingType != PricingType.FixedSlots)
-                throw new Exception("This venue does not use fixed slots.");
 
             var slots = await _venueAvailabilityRepo.GetAvailableByVenueAndDateAsync(venueId, date);
 

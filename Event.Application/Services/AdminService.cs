@@ -182,6 +182,9 @@ namespace Event.Application.Services
                 ?? JsonSerializer.Deserialize<VenueEditRequestDto>(request.RequestedDataJson, RequestJsonOptions)
                 ?? throw new Exception("Invalid request data");
 
+            data.PricingType = PricingType.FixedSlots;
+            data.PricePerHour = null;
+
             VenueSlotSupport.ValidateVenuePricing(data.PricingType, data.PricePerHour, data.TimeSlots);
 
             venue.Update(
