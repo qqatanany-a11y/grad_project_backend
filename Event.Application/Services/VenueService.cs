@@ -1,5 +1,6 @@
 using Event.Application.Dtos;
 using Event.Application.IServices;
+using Event.Application.Helpers;
 using events.domain.Entities;
 using events.domain.Repos;
 
@@ -58,7 +59,11 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            venue.AddImages(dto.ImageUrls);
+            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            if (resolvedImageUrls.Count > 0)
+            {
+                venue.AddImages(resolvedImageUrls);
+            }
 
             if (dto.TimeSlots != null)
             {
@@ -103,6 +108,12 @@ namespace Event.Application.Services
                 dto.FacebookUrl,
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
+
+            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            if (resolvedImageUrls.Count > 0)
+            {
+                venue.AddImages(resolvedImageUrls);
+            }
 
             if (dto.TimeSlots != null)
             {
@@ -244,6 +255,8 @@ namespace Event.Application.Services
 
         private static VenueDto MapVenue(Venue venue, bool activeSlotsOnly = false)
         {
+            var orderedImageUrls = VenueImageRequestHelper.OrderExistingImages(venue.Images);
+
             return new VenueDto
             {
                 Id = venue.Id,
@@ -264,6 +277,12 @@ namespace Event.Application.Services
                 InstagramUrl = venue.InstagramUrl,
                 WebsiteUrl = venue.WebsiteUrl,
                 AverageRating = venue.Reviews.Any() ? venue.Reviews.Average(r => r.Rating) : 0,
+                CoverPhotoUrl = venue.Images
+                    .OrderByDescending(image => image.IsCover)
+                    .ThenBy(image => image.Id)
+                    .Select(image => image.ImageUrl)
+                    .FirstOrDefault(),
+                ImageUrls = orderedImageUrls,
                 TimeSlots = VenueSlotSupport.MapSlots(venue.TimeSlots, activeSlotsOnly)
             };
         }

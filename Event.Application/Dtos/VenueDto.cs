@@ -22,6 +22,8 @@ namespace Event.Application.Dtos
         public string? InstagramUrl { get; set; }
         public string? WebsiteUrl { get; set; }
         public double AverageRating { get; set; }
+        public string? CoverPhotoUrl { get; set; }
+        public List<string> ImageUrls { get; set; } = new();
         public List<VenueTimeSlotDto> TimeSlots { get; set; } = new();
     }
 }

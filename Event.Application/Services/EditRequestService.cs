@@ -76,6 +76,7 @@ namespace Event.Application.Services
 
             dto.PricingType = PricingType.FixedSlots;
             dto.PricePerHour = null;
+            dto.ImageUrls = dto.GetResolvedImageUrls();
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -99,7 +100,8 @@ namespace Event.Application.Services
                     FacebookUrl = venue.FacebookUrl,
                     InstagramUrl = venue.InstagramUrl,
                     WebsiteUrl = venue.WebsiteUrl,
-                    TimeSlots = VenueSlotSupport.MapEditableSlots(venue.TimeSlots)
+                    TimeSlots = VenueSlotSupport.MapEditableSlots(venue.TimeSlots),
+                    ImageUrls = VenueImageRequestHelper.OrderExistingImages(venue.Images)
                 },
                 Requested = dto
             };
@@ -130,6 +132,7 @@ namespace Event.Application.Services
 
             dto.PricingType = PricingType.FixedSlots;
             dto.PricePerHour = null;
+            dto.ImageUrls = dto.GetResolvedImageUrls();
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -331,6 +334,12 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
+            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            if (resolvedImageUrls.Count > 0)
+            {
+                venue.AddImages(resolvedImageUrls);
+            }
+
             if (dto.TimeSlots != null)
             {
                 VenueSlotSupport.SyncSlots(venue, dto.TimeSlots);
@@ -371,9 +380,10 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            if (dto.ImageUrls.Count > 0)
+            var resolvedImageUrls = VenueImageRequestHelper.Resolve(dto.ImageUrls);
+            if (resolvedImageUrls.Count > 0)
             {
-                venue.AddImages(dto.ImageUrls);
+                venue.AddImages(resolvedImageUrls);
             }
 
             if (dto.TimeSlots != null)
