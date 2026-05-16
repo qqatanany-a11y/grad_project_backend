@@ -10,11 +10,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
 using System.Threading.RateLimiting;
+using events.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,6 +57,8 @@ builder.Services.AddScoped<IVenueAvailabilityService, VenueAvailabilityService>(
 builder.Services.AddHostedService<BookingReminderBackgroundService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<IMediaStorageService, MediaStorageService>();
+builder.Services.AddScoped<MediaStorageService>();
 // ================= JWT =================
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -162,6 +166,15 @@ if (app.Environment.IsDevelopment() || swaggerEnabledInProduction)
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
+Directory.CreateDirectory(uploadsPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
 
 app.UseCors("FrontendClients");
 

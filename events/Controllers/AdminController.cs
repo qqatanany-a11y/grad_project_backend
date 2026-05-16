@@ -17,20 +17,20 @@ namespace Event.API.Controllers
         private readonly IAdminService _adminService;
         private readonly IUserService _userService;
         private readonly ICompanyRepo _companyRepo;
-        private readonly IVenueRepo _venueRepo;
+        private readonly IVenueService _venueService;
         private readonly IEditRequestService _editRequestService;
 
         public AdminController(
             IAdminService adminService,
             IUserService userService,
             ICompanyRepo companyRepo,
-            IVenueRepo venueRepo,
+            IVenueService venueService,
             IEditRequestService editRequestService)
         {
             _adminService = adminService;
             _userService = userService;
             _companyRepo = companyRepo;
-            _venueRepo = venueRepo;
+            _venueService = venueService;
             _editRequestService = editRequestService;
         }
 
@@ -112,7 +112,7 @@ namespace Event.API.Controllers
 
         [HttpGet("venues")]
         public async Task<IActionResult> GetVenues()
-            => Ok(await _venueRepo.GetAllAsync());
+            => Ok(await _venueService.GetAllAsync());
 
         // ================= EDIT REQUESTS =================
 

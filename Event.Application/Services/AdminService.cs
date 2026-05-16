@@ -23,6 +23,7 @@ namespace Event.Application.Services
         private readonly IPasswordGenerator _passwordGenerator;
         private readonly IEmailService _emailService;
         private readonly IEditRequestRepo _editRequestRepo;
+        private readonly IMediaStorageService _mediaStorageService;
 
         public AdminService(
             IOwnerRequestRepo ownerRequestRepo,
@@ -31,7 +32,8 @@ namespace Event.Application.Services
             IVenueRepo venueRepo,
             IPasswordGenerator passwordGenerator,
             IEmailService emailService,
-            IEditRequestRepo editRequestRepo)
+            IEditRequestRepo editRequestRepo,
+            IMediaStorageService mediaStorageService)
         {
             _ownerRequestRepo = ownerRequestRepo;
             _userRepo = userRepo;
@@ -40,6 +42,7 @@ namespace Event.Application.Services
             _passwordGenerator = passwordGenerator;
             _emailService = emailService;
             _editRequestRepo = editRequestRepo;
+            _mediaStorageService = mediaStorageService;
         }
 
         public async Task<List<OwnerRequest>> GetOwnerRequestsAsync()
@@ -203,7 +206,9 @@ namespace Event.Application.Services
                 data.InstagramUrl,
                 data.WebsiteUrl);
 
-            var resolvedImageUrls = data.GetResolvedImageUrls();
+            var resolvedImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                data.GetResolvedImageUrls(),
+                "venues");
             if (resolvedImageUrls.Count > 0)
             {
                 venue.AddImages(resolvedImageUrls);

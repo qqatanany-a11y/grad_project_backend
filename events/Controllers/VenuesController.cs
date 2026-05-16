@@ -1,5 +1,7 @@
 using Event.Application.Dtos;
 using Event.Application.IServices;
+using events.Helpers;
+using events.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,10 +13,12 @@ namespace events.Controllers
     public class VenuesController : ControllerBase
     {
         private readonly IVenueService _venueService;
+        private readonly MediaStorageService _mediaStorageService;
 
-        public VenuesController(IVenueService venueService)
+        public VenuesController(IVenueService venueService, MediaStorageService mediaStorageService)
         {
             _venueService = venueService;
+            _mediaStorageService = mediaStorageService;
         }
 
         [HttpGet]
@@ -30,7 +34,7 @@ namespace events.Controllers
         [HttpPost]
         [HttpPost("venues")]
         [Authorize(Roles = "Owner")]
-        public async Task<IActionResult> AddVenue(AddVenueDto dto)
+        public async Task<IActionResult> AddVenue()
         {
             var companyIdClaim = User.FindFirst("CompanyId");
             if (companyIdClaim == null)
@@ -40,6 +44,8 @@ namespace events.Controllers
 
             try
             {
+                var (dto, form) = await RequestDtoReader.ReadAsync<AddVenueDto>(Request);
+                await ApplyUploadedVenueImagesAsync(dto, form);
                 var result = await _venueService.AddAsync(int.Parse(companyIdClaim.Value), dto);
                 return Ok(result);
             }
@@ -52,7 +58,7 @@ namespace events.Controllers
         [HttpPut("{id}")]
         [HttpPut("venues/{id}")]
         [Authorize(Roles = "Owner")]
-        public async Task<IActionResult> UpdateVenue(int id, UpdateVenueDto dto)
+        public async Task<IActionResult> UpdateVenue(int id)
         {
             var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (ownerIdClaim == null)
@@ -62,6 +68,8 @@ namespace events.Controllers
 
             try
             {
+                var (dto, form) = await RequestDtoReader.ReadAsync<UpdateVenueDto>(Request);
+                await ApplyUploadedVenueImagesAsync(dto, form);
                 var result = await _venueService.UpdateAsync(int.Parse(ownerIdClaim.Value), id, dto);
                 return Ok(result);
             }
@@ -148,6 +156,42 @@ namespace events.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task ApplyUploadedVenueImagesAsync(AddVenueDto dto, IFormCollection form)
+        {
+            if (form == null)
+            {
+                return;
+            }
+
+            var uploadedPathsByToken = await _mediaStorageService.SaveUploadedImagesByTokenAsync(
+                form["photoTokens"],
+                form.Files.GetFiles("photoFiles"),
+                "venues");
+
+            dto.ImageUrls = VenueUploadTokenResolver.ReplaceTokens(dto.ImageUrls, uploadedPathsByToken);
+            dto.CoverPhotoDataUrl = VenueUploadTokenResolver.ReplaceToken(dto.CoverPhotoDataUrl, uploadedPathsByToken);
+            dto.GalleryPhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.GalleryPhotoDataUrls, uploadedPathsByToken);
+            dto.PhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.PhotoDataUrls, uploadedPathsByToken);
+        }
+
+        private async Task ApplyUploadedVenueImagesAsync(UpdateVenueDto dto, IFormCollection form)
+        {
+            if (form == null)
+            {
+                return;
+            }
+
+            var uploadedPathsByToken = await _mediaStorageService.SaveUploadedImagesByTokenAsync(
+                form["photoTokens"],
+                form.Files.GetFiles("photoFiles"),
+                "venues");
+
+            dto.ImageUrls = VenueUploadTokenResolver.ReplaceTokens(dto.ImageUrls, uploadedPathsByToken);
+            dto.CoverPhotoDataUrl = VenueUploadTokenResolver.ReplaceToken(dto.CoverPhotoDataUrl, uploadedPathsByToken);
+            dto.GalleryPhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.GalleryPhotoDataUrls, uploadedPathsByToken);
+            dto.PhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.PhotoDataUrls, uploadedPathsByToken);
         }
     }
 }

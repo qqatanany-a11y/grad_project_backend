@@ -15,6 +15,7 @@ namespace Event.Application.Services
         private readonly IVenueServiceOptionRepo _venueServiceOptionRepo;
         private readonly IBookingSelectedServiceRepo _bookingSelectedServiceRepo;
         private readonly IEmailService _emailService;
+        private readonly IMediaStorageService _mediaStorageService;
 
         public BookingService(
             IBookingRepo bookingRepo,
@@ -23,7 +24,8 @@ namespace Event.Application.Services
             IVenueAvailabilityRepo venueAvailabilityRepo,
             IVenueServiceOptionRepo venueServiceOptionRepo,
             IBookingSelectedServiceRepo bookingSelectedServiceRepo,
-            IEmailService emailService)
+            IEmailService emailService,
+            IMediaStorageService mediaStorageService)
         {
             _bookingRepo = bookingRepo;
             _venueRepo = venueRepo;
@@ -32,6 +34,7 @@ namespace Event.Application.Services
             _venueServiceOptionRepo = venueServiceOptionRepo;
             _bookingSelectedServiceRepo = bookingSelectedServiceRepo;
             _emailService = emailService;
+            _mediaStorageService = mediaStorageService;
         }
 
         public async Task<CreateBookingResponseDto> CreateBooking(int userId, CreateBookingDto dto)
@@ -170,6 +173,13 @@ namespace Event.Application.Services
 
             var totalPrice = basePrice + servicesPrice;
 
+            var brideIdDocumentPath = await _mediaStorageService.NormalizeImageReferenceAsync(
+                dto.BrideIdDocumentDataUrl,
+                "bookings");
+            var bridegroomIdDocumentPath = await _mediaStorageService.NormalizeImageReferenceAsync(
+                dto.BridegroomIdDocumentDataUrl,
+                "bookings");
+
             var booking = new Booking(
                 dto.VenueId,
                 userId,
@@ -180,8 +190,8 @@ namespace Event.Application.Services
                 basePrice,
                 servicesPrice,
                 totalPrice,
-                dto.BrideIdDocumentDataUrl,
-                dto.BridegroomIdDocumentDataUrl);
+                brideIdDocumentPath,
+                bridegroomIdDocumentPath);
 
             await _bookingRepo.AddAsync(booking);
             await _bookingRepo.SaveChangesAsync();
@@ -373,7 +383,7 @@ namespace Event.Application.Services
             }
         }
 
-        private static BookingDto MapBooking(Booking booking)
+        private BookingDto MapBooking(Booking booking)
         {
             var depositAmount = CalculateDepositAmount(booking.TotalPrice, booking.Venue.DepositPercentage);
 
@@ -393,8 +403,8 @@ namespace Event.Application.Services
                          booking.Payment == null &&
                          depositAmount > 0,
                 Payment = MapPayment(booking.Payment),
-                BrideIdDocumentDataUrl = booking.BrideIdDocumentDataUrl,
-                BridegroomIdDocumentDataUrl = booking.BridegroomIdDocumentDataUrl,
+                BrideIdDocumentDataUrl = _mediaStorageService.SanitizePublicReference(booking.BrideIdDocumentDataUrl),
+                BridegroomIdDocumentDataUrl = _mediaStorageService.SanitizePublicReference(booking.BridegroomIdDocumentDataUrl),
                 Services = booking.SelectedServices.Select(service => new SelectedServiceResponseDto
                 {
                     VenueServiceOptionId = service.VenueServiceOptionId,
@@ -404,7 +414,7 @@ namespace Event.Application.Services
             };
         }
 
-        private static BookingPaymentDto? MapPayment(Payment? payment)
+        private BookingPaymentDto? MapPayment(Payment? payment)
         {
             if (payment == null)
             {
@@ -417,7 +427,7 @@ namespace Event.Application.Services
                 PaymentMethod = payment.PaymentMethod.ToString(),
                 Status = payment.Status.ToString(),
                 PaidAt = payment.PaidAt,
-                CliqTransferImageDataUrl = payment.CliqTransferImageDataUrl
+                CliqTransferImageDataUrl = _mediaStorageService.SanitizePublicReference(payment.CliqTransferImageDataUrl)
             };
         }
 
