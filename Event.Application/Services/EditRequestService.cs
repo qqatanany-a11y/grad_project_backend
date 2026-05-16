@@ -20,19 +20,22 @@ namespace Event.Application.Services
         private readonly IVenueRepo _venueRepo;
         private readonly IEmailService _emailService;
         private readonly ICompanyRepo _companyRepo;
+        private readonly IMediaStorageService _mediaStorageService;
 
         public EditRequestService(
             IEditRequestRepo editRequestRepo,
             IUserRepo userRepo,
             IEmailService emailService,
             IVenueRepo venueRepo,
-            ICompanyRepo companyRepo)
+            ICompanyRepo companyRepo,
+            IMediaStorageService mediaStorageService)
         {
             _editRequestRepo = editRequestRepo;
             _userRepo = userRepo;
             _emailService = emailService;
             _venueRepo = venueRepo;
             _companyRepo = companyRepo;
+            _mediaStorageService = mediaStorageService;
         }
 
         public async Task CreateProfileEditRequestAsync(int ownerId, ProfileEditRequestDto dto)
@@ -76,7 +79,12 @@ namespace Event.Application.Services
 
             dto.PricingType = PricingType.FixedSlots;
             dto.PricePerHour = null;
-            dto.ImageUrls = dto.GetResolvedImageUrls();
+            dto.ImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                dto.GetResolvedImageUrls(),
+                "venues");
+            dto.CoverPhotoDataUrl = null;
+            dto.GalleryPhotoDataUrls = new List<string>();
+            dto.PhotoDataUrls = new List<string>();
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -132,7 +140,12 @@ namespace Event.Application.Services
 
             dto.PricingType = PricingType.FixedSlots;
             dto.PricePerHour = null;
-            dto.ImageUrls = dto.GetResolvedImageUrls();
+            dto.ImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                dto.GetResolvedImageUrls(),
+                "venues");
+            dto.CoverPhotoDataUrl = null;
+            dto.GalleryPhotoDataUrls = new List<string>();
+            dto.PhotoDataUrls = new List<string>();
 
             VenueSlotSupport.ValidateVenuePricing(dto.PricingType, dto.PricePerHour, dto.TimeSlots);
 
@@ -334,7 +347,9 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            var resolvedImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                dto.GetResolvedImageUrls(),
+                "venues");
             if (resolvedImageUrls.Count > 0)
             {
                 venue.AddImages(resolvedImageUrls);
@@ -380,7 +395,9 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            var resolvedImageUrls = VenueImageRequestHelper.Resolve(dto.ImageUrls);
+            var resolvedImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                VenueImageRequestHelper.Resolve(dto.ImageUrls),
+                "venues");
             if (resolvedImageUrls.Count > 0)
             {
                 venue.AddImages(resolvedImageUrls);
@@ -394,7 +411,7 @@ namespace Event.Application.Services
             await _venueRepo.AddAsync(venue);
         }
 
-        private static EditRequestDto MapRequest(EditRequest request)
+        private EditRequestDto MapRequest(EditRequest request)
         {
             return new EditRequestDto
             {
@@ -404,7 +421,7 @@ namespace Event.Application.Services
                 Type = request.Type.ToString(),
                 Status = request.Status.ToString(),
                 TargetId = request.TargetId,
-                RequestedDataJson = request.RequestedDataJson,
+                RequestedDataJson = _mediaStorageService.SanitizeJsonPayload(request.RequestedDataJson),
                 CreatedAt = request.CreatedAt,
                 ReviewedByAdminId = request.ReviewedByAdminId,
                 ReviewedAt = request.ReviewedAt,

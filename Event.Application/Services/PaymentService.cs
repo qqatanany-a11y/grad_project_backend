@@ -10,12 +10,18 @@ namespace Event.Application.Services
         private readonly IPaymentRepo _paymentRepo;
         private readonly IBookingRepo _bookingRepo;
         private readonly IEmailService _emailService;
+        private readonly IMediaStorageService _mediaStorageService;
 
-        public PaymentService(IPaymentRepo paymentRepo, IBookingRepo bookingRepo, IEmailService emailService)
+        public PaymentService(
+            IPaymentRepo paymentRepo,
+            IBookingRepo bookingRepo,
+            IEmailService emailService,
+            IMediaStorageService mediaStorageService)
         {
             _paymentRepo = paymentRepo;
             _bookingRepo = bookingRepo;
             _emailService = emailService;
+            _mediaStorageService = mediaStorageService;
         }
 
         public async Task<string> PayAsync(int userId, PayBookingDto dto)
@@ -69,7 +75,10 @@ namespace Event.Application.Services
             }
             else
             {
-                payment.MarkAsPaid(dto.PaymentMethod, dto.CliqTransferImageDataUrl);
+                var cliqTransferImagePath = await _mediaStorageService.NormalizeImageReferenceAsync(
+                    dto.CliqTransferImageDataUrl,
+                    "payments");
+                payment.MarkAsPaid(dto.PaymentMethod, cliqTransferImagePath);
                 successMessage = "Payment completed successfully.";
             }
 

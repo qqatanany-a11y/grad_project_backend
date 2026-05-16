@@ -10,11 +10,16 @@ namespace Event.Application.Services
     {
         private readonly IVenueRepo _venueRepo;
         private readonly IUserRepo _userRepo;
+        private readonly IMediaStorageService _mediaStorageService;
 
-        public VenueService(IVenueRepo venueRepo, IUserRepo userRepo)
+        public VenueService(
+            IVenueRepo venueRepo,
+            IUserRepo userRepo,
+            IMediaStorageService mediaStorageService)
         {
             _venueRepo = venueRepo;
             _userRepo = userRepo;
+            _mediaStorageService = mediaStorageService;
         }
 
         public async Task<List<VenueDto>> GetByCompanyIdAsync(int companyId)
@@ -59,7 +64,9 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            var resolvedImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                dto.GetResolvedImageUrls(),
+                "venues");
             if (resolvedImageUrls.Count > 0)
             {
                 venue.AddImages(resolvedImageUrls);
@@ -109,7 +116,9 @@ namespace Event.Application.Services
                 dto.InstagramUrl,
                 dto.WebsiteUrl);
 
-            var resolvedImageUrls = dto.GetResolvedImageUrls();
+            var resolvedImageUrls = await _mediaStorageService.NormalizeImageReferencesAsync(
+                dto.GetResolvedImageUrls(),
+                "venues");
             if (resolvedImageUrls.Count > 0)
             {
                 venue.AddImages(resolvedImageUrls);
@@ -256,6 +265,7 @@ namespace Event.Application.Services
         private static VenueDto MapVenue(Venue venue, bool activeSlotsOnly = false)
         {
             var orderedImageUrls = VenueImageRequestHelper.OrderExistingImages(venue.Images);
+            var coverPhotoUrl = orderedImageUrls.FirstOrDefault();
 
             return new VenueDto
             {
@@ -277,11 +287,7 @@ namespace Event.Application.Services
                 InstagramUrl = venue.InstagramUrl,
                 WebsiteUrl = venue.WebsiteUrl,
                 AverageRating = venue.Reviews.Any() ? venue.Reviews.Average(r => r.Rating) : 0,
-                CoverPhotoUrl = venue.Images
-                    .OrderByDescending(image => image.IsCover)
-                    .ThenBy(image => image.Id)
-                    .Select(image => image.ImageUrl)
-                    .FirstOrDefault(),
+                CoverPhotoUrl = coverPhotoUrl,
                 ImageUrls = orderedImageUrls,
                 TimeSlots = VenueSlotSupport.MapSlots(venue.TimeSlots, activeSlotsOnly)
             };

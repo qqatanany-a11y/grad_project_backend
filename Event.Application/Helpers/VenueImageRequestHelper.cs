@@ -33,7 +33,9 @@ namespace Event.Application.Helpers
             }
 
             return images
-                .Where(image => !string.IsNullOrWhiteSpace(image.ImageUrl))
+                .Where(image =>
+                    !string.IsNullOrWhiteSpace(image.ImageUrl) &&
+                    !LooksLikeDataUrl(image.ImageUrl))
                 .OrderByDescending(image => image.IsCover)
                 .ThenBy(image => image.Id)
                 .Select(image => image.ImageUrl.Trim())
@@ -62,6 +64,11 @@ namespace Event.Application.Helpers
             }
 
             target.Add(value.Trim());
+        }
+
+        private static bool LooksLikeDataUrl(string value)
+        {
+            return value.TrimStart().StartsWith("data:", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

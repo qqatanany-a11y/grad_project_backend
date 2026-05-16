@@ -1,5 +1,7 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
+using events.Helpers;
+using events.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,14 +12,16 @@ using System.Security.Claims;
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
+    private readonly MediaStorageService _mediaStorageService;
 
-    public BookingController(IBookingService bookingService)
+    public BookingController(IBookingService bookingService, MediaStorageService mediaStorageService)
     {
         _bookingService = bookingService;
+        _mediaStorageService = mediaStorageService;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateBookingDto dto)
+    public async Task<IActionResult> Create()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -29,6 +33,27 @@ public class BookingController : ControllerBase
 
         try
         {
+            var (dto, form) = await RequestDtoReader.ReadAsync<CreateBookingDto>(Request);
+            if (form != null)
+            {
+                var brideDocumentFile = form.Files.GetFile("brideIdDocumentFile");
+                var bridegroomDocumentFile = form.Files.GetFile("bridegroomIdDocumentFile");
+
+                if (brideDocumentFile != null)
+                {
+                    dto.BrideIdDocumentDataUrl = await _mediaStorageService.SaveUploadedImageAsync(
+                        brideDocumentFile,
+                        "bookings");
+                }
+
+                if (bridegroomDocumentFile != null)
+                {
+                    dto.BridegroomIdDocumentDataUrl = await _mediaStorageService.SaveUploadedImageAsync(
+                        bridegroomDocumentFile,
+                        "bookings");
+                }
+            }
+
             var result = await _bookingService.CreateBooking(userId, dto);
             return Ok(result);
         }

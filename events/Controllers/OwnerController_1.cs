@@ -1,6 +1,8 @@
 ﻿using Event.Application.Dtos;
 using Event.Application.IServices;
 using events.domain.Repos;
+using events.Helpers;
+using events.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,19 +19,22 @@ namespace events.Controllers
         private readonly ICompanyRepo _companyRepo;
         private readonly IEditRequestService _editRequestService;
         private readonly IAdminService _adminService;
+        private readonly MediaStorageService _mediaStorageService;
 
         public OwnerController(
             IAuthService authService,
             IVenueService venueService,
             ICompanyRepo companyRepo,
             IAdminService adminService,
-            IEditRequestService editRequestService)
+            IEditRequestService editRequestService,
+            MediaStorageService mediaStorageService)
         {
             _authService = authService;
             _adminService = adminService;
             _venueService = venueService;
             _companyRepo = companyRepo;
             _editRequestService = editRequestService;
+            _mediaStorageService = mediaStorageService;
         }
 
         [HttpGet("me")]
@@ -84,7 +89,7 @@ namespace events.Controllers
         }
 
         [HttpPost("edit-requests/venue/{venueId}")]
-        public async Task<IActionResult> CreateVenueEditRequest(int venueId, VenueEditRequestDto dto)
+        public async Task<IActionResult> CreateVenueEditRequest(int venueId)
         {
             var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (ownerIdClaim == null)
@@ -94,6 +99,8 @@ namespace events.Controllers
 
             try
             {
+                var (dto, form) = await RequestDtoReader.ReadAsync<VenueEditRequestDto>(Request);
+                await ApplyUploadedVenueImagesAsync(dto, form);
                 await _editRequestService.CreateVenueEditRequestAsync(ownerId, venueId, dto);
                 return Ok("Venue edit request submitted");
             }
@@ -104,7 +111,7 @@ namespace events.Controllers
         }
 
         [HttpPost("edit-requests/venue-create")]
-        public async Task<IActionResult> CreateVenueCreateRequest(CreateVenueRequestDto dto)
+        public async Task<IActionResult> CreateVenueCreateRequest()
         {
             var ownerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (ownerIdClaim == null)
@@ -114,6 +121,8 @@ namespace events.Controllers
 
             try
             {
+                var (dto, form) = await RequestDtoReader.ReadAsync<CreateVenueRequestDto>(Request);
+                await ApplyUploadedVenueImagesAsync(dto, form);
                 await _editRequestService.CreateVenueCreateRequestAsync(ownerId, dto);
                 return Ok("Venue creation request submitted");
             }
@@ -141,6 +150,42 @@ namespace events.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async Task ApplyUploadedVenueImagesAsync(VenueEditRequestDto dto, IFormCollection form)
+        {
+            if (form == null)
+            {
+                return;
+            }
+
+            var uploadedPathsByToken = await _mediaStorageService.SaveUploadedImagesByTokenAsync(
+                form["photoTokens"],
+                form.Files.GetFiles("photoFiles"),
+                "venues");
+
+            dto.ImageUrls = VenueUploadTokenResolver.ReplaceTokens(dto.ImageUrls, uploadedPathsByToken);
+            dto.CoverPhotoDataUrl = VenueUploadTokenResolver.ReplaceToken(dto.CoverPhotoDataUrl, uploadedPathsByToken);
+            dto.GalleryPhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.GalleryPhotoDataUrls, uploadedPathsByToken);
+            dto.PhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.PhotoDataUrls, uploadedPathsByToken);
+        }
+
+        private async Task ApplyUploadedVenueImagesAsync(CreateVenueRequestDto dto, IFormCollection form)
+        {
+            if (form == null)
+            {
+                return;
+            }
+
+            var uploadedPathsByToken = await _mediaStorageService.SaveUploadedImagesByTokenAsync(
+                form["photoTokens"],
+                form.Files.GetFiles("photoFiles"),
+                "venues");
+
+            dto.ImageUrls = VenueUploadTokenResolver.ReplaceTokens(dto.ImageUrls, uploadedPathsByToken);
+            dto.CoverPhotoDataUrl = VenueUploadTokenResolver.ReplaceToken(dto.CoverPhotoDataUrl, uploadedPathsByToken);
+            dto.GalleryPhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.GalleryPhotoDataUrls, uploadedPathsByToken);
+            dto.PhotoDataUrls = VenueUploadTokenResolver.ReplaceTokens(dto.PhotoDataUrls, uploadedPathsByToken);
         }
     }
 }
