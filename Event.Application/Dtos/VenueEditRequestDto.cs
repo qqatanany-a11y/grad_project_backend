@@ -1,4 +1,5 @@
 using events.domain.Entities;
+using Event.Application.Helpers;
 
 namespace Event.Application.Dtos
 {
@@ -19,5 +20,18 @@ namespace Event.Application.Dtos
         public string? InstagramUrl { get; set; }
         public string? WebsiteUrl { get; set; }
         public List<VenueTimeSlotUpsertDto>? TimeSlots { get; set; }
+        public List<string> ImageUrls { get; set; } = new();
+        public string? CoverPhotoDataUrl { get; set; }
+        public List<string> GalleryPhotoDataUrls { get; set; } = new();
+        public List<string> PhotoDataUrls { get; set; } = new();
+
+        public List<string> GetResolvedImageUrls()
+        {
+            return VenueImageRequestHelper.Resolve(
+                ImageUrls,
+                CoverPhotoDataUrl,
+                GalleryPhotoDataUrls,
+                PhotoDataUrls);
+        }
     }
 }

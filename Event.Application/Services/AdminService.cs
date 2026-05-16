@@ -203,6 +203,12 @@ namespace Event.Application.Services
                 data.InstagramUrl,
                 data.WebsiteUrl);
 
+            var resolvedImageUrls = data.GetResolvedImageUrls();
+            if (resolvedImageUrls.Count > 0)
+            {
+                venue.AddImages(resolvedImageUrls);
+            }
+
             if (data.TimeSlots != null)
             {
                 VenueSlotSupport.SyncSlots(venue, data.TimeSlots);
